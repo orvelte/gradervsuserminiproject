@@ -36,7 +36,7 @@ def test_arms_are_byte_identical_outside_user_prompt_and_condition():
     texts = {n: _strip_varying((CFG / n).read_text()) for n in ARM_FILES}
     base = texts[ARM_FILES[0]]
     assert "user_prompt" not in base and "condition" not in base
-    assert "system_prompt" in base and "reasoning_effort: low" in base and "max_steps: 100" in base
+    assert "system_prompt" in base and "reasoning_effort: high" in base and "max_steps: 100" in base
     for n, t in texts.items():
         assert t == base, f"{n} differs from {ARM_FILES[0]} outside user_prompt/condition"
 
@@ -54,9 +54,11 @@ def test_arms_parse_identically_outside_user_prompt_and_condition():
 def test_prompt_building_blocks_are_used_verbatim():
     p = {n: yaml.safe_load((CFG / n).read_text()) for n in ARM_FILES}
     up = {n: p[n]["prompts"]["user_prompt"] for n in ARM_FILES}
-    upstream = yaml.safe_load((CFG / "upstream" / "default.yaml").read_text())
+    upstream = yaml.safe_load((CFG / "upstream" / "gpt_oss_post.yaml").read_text())  # the paper's GPT-OSS prompts
     assert up["N0_replication.yaml"] == upstream["prompts"]["user_prompt"]
-    assert p["N0_replication.yaml"]["prompts"]["system_prompt"] == upstream["prompts"]["system_prompt"]
+    for n in ARM_FILES:
+        assert p[n]["prompts"]["system_prompt"] == upstream["prompts"]["system_prompt"]
+        assert p[n]["task"]["tools"] == ["bash", "apply_patch"]
     for n in ARM_FILES[1:]:
         assert build_arms.CORE in up[n]
         assert up[n].count(build_arms.CORE) == 1
@@ -70,7 +72,7 @@ def test_prompt_building_blocks_are_used_verbatim():
         assert up[n].startswith(build_arms.U_PRE) and up[n].rstrip("\n").endswith(build_arms.U_POST)
     assert up["G_O.yaml"] == f"{build_arms.G_PRE}\n\n{build_arms.CORE}\n\n{build_arms.OVERSIGHT}\n\n{build_arms.G_POST}\n"
     assert up["U_O.yaml"] == f"{build_arms.U_PRE}\n\n{build_arms.CORE}\n\n{build_arms.OVERSIGHT}\n\n{build_arms.U_POST}\n"
-    # CORE is the paper prompt minus its stakes/deployment preamble
+    # CORE is the paper's GPT-OSS prompt minus its two opening sentences
     assert build_arms.CORE in upstream["prompts"]["user_prompt"]
     ids = [p[n]["condition"]["id"] for n in ARM_FILES]
     assert ids == ["N0", "G0", "G1", "U0", "U1"]
@@ -92,28 +94,33 @@ def test_runner_resolves_every_arm_and_keeps_the_condition_block():
         src = yaml.safe_load((CFG / n).read_text())
         assert cfg["condition"]["id"] == src["condition"]["id"]
         assert cfg["prompts"]["user_prompt"] == src["prompts"]["user_prompt"]
-        assert cfg["agent"]["reasoning_effort"] == "low"
+        assert cfg["agent"]["reasoning_effort"] == "high"
 
 
 def test_agent_settings_reach_the_openrouter_request_body(monkeypatch):
-    """agent.* -> provider_kwargs -> create_provider -> OpenRouterProvider request body, as agent.py builds it."""
+    """agent.* + task.tools -> create_provider -> OpenRouterProvider request body, as agent.py builds it."""
     monkeypatch.setenv("OPENROUTER_API_KEY", "test-key-not-real")
     from agent_interp_envs.checkpoint import provider_kwargs
     from agent_interp_envs.providers import create_provider
     from agent_interp_envs.providers.openrouter_provider import OpenRouterProvider
-    from agent_interp_envs.tool_calling import EXECUTE_COMMAND_TOOL
+
+    spec = importlib.util.spec_from_file_location("precommit_tools", REPO_ROOT / "environments" / "precommit_hook" / "tools.py")
+    env_tools = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(env_tools)
 
     cfg = yaml.safe_load((CFG / "G_O.yaml").read_text())
+    tools = env_tools.get_tools(cfg)
+    assert [t["function"]["name"] for t in tools] == ["bash", "apply_patch"]
     kwargs = provider_kwargs(cfg)
-    assert kwargs["reasoning_effort"] == "low" and "condition" not in kwargs and "max_steps" not in kwargs
-    provider = create_provider(messages=[], tools=[EXECUTE_COMMAND_TOOL], **kwargs)
+    assert kwargs["reasoning_effort"] == "high" and "condition" not in kwargs and "max_steps" not in kwargs
+    provider = create_provider(messages=[], tools=tools, **kwargs)
     assert isinstance(provider, OpenRouterProvider)
-    assert provider.model == "deepseek/deepseek-v4-pro-0813"
+    assert provider.model == "openai/gpt-oss-120b"
     body = provider.kwargs["extra_body"]
-    assert body["reasoning"] == {"effort": "low"}  # the provider's own default would be "xhigh"
-    assert body["provider"] == {"only": ["deepseek"], "allow_fallbacks": False}
+    assert body["reasoning"] == {"effort": "high"}
+    assert body["provider"] == {"only": ["deepinfra/bf16"], "allow_fallbacks": False}
     assert body["usage"] == {"include": True}
-    assert provider.kwargs["tools"] == [EXECUTE_COMMAND_TOOL]
+    assert provider.kwargs["tools"] == tools
 
 
 def test_smoke_configs_share_the_arm_task_block_and_carry_expectations():
