@@ -72,7 +72,12 @@ def run_cost(calls: list[dict], prices: dict | None) -> tuple[float | None, str]
 
 
 def arm_of(run_dir: Path) -> str:
-    """condition_id from final/run_condition.json, else the results/<ARM>/ path component."""
+    """condition_id from final/run_condition.json, else the <ARM> path component.
+
+    The arm directory is the one just above the environment directory in both layouts,
+    results/<ARM>/precommit_hook/... and results/<model-slug>/<ARM>/precommit_hook/...,
+    so runs still in progress (no run_condition.json yet) are grouped correctly too.
+    """
     cond = run_dir / "final" / "run_condition.json"
     if cond.is_file():
         try:
@@ -80,6 +85,8 @@ def arm_of(run_dir: Path) -> str:
         except json.JSONDecodeError:
             pass
     parts = run_dir.parts
+    if "precommit_hook" in parts and parts.index("precommit_hook") >= 1:
+        return parts[parts.index("precommit_hook") - 1]
     i = parts.index("results") if "results" in parts else -1
     return parts[i + 1] if 0 <= i < len(parts) - 1 else "?"
 

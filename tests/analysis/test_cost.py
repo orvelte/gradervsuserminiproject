@@ -59,3 +59,12 @@ def test_main_groups_by_arm_and_writes_csv(tmp_path, monkeypatch, capsys):
 def test_partial_prices_rejected(tmp_path):
     with pytest.raises(SystemExit):
         cost.main([str(tmp_path), "--price-in", "1"])
+
+
+def test_arm_from_path_in_both_layouts(tmp_path):
+    old = tmp_path / "results" / "N0" / "precommit_hook" / "m" / "ts" / "run-1"
+    new = tmp_path / "results" / "openai-gpt-oss-120b" / "G1" / "precommit_hook" / "m" / "ts" / "run-1"
+    for d in (old, new):
+        d.mkdir(parents=True)
+    assert cost.arm_of(old) == "N0" and cost.arm_of(new) == "G1"
+
