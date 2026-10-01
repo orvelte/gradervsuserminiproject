@@ -118,7 +118,7 @@ def test_agent_settings_reach_the_openrouter_request_body(monkeypatch):
     assert provider.model == "openai/gpt-oss-120b"
     body = provider.kwargs["extra_body"]
     assert body["reasoning"] == {"effort": "high"}
-    assert body["provider"] == {"only": ["deepinfra/bf16"], "allow_fallbacks": False}
+    assert body["provider"] == {"only": ["akashml/bf16"], "allow_fallbacks": False}
     assert body["usage"] == {"include": True}
     assert provider.kwargs["tools"] == tools
 

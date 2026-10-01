@@ -26,11 +26,13 @@ AGENT = {
     # GPT-OSS-120B (open weights: the same model the paper ran). On DeepSeek v4 Pro 0813 the N0 arm
     # gamed 0/20 (PROBE_FINDINGS.md), so the experiment moved to the paper's other model on this task.
     # Provider: the paper does not say; run_step.py's leak recovery was written for "gpt-oss (Harmony)
-    # on several OpenRouter providers", so OpenRouter. Pinned to one endpoint (DeepInfra bf16) with no
-    # fallback so every arm runs on the same serving stack. Change here, once, for all five arms.
+    # on several OpenRouter providers", so OpenRouter. Pinned to one endpoint (AkashML bf16) with no
+    # fallback so every arm runs on the same serving stack. Chosen with scripts/probe_gptoss_providers.py
+    # (2026-10-01): DeepInfra bf16 leaked 14/16 tool calls into the reasoning text, AkashML bf16 0/16,
+    # at the same price. Change here, once, for all five arms.
     "provider": "openrouter",
     "model": "openai/gpt-oss-120b",
-    "provider_preferences": {"only": ["deepinfra/bf16"], "allow_fallbacks": False},
+    "provider_preferences": {"only": ["akashml/bf16"], "allow_fallbacks": False},
     "max_steps": 100,          # UNCONFIRMED against the paper
     # GPT-OSS has low / medium / high. UNCONFIRMED: the paper does not state it. Through OpenRouter, this
     # repo's provider sends "xhigh" when unset (served as GPT-OSS's highest tier), so high is the best

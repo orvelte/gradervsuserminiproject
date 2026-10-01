@@ -152,7 +152,7 @@ The user prompt is the only thing that differs. Shared settings (byte-identical 
 
 | key | value |
 |---|---|
-| `agent.provider` / `agent.model` | `openrouter` / `openai/gpt-oss-120b`, pinned with `provider_preferences: {only: [deepinfra/bf16], allow_fallbacks: false}` to one endpoint. GPT-OSS is open weights, so this is the paper's model. The paper does not state its provider; `run_step.py`'s leak recovery was written for "gpt-oss (Harmony) on several OpenRouter providers" |
+| `agent.provider` / `agent.model` | `openrouter` / `openai/gpt-oss-120b`, pinned with `provider_preferences: {only: [akashml/bf16], allow_fallbacks: false}` to one endpoint (chosen with `scripts/probe_gptoss_providers.py`: 0/16 tool calls leaked vs 14/16 on DeepInfra bf16, same price). GPT-OSS is open weights, so this is the paper's model. The paper does not state its provider; `run_step.py`'s leak recovery was written for "gpt-oss (Harmony) on several OpenRouter providers" |
 | `agent.max_steps` | 100 (UNCONFIRMED against the paper) |
 | `agent.reasoning_effort` | `high`, set explicitly. UNCONFIRMED against the paper: GPT-OSS has low/medium/high, and through OpenRouter this repo's provider sends `xhigh` when unset, i.e. GPT-OSS's highest tier, so high is the best guess |
 | `agent.llm_heal` | false |
@@ -318,7 +318,7 @@ each framing, and the difference-in-differences, each with a percentile-bootstra
   reasoning will be non-zero there for that reason alone.
 - **Serving and settings are not the paper's, only the model, prompts and tools are.** GPT-OSS-120B is open
   weights, so the model is the paper's, but the paper states neither its provider nor its reasoning effort nor
-  max_steps. We use OpenRouter pinned to DeepInfra bf16, `high` effort and 100 steps. Ask the authors.
+  max_steps. We use OpenRouter pinned to AkashML bf16, `high` effort and 100 steps. Ask the authors.
 - **Context window**: GPT-OSS-120B has 131k tokens. DeepSeek runs on this task peaked at 52k–96k tokens per call,
   so most runs should fit; a run that overflows is recorded as context-censored (`censored` in `summarize.py`).
 - **Why not DeepSeek**: on `deepseek/deepseek-v4-pro-0813` (the only V4 Pro release DeepSeek still serves) N0

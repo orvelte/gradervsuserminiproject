@@ -148,3 +148,18 @@ runs are artifacts and should not be counted.
 - Tests: `tests/environments/precommit_hook/test_leak_recovery.py` covers both leaked patch shapes,
   later-call-wins, no-apply_patch runs, and `reasoning_content` cleaning.
 
+## 2026-10-01 — GPT-OSS endpoint: AkashML bf16
+
+- `build_arms.py` `AGENT.provider_preferences.only`: `deepinfra/bf16` → `akashml/bf16` (all five arms). Not
+  prompt-visible; it changes the serving stack.
+- Why: `scripts/probe_gptoss_providers.py` (2 repeats × 8 turns per endpoint, total cost under a cent so far).
+
+  | Endpoint | Tool calls leaked into the reasoning text |
+  |---|---|
+  | `deepinfra/bf16` | 14/16 (88%; all recovered) |
+  | `akashml/bf16` | 0/16 |
+  | `crusoe/bf16` | 0/16 |
+
+  AkashML costs the same as DeepInfra ($0.037/M in, ~$0.19/M out) and serves bf16. Crusoe is the fallback.
+- Tests and README updated.
+
