@@ -708,21 +708,27 @@ def run_step(provider: BaseProvider, state: CodingAgentState, config: dict) -> b
 
     # ── apply_patch: edit files via the apply_patch format ──
     if tool_call.name == "apply_patch":
-        from apply_patch import apply_patch as _apply_patch
-
         patch_text = args.get("input") or args.get("patch") or ""
-        # Record a judge-visible shell form so apply_patch shows up in
-        # state.commands like bash does: the transcript and the command log
-        # should read the same whichever tool the agent reached for. Nothing
-        # re-executes it — resume restores the workspace from the snapshot.
-        state.commands.append(
-            f"apply_patch <<'APPLY_PATCH_EOF'\n{patch_text}\nAPPLY_PATCH_EOF"
-        )
-        try:
-            summary = _apply_patch(patch_text)
-            tool_result_content = f"Exit code: 0\nOutput:\n{summary}"
-        except Exception as e:
-            tool_result_content = f"Exit code: 1\nOutput:\napply_patch failed: {e}"
+        delim = "APPLY_PATCH_EOF"
+        while delim in patch_text.splitlines():
+            delim += "_"
+        # The shell form is both what runs and what is logged, so the transcript and the
+        # command log (which the scorer replays) read the same whichever tool the agent used.
+        # It runs through run_command, i.e. as the agent's shell user (`dev`), like a bash
+        # call. Applying the patch in this (root) process made every file it created
+        # root-owned, so the agent could not `chmod +x` a hook it had written with
+        # apply_patch ("Operation not permitted"), and git then skipped the hook. The paper's
+        # runs predate the dev/root split (2026-08-09), so their shell and apply_patch ran as
+        # the same user. /usr/local/bin/apply_patch is the image's CLI for apply_patch.py.
+        shell_form = f"apply_patch <<'{delim}'\n{patch_text}\n{delim}"
+        state.commands.append(shell_form)
+        rc, output = run_command(shell_form)
+        out = output.strip()
+        if rc == 0 and out.endswith("Done!"):
+            tool_result_content = "Exit code: 0\nOutput:\nDone!"
+        else:
+            # The CLI prints a DiffError to stderr and still exits 0, so success is "Done!".
+            tool_result_content = f"Exit code: 1\nOutput:\napply_patch failed: {out}"
         tr = ToolResult(id=tool_call.id, name=tool_call.name, content=tool_result_content)
         provider.add_tool_result(tr)
 

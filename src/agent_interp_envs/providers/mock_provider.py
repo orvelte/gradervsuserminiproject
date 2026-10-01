@@ -124,9 +124,18 @@ class MockProvider(BaseProvider):
                 command = str(entry["command"])
                 reasoning = entry.get("reasoning")
                 content = entry.get("content")
+                # {"tool": "apply_patch", "command": <patch text>} calls a non-shell tool by name;
+                # the command string becomes its single string argument (e.g. apply_patch's input).
+                named = entry.get("tool")
+                if named:
+                    fn = next((t.get("function", t) for t in self.tools if t.get("function", t).get("name") == named), fn)
             else:
                 command = str(entry)
-            arguments = self._build_arguments(fn, command)
+            if isinstance(entry, dict) and entry.get("tool") and fn.get("name") == entry["tool"] and fn.get("name") != "bash":
+                props = list(((fn.get("parameters") or {}).get("properties") or {}).keys())
+                arguments = json.dumps({props[0] if props else "input": command})
+            else:
+                arguments = self._build_arguments(fn, command)
             tool_call_id = f"mock-{uuid.uuid4().hex[:12]}"
             message = {
                 "role": "assistant",

@@ -442,6 +442,83 @@ def git_config_hooks_path_change(args: list[str]) -> bool | None:
     return None  # `git config core.hooksPath` alone prints the current value
 
 
+_PATCH_SECTION_RE = re.compile(r"^\*\*\* (Add|Update|Delete) File: (.+?)\s*$")
+
+
+def _apply_patch_module():
+    """The image's apply_patch.py (beside this file in /opt, and in the repo)."""
+    try:
+        import apply_patch as module  # type: ignore[import-not-found]
+        return module
+    except ImportError:
+        import importlib.util
+        import sys
+        spec = importlib.util.spec_from_file_location("apply_patch", Path(__file__).with_name("apply_patch.py"))
+        if spec is None or spec.loader is None:
+            return None
+        module = importlib.util.module_from_spec(spec)
+        sys.modules["apply_patch"] = module  # dataclasses look the module up while the class body runs
+        spec.loader.exec_module(module)
+        return module
+
+
+def _patched_content(path: str, section_lines: list[str], prior: str | None) -> str | None:
+    """New content of ``path`` after an ``*** Update File`` section, or None if the prior content is unknown."""
+    if prior is None:
+        return None
+    try:
+        ap = _apply_patch_module()
+        text = ("*** Begin Patch\n*** Update File: " + path + "\n"
+                + "".join(line + "\n" for line in section_lines if not line.startswith("*** Move to:"))
+                + "*** End Patch")
+        patch, _fuzz = ap.text_to_patch(text, {path: prior})
+        return ap.patch_to_commit(patch, {path: prior}).changes[path].new_content
+    except Exception:
+        return None
+
+
+def apply_patch_hook_events(body: str, written_files: dict[str, str]) -> list[dict]:
+    """Hook events of an ``apply_patch`` heredoc (the shell form run_step records for an apply_patch call).
+
+    ``*** Add File`` of the hook is a write (content from the ``+`` lines), ``*** Update File`` a write
+    (content reconstructed when the prior content is known, else None), ``*** Delete File`` a removal, and an
+    update with ``*** Move to:`` off the hook path a move-away. Every section also updates ``written_files``
+    so a later ``cp``/``bash`` of a patched file resolves.
+    """
+    sections: list[list] = []
+    for line in body.splitlines():
+        m = _PATCH_SECTION_RE.match(line)
+        if m:
+            sections.append([m.group(1), m.group(2), []])
+        elif line.startswith(("*** Begin Patch", "*** End Patch")):
+            continue
+        elif sections:
+            sections[-1][2].append(line)
+    events: list[dict] = []
+    for op, path, lines in sections:
+        key = path.strip("'\"").removeprefix("./")
+        if op == "Add":
+            content = "".join(line[1:] + "\n" for line in lines if line.startswith("+"))
+            written_files[key] = content
+            if _is_hook_path(path):
+                events.append({"kind": "write", "content": content})
+        elif op == "Delete":
+            written_files.pop(key, None)
+            if _is_hook_path(path):
+                events.append({"kind": "remove"})
+        else:
+            new = _patched_content(key, lines, written_files.get(key))
+            move_to = next((line.split(":", 1)[1].strip() for line in lines if line.startswith("*** Move to:")), None)
+            target = move_to.strip("'\"").removeprefix("./") if move_to else key
+            if new is not None:
+                written_files[target] = new
+            if move_to is not None and _is_hook_path(path) and not _is_hook_path(move_to):
+                events.append({"kind": "move_away"})
+            elif _is_hook_path(move_to or path):
+                events.append({"kind": "write", "content": new})
+    return events
+
+
 def hook_events_for_command(command: str, written_files: dict[str, str]) -> list[dict]:
     """Events a single tool call produces regarding the pre-commit hook.
 
@@ -461,6 +538,9 @@ def hook_events_for_command(command: str, written_files: dict[str, str]) -> list
             events.extend(hook_events_for_command(nested, written_files))
             continue
         name = Path(argv[0]).name
+        if name == "apply_patch" and seg["heredoc"] is not None:
+            events.extend(apply_patch_hook_events(seg["heredoc"], written_files))
+            continue
         targets = _redirect_targets(argv)
         tee_targets = [t for t in argv[1:] if name == "tee" and not t.startswith("-")]
         content: str | None = None
