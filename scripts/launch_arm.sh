@@ -6,7 +6,7 @@
 #   ARM   one of N0 G0 G1 U0 U1 (or a config stem: N0_replication, G_noO, G_O, U_noO, U_O)
 #   COUNT number of rollouts
 #
-# Results go to results/<condition_id>/precommit_hook/<model>/<timestamp>/run-N/ and the
+# Results go to results/<model-slug>/<condition_id>/precommit_hook/<model>/<timestamp>/run-N/ and the
 # matching Docent upload command is printed at the end. --dry-run resolves the config and
 # prints the plan without building or launching anything (no cost).
 #
@@ -53,7 +53,12 @@ if [ -z "$PY" ]; then
   if [ -x "$REPO_ROOT/.venv/bin/python" ]; then PY="$REPO_ROOT/.venv/bin/python"; else PY="python3"; fi
 fi
 
-RESULTS_DIR="$REPO_ROOT/results/$CID"
+# One results tree per model (results/<model-slug>/<ARM>/...), so runs of different models never
+# share an arm directory and summarize.py/cost.py can be pointed at one model at a time.
+MODEL="$(sed -n 's/^  model: //p' "$CFG" | head -1)"
+MODEL_SLUG="$(printf '%s' "$MODEL" | tr '/:' '--')"
+RESULTS_ROOT="$REPO_ROOT/results/$MODEL_SLUG"
+RESULTS_DIR="$RESULTS_ROOT/$CID"
 PROVIDER="$(sed -n 's/^  provider: //p' "$CFG" | head -1)"
 case "$PROVIDER" in
   openrouter) KEY_VAR=OPENROUTER_API_KEY ;;
@@ -71,4 +76,5 @@ echo "arm=$CID config=$CFG count=$COUNT max_concurrent=$MAX_CONCURRENT results=$
 echo
 echo "Next:"
 echo "  $PY scripts/upload_to_docent.py $RESULTS_DIR            # upload to DOCENT_COLLECTION_ID (idempotent)"
-echo "  $PY analysis/summarize.py                               # per-arm table + 2x2 contrasts"
+echo "  $PY analysis/summarize.py $RESULTS_ROOT          # per-arm table + 2x2 contrasts (this model only)"
+echo "  $PY analysis/cost.py $RESULTS_ROOT               # per-run and per-arm cost"

@@ -129,9 +129,14 @@ def _extract_leaked_command(text: str) -> tuple[str, int, int] | None:
 
 
 def _recover_json_tool_call(
-    response: LLMResponse, provider: BaseProvider, state: CodingAgentState
+    response: LLMResponse, provider: BaseProvider, state: CodingAgentState,
+    shell_tool: str = "execute_command",
 ) -> LLMResponse:
-    """Recover an execute_command tool call leaked as raw JSON into reasoning text.
+    """Recover a shell tool call leaked as raw JSON into reasoning text.
+
+    ``shell_tool`` is the name the recovered call gets: the run's shell tool
+    (``execute_command``, or ``bash`` when the run offers ``[bash, apply_patch]``),
+    so the promoted call is one the run actually allows.
 
     Seen with gpt-oss (Harmony) on several OpenRouter providers: after the first
     turn, the model's tool call comes back glued to the end of the `reasoning`
@@ -160,7 +165,7 @@ def _recover_json_tool_call(
         command, start, end = extracted
         call_id = f"recovered_{state.step}"
         arguments = json.dumps({"command": command})
-        tool_call = ToolCall(id=call_id, name="execute_command", arguments=arguments)
+        tool_call = ToolCall(id=call_id, name=shell_tool, arguments=arguments)
         cleaned = (text[:start] + text[end:]).rstrip()
 
         # Rewrite the last assistant message so the history is consistent on
@@ -172,7 +177,7 @@ def _recover_json_tool_call(
             last["tool_calls"] = [{
                 "id": call_id,
                 "type": "function",
-                "function": {"name": "execute_command", "arguments": arguments},
+                "function": {"name": shell_tool, "arguments": arguments},
             }]
             last.pop("reasoning_details", None)
 
@@ -426,11 +431,13 @@ def run_step(provider: BaseProvider, state: CodingAgentState, config: dict) -> b
 
     # ── Recover tool calls leaked as raw JSON into reasoning (gpt-oss / Harmony) ──
     if not response.tool_calls:
-        recovered = _recover_json_tool_call(response, provider, state)
+        allowed_now = _get_allowed_tools(config)
+        shell_tool = "execute_command" if "execute_command" in allowed_now or "bash" not in allowed_now else "bash"
+        recovered = _recover_json_tool_call(response, provider, state, shell_tool=shell_tool)
         if recovered.tool_calls:
             print_section(
                 "RECOVERED TOOL CALL",
-                "execute_command leaked into reasoning text (provider Harmony parse); promoted to a real tool call.",
+                f"{shell_tool} leaked into reasoning text (provider Harmony parse); promoted to a real tool call.",
             )
             response = recovered
 

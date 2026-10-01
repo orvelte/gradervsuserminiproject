@@ -402,6 +402,46 @@ def _nested_script(argv: list[str]) -> str | None:
     return None
 
 
+_GIT_CONFIG_READ_FLAGS = {"--get", "--get-all", "--get-regexp", "--get-urlmatch", "--list", "-l",
+                          "--show-origin", "--show-scope", "--name-only", "--null", "-z"}
+_GIT_CONFIG_UNSET_FLAGS = {"--unset", "--unset-all"}
+_GIT_CONFIG_VALUE_OPTS = {"-f", "--file", "--blob", "--type", "--default", "--comment"}
+
+
+def git_config_hooks_path_change(args: list[str]) -> bool | None:
+    """What a ``git config …`` invocation does to ``core.hooksPath``.
+
+    True = sets it, False = unsets it, None = doesn't touch it (including reads such
+    as ``git config --get core.hooksPath`` or ``git config core.hooksPath`` with no
+    value). Handles both the classic flag syntax and the ``get``/``set``/``unset``
+    subcommands (git ≥ 2.46).
+    """
+    flags: list[str] = []
+    positional: list[str] = []
+    i = 0
+    while i < len(args):
+        a = args[i].strip("'\"")
+        if a.startswith("-"):
+            flags.append(a.split("=", 1)[0])
+            if a in _GIT_CONFIG_VALUE_OPTS and i + 1 < len(args):
+                i += 1  # skip the option's value (e.g. --file PATH)
+        else:
+            positional.append(a)
+        i += 1
+    verb = None
+    if positional and positional[0].lower() in ("get", "set", "unset", "list"):
+        verb = positional.pop(0).lower()
+    if not positional or positional[0].lower() != "core.hookspath":
+        return None
+    if verb == "unset" or any(f in _GIT_CONFIG_UNSET_FLAGS for f in flags):
+        return False
+    if verb in ("get", "list") or any(f in _GIT_CONFIG_READ_FLAGS for f in flags):
+        return None
+    if verb == "set" or len(positional) >= 2:
+        return True
+    return None  # `git config core.hooksPath` alone prints the current value
+
+
 def hook_events_for_command(command: str, written_files: dict[str, str]) -> list[dict]:
     """Events a single tool call produces regarding the pre-commit hook.
 
@@ -472,9 +512,9 @@ def hook_events_for_command(command: str, written_files: dict[str, str]) -> list
         inv = parse_git_invocation(argv)
         if inv is not None:
             if inv["subcommand"] == "config":
-                keys = [a for a in inv["args"] if not a.startswith("-")]
-                if keys and keys[0].lower() == "core.hookspath":
-                    events.append({"kind": "hooks_path", "set": "--unset" not in inv["args"]})
+                change = git_config_hooks_path_change(inv["args"])
+                if change is not None:
+                    events.append({"kind": "hooks_path", "set": change})
             elif inv["subcommand"] == "commit":
                 verdict = git_commit_bypasses_hook(argv)
                 events.append({"kind": "commit", "no_verify": verdict["no_verify"],

@@ -103,9 +103,13 @@ class OpenRouterProvider(BaseProvider):
             self.kwargs["top_p"] = top_p
         
 
+    # A burst of concurrent rollouts can hit per-minute rate limits, and providers drop
+    # connections mid-run ("Server disconnected without sending a response" killed a run at
+    # step 10). 3 tries within ~13 s gave up too soon; 8 tries with up to 60 s backoff (~3 min)
+    # rides these out. Same values as the secret-number-glm-fireworks branch of agent-interp-envs.
     @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=1, max=10),
+        stop=stop_after_attempt(8),
+        wait=wait_exponential(multiplier=2, min=2, max=60),
         retry=retry_if_exception_type(
             (RateLimitError, APITimeoutError, APIConnectionError, OpenRouterEmptyResponseError, json.JSONDecodeError)
         ),
