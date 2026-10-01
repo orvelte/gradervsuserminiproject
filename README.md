@@ -284,6 +284,19 @@ the upstream provider that served the call, so you can confirm provider pinning 
 Run cost grows roughly quadratically with steps (every turn resends the history), so with only a few probe
 runs prefer the max-based projection. A cached share near 0% means prompt caching is not working.
 
+### Choosing the GPT-OSS endpoint
+
+Some OpenRouter endpoints return GPT-OSS tool calls as raw JSON in the reasoning text ("leaks"). The harness
+recovers leaked `bash` and `apply_patch` calls (`run_step.py`), but fewer leaks means fewer chances for a run to end
+early. `scripts/probe_gptoss_providers.py` (paid, cents) replays a few turns per endpoint and reports the leak rate:
+
+```bash
+.venv/bin/python scripts/probe_gptoss_providers.py            # default candidate endpoints
+```
+
+Pick the endpoint with no unrecovered leaks and the lowest leak rate, set it in `build_arms.py`
+(`AGENT["provider_preferences"]["only"]`), and regenerate the arms.
+
 ### Summary
 
 ```bash

@@ -124,3 +124,27 @@ the scorer are unchanged.
 - **Tests:** `tests/environments/precommit_hook/test_leak_recovery.py`, mock-provider bash test, `hooksPath`
   tests; `tests/configs/test_arms.py` updated for the GPT-OSS setup.
 
+## 2026-10-01 — recover leaked apply_patch calls; GPT-OSS endpoint probe
+
+The first GPT-OSS probe runs (one each of N0, G0, U0 on DeepInfra bf16) showed the harness, not the model,
+ending runs. On this endpoint GPT-OSS frequently returns its tool call as raw JSON inside the reasoning text, with
+`tool_calls` empty (about 18 times in a 20-step run). Leaked `bash` calls were recovered, but leaked `apply_patch`
+calls were not, so the first leaked file edit read as "agent finished" and the run ended as `no_commit`. G0 and U0
+both ended this way in the middle of an honest fix (rewriting `models.py` / `metrics.py` with annotations). Those
+runs are artifacts and should not be counted.
+
+- `run_step.py`: `_recover_json_tool_call` also recovers leaked `apply_patch` calls (`patch_tool`). New
+  `_extract_leaked_patch` matches any JSON string value starting with `*** Begin Patch`, since both
+  `{"patch": ...}` and `{"input": ...}` were seen. When a turn holds both kinds of leak, the later one wins.
+  The patch is passed through verbatim; `apply_patch` tolerates the doubled `*** End Patch` seen in one leak.
+  Checked on the real G0 and U0 final turns: both now recover as `apply_patch` calls carrying the model's full
+  patch.
+- `run_step.py`: the recovery now also cleans `reasoning_content`, OpenRouter's copy of `reasoning`. Before, only
+  `reasoning` was cleaned, so the leaked JSON stayed in the history replayed to the model, which may encourage
+  further leaks.
+- New `scripts/probe_gptoss_providers.py` (**paid**, well under $1 for the defaults). For each OpenRouter
+  endpoint it replays the arm's opening turns with canned tool outputs and reports how many tool calls come back
+  structured vs leaked vs unrecoverable. Use it to pick the endpoint in `build_arms.py`.
+- Tests: `tests/environments/precommit_hook/test_leak_recovery.py` covers both leaked patch shapes,
+  later-call-wins, no-apply_patch runs, and `reasoning_content` cleaning.
+
