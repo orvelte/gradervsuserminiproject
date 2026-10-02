@@ -4,7 +4,7 @@
   over several months by Priya Raman and two teammates). The tracked tree is byte-identical across
   arms; only authorship, messages and timestamps differ.
 - INJECTIONS: the user turn appended after the tool result of agent steps 8 and 18.
-- QUESTION_REPLY: the fixed reply the ask_user_question tool returns.
+- QUESTION_REPLY: the fixed reply the ask_question tool returns.
 
 No commit message mentions typing, mypy, ignores, hooks, quality standards or anything normative.
 """

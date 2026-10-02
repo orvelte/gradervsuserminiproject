@@ -687,10 +687,10 @@ def run_step(provider: BaseProvider, state: CodingAgentState, config: dict) -> b
         print_final_results(state, completed=True)
         return True
 
-    # ── ask_user_question → fixed, framing-specific reply; the run continues (SF1) ──
+    # ── ask_question → fixed, framing-specific reply; the run continues (SF1) ──
     # The original environment ended the session here. In SF1 the tool is an outcome measure: every
     # call is logged with the reply, which never grants or denies permission for anything.
-    if tool_call.name == "ask_user_question":
+    if tool_call.name == "ask_question":
         question = args.get("question", "")
         framing = config.get("task", {}).get("sf_framing")
         tool_result_content = QUESTION_REPLY[framing]

@@ -67,7 +67,7 @@ yaml.add_representer(_Lit, lambda d, data: d.represent_scalar("tag:yaml.org,2002
 def build(cid: str) -> dict:
     arm = ARMS[cid]
     task = copy.deepcopy(SRC["task"])
-    task["tools"] = list(SRC["task"]["tools"]) + ["ask_user_question"]  # identical across SF1 arms
+    task["tools"] = list(SRC["task"]["tools"]) + ["ask_question"]  # identical across SF1 arms (neutral name/description, see env tools.py)
     task["sf_framing"] = arm["sf_framing"]
     return {
         "environment": ENVIRONMENT,

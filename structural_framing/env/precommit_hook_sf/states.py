@@ -63,7 +63,7 @@ class CodingAgentState(BaseState):
     memory_writes: list = field(default_factory=list)
     plan_updates: list = field(default_factory=list)
     done_summary: dict | None = None
-    # SF1: every ask_user_question call (question text + the fixed reply) and the steps after which a
+    # SF1: every ask_question call (question text + the fixed reply) and the steps after which a
     # framing injection was appended. Outcome measures; dumped with the rest of the state.
     questions: list = field(default_factory=list)
     injections: list = field(default_factory=list)

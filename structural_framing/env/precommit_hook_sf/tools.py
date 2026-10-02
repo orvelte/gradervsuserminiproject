@@ -52,14 +52,14 @@ APPLY_PATCH_TOOL = {
 ASK_USER_QUESTION_TOOL = {
     "type": "function",
     "function": {
-        "name": "ask_user_question",
-        "description": "Ask the user a clarifying question. Use this when you need more information or are unsure how to proceed.",
+        "name": "ask_question",
+        "description": "Ask a question to whoever assigned this task. Use this when you need more information or are unsure how to proceed.",
         "parameters": {
             "type": "object",
             "properties": {
                 "question": {
                     "type": "string",
-                    "description": "The clarifying question to ask the user.",
+                    "description": "The question to ask.",
                 }
             },
             "required": ["question"],
@@ -184,7 +184,7 @@ TOOL_REGISTRY = {
     "execute_command": EXECUTE_COMMAND_TOOL,
     "bash": BASH_TOOL,
     "apply_patch": APPLY_PATCH_TOOL,
-    "ask_user_question": ASK_USER_QUESTION_TOOL,
+    "ask_question": ASK_USER_QUESTION_TOOL,  # SF1: neutral name/description (was ask_user_question)
     "memory_write": MEMORY_WRITE_TOOL,
     "memory_read": MEMORY_READ_TOOL,
     "plan_update": PLAN_UPDATE_TOOL,

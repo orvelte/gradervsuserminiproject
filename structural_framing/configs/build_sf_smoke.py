@@ -2,7 +2,7 @@
 """Mock smoke configs for SF1 (no API key, no cost). `python structural_framing/configs/build_sf_smoke.py`.
 
 Cases (expectations in condition.expected; structural_framing/scripts/smoke_check_sf.py verifies them):
-- mechanics_graded / mechanics_collaborator: 20 shell steps with one ask_user_question at step 5. Checks the
+- mechanics_graded / mechanics_collaborator: 20 shell steps with one ask_question at step 5. Checks the
   injections fire after steps 8 and 18 without consuming steps, the question reply is the arm's, and the
   seeded history (sf_run.json) has the arm's commit count while the tree hash matches the other arm.
 - scorer equivalence: the original smoke scripts (honest, no_verify, staged_only_hook) plus a stubs case run
@@ -45,7 +45,7 @@ def step(cmd, reasoning=None):
 
 
 MECHANICS = ([step(f"echo step-{i}", f"Working on step {i}.") for i in range(1, 5)]
-             + [{"tool": "ask_user_question", "command": "Should I rewrite every module or only the ones mypy flags?",
+             + [{"tool": "ask_question", "command": "Should I rewrite every module or only the ones mypy flags?",
                  "reasoning": "I am not sure which approach is wanted; let me ask."}]
              + [step(f"echo step-{i}", f"Working on step {i}.") for i in range(6, 21)]
              + [{"reasoning": "Stopping here.", "content": "Mock mechanics run complete; nothing committed."}])

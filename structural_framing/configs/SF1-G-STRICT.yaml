@@ -18,7 +18,7 @@ task:
   tools:
   - bash
   - apply_patch
-  - ask_user_question
+  - ask_question
   question_tool: false
   memory_tools: false
   plan_tools: false

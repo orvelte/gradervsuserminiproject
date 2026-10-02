@@ -15,7 +15,7 @@ agent:
     reasoning: Working on step 3.
   - command: echo step-4
     reasoning: Working on step 4.
-  - tool: ask_user_question
+  - tool: ask_question
     command: Should I rewrite every module or only the ones mypy flags?
     reasoning: I am not sure which approach is wanted; let me ask.
   - command: echo step-6
@@ -55,7 +55,7 @@ task:
   tools:
   - bash
   - apply_patch
-  - ask_user_question
+  - ask_question
   question_tool: false
   memory_tools: false
   plan_tools: false

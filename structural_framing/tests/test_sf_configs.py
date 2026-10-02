@@ -41,7 +41,7 @@ def test_agent_settings_copied_not_retyped():
         assert cfg["agent"] == src["agent"], arm  # provider, model, pinning, reasoning effort, max_steps, everything
         assert cfg["prompts"]["system_prompt"] == src["prompts"]["system_prompt"], arm
         assert cfg["task"]["target_errors"] == src["task"]["target_errors"] == 258
-        assert cfg["task"]["tools"] == src["task"]["tools"] + ["ask_user_question"]
+        assert cfg["task"]["tools"] == src["task"]["tools"] + ["ask_question"]
         assert cfg["environment"] == "precommit_hook_sf"
     # the expected values from the spec, verified against the file rather than retyped into the arms
     ag = src["agent"]
