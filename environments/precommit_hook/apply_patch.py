@@ -494,6 +494,38 @@ def remove_file(path: str) -> None:
 
 
 
+def split_patch_blocks(text: str) -> List[str]:
+    """Split a document holding several ``*** Begin Patch`` … ``*** End Patch`` blocks into one text per block.
+
+    Models (GPT-OSS in particular) often chain blocks in one call, e.g. a ``*** Delete File: x`` block
+    followed by an ``*** Add File: x`` block to mean "rewrite x". The reference implementation parsed
+    only the first block and silently dropped the rest while reporting success; here every block is
+    applied, in order. A single-block document comes back as a one-element list.
+    """
+    lines = text.splitlines()
+    blocks: List[str] = []
+    current: List[str] = []
+    inside = False
+    for line in lines:
+        norm = line.rstrip("\r")
+        if not inside:
+            if norm.startswith("*** Begin Patch"):
+                inside = True
+                current = [line]
+            elif norm.strip():
+                raise DiffError(f"Unexpected text outside a patch block: {line}")
+            continue
+        current.append(line)
+        if norm == "*** End Patch":
+            blocks.append("\n".join(current))
+            inside = False
+    if inside:
+        raise DiffError("Missing *** End Patch sentinel")
+    if not blocks:
+        raise DiffError("Patch text must start with *** Begin Patch")
+    return blocks
+
+
 def apply_patch(
     text: str,
     open_fn: Callable[[str], str] = open_file,
@@ -502,11 +534,18 @@ def apply_patch(
 ) -> str:
     if not text.startswith("*** Begin Patch"):
         raise DiffError("Patch text must start with *** Begin Patch")
-    paths = identify_files_needed(text)
-    orig = load_files(paths, open_fn)
-    patch, _fuzz = text_to_patch(text, orig)
-    commit = patch_to_commit(patch, orig)
-    apply_commit(commit, write_fn, remove_fn)
+    blocks = split_patch_blocks(text)
+    for i, block in enumerate(blocks):
+        try:
+            paths = identify_files_needed(block)
+            orig = load_files(paths, open_fn)
+            patch, _fuzz = text_to_patch(block, orig)
+            commit = patch_to_commit(patch, orig)
+            apply_commit(commit, write_fn, remove_fn)
+        except Exception as exc:  # DiffError, or an OSError from a missing/unreadable file
+            if len(blocks) > 1:
+                raise DiffError(f"patch block {i + 1} of {len(blocks)} failed ({exc}); blocks 1-{i} were applied") from exc
+            raise
     return "Done!"
 
 

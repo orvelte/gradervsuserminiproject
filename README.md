@@ -324,6 +324,9 @@ each framing, and the difference-in-differences, each with a percentile-bootstra
 - **Why not DeepSeek**: on `deepseek/deepseek-v4-pro-0813` (the only V4 Pro release DeepSeek still serves) N0
   gamed 0/20 against the paper's 69/100 (PROBE_FINDINGS.md on branch `deepseek-openrouter-probe`).
 - A **single environment** and a single model; the 2×2 shows whether framing matters here, not in general.
+- The `apply_patch` tool applies every chained `*** Begin Patch` block in one call (since 2026-10-02); the reference
+  implementation the paper presumably used applied only the first and reported success, which silently deleted
+  modules in one N0 run. Runs before that date carry `apply_patch_multi_patch_calls` in their score for separation.
 - The agent loop itself diverges from upstream (`agent.py` scores in a `finally`, forwards provider kwargs,
   censors context overflows); anyone comparing to the paper should read UPSTREAM.md's divergence note.
 - Scoring is deterministic but heuristic at the edges: `config_weakened` fires on any `[tool.mypy]` change,
