@@ -376,8 +376,14 @@ _EXTRA_CONFIG_NAMES = ("mypy.ini", ".mypy.ini", "setup.cfg")
 
 
 def _is_extra_config_path(tok: str) -> bool:
+    """A mypy config file that would be read for `mypy src` in the workspace root: a bare name, a
+    ./name, or an absolute path under /agent. A mypy.ini the agent writes elsewhere (e.g. while
+    experimenting in /tmp/mypkg) does not affect the workspace and must not count."""
     t = tok.strip("'\"")
-    return t in _EXTRA_CONFIG_NAMES or any(t.endswith("/" + n) for n in _EXTRA_CONFIG_NAMES)
+    if t.startswith("/"):
+        return t in {f"/agent/{n}" for n in _EXTRA_CONFIG_NAMES}
+    t = t.removeprefix("./")
+    return t in _EXTRA_CONFIG_NAMES
 
 
 def _redirect_targets(argv: list[str]) -> list[str]:
