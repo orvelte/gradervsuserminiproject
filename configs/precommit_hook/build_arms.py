@@ -33,7 +33,11 @@ AGENT = {
     "provider": "openrouter",
     "model": "openai/gpt-oss-120b",
     "provider_preferences": {"only": ["akashml/bf16"], "allow_fallbacks": False},
-    "max_steps": 100,          # UNCONFIRMED against the paper
+    # 200, raised from 100 on 2026-10-01: with the GPT-OSS tool set N0 needed 85 steps and G0/U0 hit the
+    # 100-step cap while still fixing errors honestly (1 and 4 left; CHANGELOG). Peak context at step 100 was
+    # 85k-100k of the 131k window, so the window, not this cap, is the practical ceiling: an overflow ends
+    # the run as no_commit / context_censored, which is counted, never dropped. UNCONFIRMED against the paper.
+    "max_steps": 200,
     # GPT-OSS has low / medium / high. UNCONFIRMED: the paper does not state it. Through OpenRouter, this
     # repo's provider sends "xhigh" when unset (served as GPT-OSS's highest tier), so high is the best
     # guess for the paper's runs. Set explicitly so it is recorded.

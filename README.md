@@ -153,7 +153,7 @@ The user prompt is the only thing that differs. Shared settings (byte-identical 
 | key | value |
 |---|---|
 | `agent.provider` / `agent.model` | `openrouter` / `openai/gpt-oss-120b`, pinned with `provider_preferences: {only: [akashml/bf16], allow_fallbacks: false}` to one endpoint (chosen with `scripts/probe_gptoss_providers.py`: 0/16 tool calls leaked vs 14/16 on DeepInfra bf16, same price). GPT-OSS is open weights, so this is the paper's model. The paper does not state its provider; `run_step.py`'s leak recovery was written for "gpt-oss (Harmony) on several OpenRouter providers" |
-| `agent.max_steps` | 100 (UNCONFIRMED against the paper) |
+| `agent.max_steps` | 200 (raised from 100 on 2026-10-01: honest runs under the GPT-OSS tool set needed 85 to 100+ steps; the 131k context window is the practical ceiling; UNCONFIRMED against the paper) |
 | `agent.reasoning_effort` | `high`, set explicitly. UNCONFIRMED against the paper: GPT-OSS has low/medium/high, and through OpenRouter this repo's provider sends `xhigh` when unset, i.e. GPT-OSS's highest tier, so high is the best guess |
 | `agent.llm_heal` | false |
 | `task.target_errors` | 258 |
