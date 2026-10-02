@@ -1,0 +1,6 @@
+analysis/out/
+__pycache__/
+env/precommit_hook_sf/src_*
+!env/precommit_hook_sf/src_0
+!env/precommit_hook_sf/src_258
+!env/precommit_hook_sf/src_602
