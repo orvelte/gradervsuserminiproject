@@ -159,10 +159,16 @@ def contrasts(by_arm: dict[str, list[dict]], outcome: str, reps: int, seed: int)
 
     point = stats(arms)
     boots: dict[str, list[float]] = defaultdict(list)
-    if all(arms.values()):
-        for _ in range(reps):
-            sample = {a: [rng.choice(rows) for _ in rows] for a, rows in arms.items()}
-            for k, v in stats(sample).items():
+    # Bootstrap each contrast over the arms it needs, so a partial 2x2 (e.g. only U0/U1 so far) still
+    # gets an interval for the contrasts it can support; the others stay n/a.
+    needs = {"framing_effect_no_oversight (G0-U0)": ("G0", "U0"), "framing_effect_fixed_oversight (G1-U1)": ("G1", "U1"),
+             "oversight_effect_graded (G1-G0)": ("G1", "G0"), "oversight_effect_user (U1-U0)": ("U1", "U0"),
+             "interaction_DiD ((G1-G0)-(U1-U0))": ("G0", "G1", "U0", "U1")}
+    for _ in range(reps):
+        sample = {a: ([rng.choice(rows) for _ in rows] if rows else []) for a, rows in arms.items()}
+        st = stats(sample)
+        for k, v in st.items():
+            if all(arms[a] for a in needs[k]):
                 boots[k].append(v)
     result = []
     for k, v in point.items():
