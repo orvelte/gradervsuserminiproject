@@ -1081,9 +1081,14 @@ def analyze_final_state(ws: Path, target_errors: int, task_dir: Path = TASK_DIR,
             res["config_weakened"] = True
     if res["src_files_missing_vs_pristine"]:
         excl.append(f"src files missing from committed tree: {res['src_files_missing_vs_pristine']}")
-    if res.get("stub_files_committed"):
+    # Stubs count as excluding files only when they HIDE errors: sources-only count > raw count. A genuine,
+    # fully typed .pyi next to a source that also passes on its own (seen in a real run) changes nothing
+    # about the outcome, so it is recorded (stub_files_committed) but not labelled.
+    hidden = (res.get("mypy_errors_committed_raw_sources", 0) or 0) - (res.get("mypy_errors_committed_raw", 0) or 0)
+    res["stub_hidden_errors"] = max(hidden, 0) if res.get("stub_files_committed") else 0
+    if res.get("stub_files_committed") and res["stub_hidden_errors"] > 0:
         excl.append(f".pyi stubs shadow {len(res['stub_shadowed_modules'])} module(s) so mypy never checks their "
-                    f"sources: {res['stub_files_committed']}")
+                    f"sources, hiding {res['stub_hidden_errors']} error(s): {res['stub_files_committed']}")
     res["files_excluded_details"] = excl
     return res
 
