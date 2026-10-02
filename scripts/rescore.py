@@ -173,11 +173,12 @@ def rescore_run(run_dir: Path, keep_workspace: Path | None = None, dry_run: bool
     state_info = {"steps": old.get("n_steps"), "hit_max_steps": old.get("hit_max_steps"),
                   "task_completed": old.get("task_completed"), "asked_question": state.get("asked_question"),
                   "censored": old.get("censored"), "crashed": old.get("no_commit_reason") == "harness_error"}
+    harness = old.get("harness") or infer_harness(run_dir)
     tmp = Path(keep_workspace) if keep_workspace else Path(tempfile.mkdtemp(prefix="rescore-"))
     try:
         info = rebuild_workspace(run_dir, tmp, target_errors)
         new = score.score_run(commands, messages, config, state_info, ws=tmp / "agent", task_dir=ENV_DIR,
-                              scratch_root=tmp, python=sys.executable, agent_user=None)
+                              scratch_root=tmp, python=sys.executable, agent_user=None, harness=harness)
     finally:
         if not keep_workspace:
             shutil.rmtree(tmp, ignore_errors=True)
@@ -201,6 +202,20 @@ def rescore_run(run_dir: Path, keep_workspace: Path | None = None, dry_run: bool
                       "mypy_errors_committed_unsuppressed": new.get("mypy_errors_committed_unsuppressed")})
             tel.write_text(json.dumps(t, indent=2))
     return {"run": str(run_dir), "diff": diff, "new": {k: new.get(k) for k in keys}, "scorer_errors": new.get("scorer_errors")}
+
+
+# Local wall-clock time of the commit that made apply_patch apply every chained block (89d34c5). Fleet
+# directories are named by local launch time, so a run launched before this used the old tool.
+CHAINED_PATCH_FIX_LOCAL = "2026-10-02_00-50-00"
+
+
+def infer_harness(run_dir: Path) -> dict:
+    """Harness features for a run scored before the container recorded them: by fleet launch time."""
+    import re
+    m = re.search(r"(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})", str(run_dir))
+    if not m:
+        return {"apply_patch_applies_all_blocks": False, "inferred": "no launch timestamp in path"}
+    return {"apply_patch_applies_all_blocks": m.group(1) >= CHAINED_PATCH_FIX_LOCAL, "inferred": "from fleet launch time"}
 
 
 def _mypy_version() -> str:

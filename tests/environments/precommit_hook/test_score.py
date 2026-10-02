@@ -586,7 +586,7 @@ def test_apply_patch_multi_patch_calls_are_recorded():
            "*** Begin Patch\n*** Add File: src/cli.py\n+x = 1\n*** End Patch\nAPPLY_PATCH_EOF")
     single = "apply_patch <<'APPLY_PATCH_EOF'\n*** Begin Patch\n*** Add File: src/py.typed\n*** End Patch\nAPPLY_PATCH_EOF"
     out = score.apply_patch_multi_patch_calls(["ls", single, cmd])
-    assert out == [{"command_index": 2, "n_patches": 2, "applied": ["Delete File: src/cli.py"], "dropped": ["Add File: src/cli.py"]}]
+    assert out == [{"command_index": 2, "n_patches": 2, "first_block": ["Delete File: src/cli.py"], "later_blocks": ["Add File: src/cli.py"]}]
 
 
 @needs_mypy
