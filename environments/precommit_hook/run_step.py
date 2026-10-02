@@ -128,51 +128,125 @@ def _extract_leaked_command(text: str) -> tuple[str, int, int] | None:
     return None
 
 
+_PATCH_BEGIN = "*** Begin Patch"
+
+
+def _extract_leaked_patch(text: str) -> tuple[str, int, int] | None:
+    """Locate an apply_patch tool call leaked as raw JSON in free text.
+
+    Returns ``(patch, start, end)`` like ``_extract_leaked_command``. The JSON key varies
+    by turn (``{"input": ...}``, ``{"patch": ...}`` were both seen from gpt-oss on
+    OpenRouter), so this matches on the value: any JSON string beginning with
+    ``*** Begin Patch``.
+
+    Two strategies, in order:
+    1. Parse the last balanced JSON object with a string value that starts with
+       ``*** Begin Patch``.
+    2. Otherwise decode just that string value (starting at its opening quote) and
+       absorb trailing object-closing punctuation, as for leaked commands.
+    """
+    decoder = json.JSONDecoder()
+
+    best: tuple[str, int, int] | None = None
+    idx = text.find("{")
+    while idx != -1:
+        try:
+            obj, rel_end = decoder.raw_decode(text[idx:])
+            if isinstance(obj, dict):
+                for value in obj.values():
+                    if isinstance(value, str) and value.lstrip().startswith(_PATCH_BEGIN):
+                        best = (value, idx, idx + rel_end)
+                        break
+        except json.JSONDecodeError:
+            pass
+        idx = text.find("{", idx + 1)
+    if best is not None:
+        return best
+
+    for m in re.finditer(r'"\s*\*\*\* Begin Patch', text):
+        vstart = m.start()
+        try:
+            value, rel_end = decoder.raw_decode(text[vstart:])
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(value, str):
+            continue
+        obj_start = text.rfind("{", 0, vstart)
+        start = obj_start if obj_start != -1 else vstart
+        end = vstart + rel_end
+        while end < len(text) and text[end] in " \t\r\n]},":
+            end += 1
+        best = (value, start, end)
+    return best
+
+
 def _recover_json_tool_call(
-    response: LLMResponse, provider: BaseProvider, state: CodingAgentState
+    response: LLMResponse, provider: BaseProvider, state: CodingAgentState,
+    shell_tool: str = "execute_command", patch_tool: str | None = None,
 ) -> LLMResponse:
-    """Recover an execute_command tool call leaked as raw JSON into reasoning text.
+    """Recover a shell or apply_patch tool call leaked as raw JSON into reasoning text.
+
+    ``shell_tool`` is the name a recovered shell call gets: the run's shell tool
+    (``execute_command``, or ``bash`` when the run offers ``[bash, apply_patch]``),
+    so the promoted call is one the run actually allows. ``patch_tool`` is
+    ``"apply_patch"`` when the run offers it (else None: patch leaks are left alone).
 
     Seen with gpt-oss (Harmony) on several OpenRouter providers: after the first
     turn, the model's tool call comes back glued to the end of the `reasoning`
-    field as a bare `{"command": ...}` object with `tool_calls` empty. Without
-    recovery the harness misreads the empty tool_calls as "agent finished" and
-    ends the run one step in (the observed failure).
+    field as a bare `{"command": ...}` object (or, for a file edit, a
+    `{"input"|"patch": "*** Begin Patch ..."}` object) with `tool_calls` empty.
+    Without recovery the harness misreads the empty tool_calls as "agent finished"
+    and ends the run (the observed failure: runs ended on the first leaked edit).
 
-    We extract the leaked command, promote it to a real ToolCall, strip it from
-    the text, and rewrite the last assistant message so the replayed history
-    stays valid — i.e. the tool result we append next references a real
-    tool_call_id, and the leaked JSON / stale chain-of-thought won't be fed back
-    to confuse the next turn.
+    We extract the leaked call (the later one in the text if both kinds appear),
+    promote it to a real ToolCall, strip it from the text, and rewrite the last
+    assistant message so the replayed history stays valid — i.e. the tool result
+    we append next references a real tool_call_id, and the leaked JSON / stale
+    chain-of-thought won't be fed back to confuse the next turn.
     """
     if response.tool_calls:
         return response
 
     for field in ("reasoning", "response"):
         text = getattr(response, field)
-        if not text or '"command"' not in text:
+        if not text:
             continue
 
-        extracted = _extract_leaked_command(text)
-        if extracted is None:
+        candidates = []
+        if '"command"' in text:
+            cmd = _extract_leaked_command(text)
+            if cmd is not None:
+                candidates.append((cmd[1], shell_tool, {"command": cmd[0]}, cmd[1], cmd[2]))
+        if patch_tool and _PATCH_BEGIN in text:
+            patch = _extract_leaked_patch(text)
+            if patch is not None:
+                candidates.append((patch[1], patch_tool, {"input": patch[0]}, patch[1], patch[2]))
+        if not candidates:
             continue
 
-        command, start, end = extracted
+        _, name, args, start, end = max(candidates, key=lambda c: c[0])
         call_id = f"recovered_{state.step}"
-        arguments = json.dumps({"command": command})
-        tool_call = ToolCall(id=call_id, name="execute_command", arguments=arguments)
+        arguments = json.dumps(args)
+        tool_call = ToolCall(id=call_id, name=name, arguments=arguments)
         cleaned = (text[:start] + text[end:]).rstrip()
 
         # Rewrite the last assistant message so the history is consistent on
         # replay: promote to a structured tool call, clear the leaked JSON from
-        # the text, and drop reasoning_details (which mirror the leaked text).
+        # the text (in every field that carries it: OpenRouter's `reasoning` and
+        # its `reasoning_content` copy), and drop reasoning_details (which mirror
+        # the leaked text).
         last = provider.messages[-1]
         if last.get("role") == "assistant":
-            last["reasoning" if field == "reasoning" else "content"] = cleaned
+            if field == "reasoning":
+                last["reasoning"] = cleaned
+                if last.get("reasoning_content"):
+                    last["reasoning_content"] = cleaned
+            else:
+                last["content"] = cleaned
             last["tool_calls"] = [{
                 "id": call_id,
                 "type": "function",
-                "function": {"name": "execute_command", "arguments": arguments},
+                "function": {"name": name, "arguments": arguments},
             }]
             last.pop("reasoning_details", None)
 
@@ -426,11 +500,15 @@ def run_step(provider: BaseProvider, state: CodingAgentState, config: dict) -> b
 
     # ── Recover tool calls leaked as raw JSON into reasoning (gpt-oss / Harmony) ──
     if not response.tool_calls:
-        recovered = _recover_json_tool_call(response, provider, state)
+        allowed_now = _get_allowed_tools(config)
+        shell_tool = "execute_command" if "execute_command" in allowed_now or "bash" not in allowed_now else "bash"
+        patch_tool = "apply_patch" if "apply_patch" in allowed_now else None
+        recovered = _recover_json_tool_call(response, provider, state, shell_tool=shell_tool, patch_tool=patch_tool)
         if recovered.tool_calls:
             print_section(
                 "RECOVERED TOOL CALL",
-                "execute_command leaked into reasoning text (provider Harmony parse); promoted to a real tool call.",
+                f"{recovered.tool_calls[0].name} leaked into reasoning text (provider Harmony parse); "
+                "promoted to a real tool call.",
             )
             response = recovered
 
@@ -630,21 +708,27 @@ def run_step(provider: BaseProvider, state: CodingAgentState, config: dict) -> b
 
     # ── apply_patch: edit files via the apply_patch format ──
     if tool_call.name == "apply_patch":
-        from apply_patch import apply_patch as _apply_patch
-
         patch_text = args.get("input") or args.get("patch") or ""
-        # Record a judge-visible shell form so apply_patch shows up in
-        # state.commands like bash does: the transcript and the command log
-        # should read the same whichever tool the agent reached for. Nothing
-        # re-executes it — resume restores the workspace from the snapshot.
-        state.commands.append(
-            f"apply_patch <<'APPLY_PATCH_EOF'\n{patch_text}\nAPPLY_PATCH_EOF"
-        )
-        try:
-            summary = _apply_patch(patch_text)
-            tool_result_content = f"Exit code: 0\nOutput:\n{summary}"
-        except Exception as e:
-            tool_result_content = f"Exit code: 1\nOutput:\napply_patch failed: {e}"
+        delim = "APPLY_PATCH_EOF"
+        while delim in patch_text.splitlines():
+            delim += "_"
+        # The shell form is both what runs and what is logged, so the transcript and the
+        # command log (which the scorer replays) read the same whichever tool the agent used.
+        # It runs through run_command, i.e. as the agent's shell user (`dev`), like a bash
+        # call. Applying the patch in this (root) process made every file it created
+        # root-owned, so the agent could not `chmod +x` a hook it had written with
+        # apply_patch ("Operation not permitted"), and git then skipped the hook. The paper's
+        # runs predate the dev/root split (2026-08-09), so their shell and apply_patch ran as
+        # the same user. /usr/local/bin/apply_patch is the image's CLI for apply_patch.py.
+        shell_form = f"apply_patch <<'{delim}'\n{patch_text}\n{delim}"
+        state.commands.append(shell_form)
+        rc, output = run_command(shell_form)
+        out = output.strip()
+        if rc == 0 and out.endswith("Done!"):
+            tool_result_content = "Exit code: 0\nOutput:\nDone!"
+        else:
+            # The CLI prints a DiffError to stderr and still exits 0, so success is "Done!".
+            tool_result_content = f"Exit code: 1\nOutput:\napply_patch failed: {out}"
         tr = ToolResult(id=tool_call.id, name=tool_call.name, content=tool_result_content)
         provider.add_tool_result(tr)
 

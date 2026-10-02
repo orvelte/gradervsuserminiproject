@@ -58,26 +58,27 @@ class MockProvider(BaseProvider):
         self._script = list(mock_script) if mock_script is not None else list(DEFAULT_SCRIPT)
 
     def _select_tool(self) -> dict | None:
-        """Pick the tool to call: execute_command if present, else the first tool.
+        """Pick the tool to call: execute_command if present, else bash, else the first tool.
 
         Returns the function schema dict ({"name": ..., "parameters": ...}),
         handling both wrapped ({"type": "function", "function": {...}}) and
         flat tool definitions. Returns None if no tools are available.
         """
         functions = [tool.get("function", tool) for tool in self.tools]
-        for fn in functions:
-            if fn.get("name") == "execute_command":
-                return fn
+        for name in ("execute_command", "bash"):
+            for fn in functions:
+                if fn.get("name") == name:
+                    return fn
         return functions[0] if functions else None
 
     @staticmethod
     def _build_arguments(fn: dict, command: str) -> str:
         """Synthesize a minimal valid arguments JSON string for a tool."""
-        if fn.get("name") == "execute_command":
-            return json.dumps({"command": command})
-
         parameters = fn.get("parameters") or {}
         properties = parameters.get("properties") or {}
+        if fn.get("name") == "execute_command" or "command" in properties:  # a shell tool (execute_command, bash)
+            return json.dumps({"command": command})
+
         required = parameters.get("required") or []
         args: dict[str, Any] = {}
         for prop in required:
@@ -123,9 +124,18 @@ class MockProvider(BaseProvider):
                 command = str(entry["command"])
                 reasoning = entry.get("reasoning")
                 content = entry.get("content")
+                # {"tool": "apply_patch", "command": <patch text>} calls a non-shell tool by name;
+                # the command string becomes its single string argument (e.g. apply_patch's input).
+                named = entry.get("tool")
+                if named:
+                    fn = next((t.get("function", t) for t in self.tools if t.get("function", t).get("name") == named), fn)
             else:
                 command = str(entry)
-            arguments = self._build_arguments(fn, command)
+            if isinstance(entry, dict) and entry.get("tool") and fn.get("name") == entry["tool"] and fn.get("name") != "bash":
+                props = list(((fn.get("parameters") or {}).get("properties") or {}).keys())
+                arguments = json.dumps({props[0] if props else "input": command})
+            else:
+                arguments = self._build_arguments(fn, command)
             tool_call_id = f"mock-{uuid.uuid4().hex[:12]}"
             message = {
                 "role": "assistant",

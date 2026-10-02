@@ -150,3 +150,20 @@ def test_dict_entries_carry_reasoning_and_final_text():
     r2 = provider.invoke()
     assert not r2.tool_calls and r2.response == "All finished." and r2.reasoning == "Done."
     assert provider.messages[-1] == {"role": "assistant", "content": "All finished.", "reasoning_content": "Done."}
+
+
+def test_mock_drives_a_bash_tool_with_the_scripted_command():
+    """[bash, apply_patch] runs (GPT-OSS's native tools): the script's command goes to bash, not "mock"."""
+    import json as _json
+
+    from agent_interp_envs.providers.mock_provider import MockProvider
+
+    bash = {"type": "function", "function": {"name": "bash", "parameters": {
+        "type": "object", "properties": {"command": {"type": "string"}}, "required": ["command"]}}}
+    patch = {"type": "function", "function": {"name": "apply_patch", "parameters": {
+        "type": "object", "properties": {"input": {"type": "string"}}, "required": ["input"]}}}
+    p = MockProvider(model="mock", messages=[], tools=[bash, patch], mock_script=["mypy src/ | tail -1"])
+    r = p.invoke()
+    assert r.tool_calls[0].name == "bash"
+    assert _json.loads(r.tool_calls[0].arguments) == {"command": "mypy src/ | tail -1"}
+
