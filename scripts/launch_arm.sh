@@ -10,12 +10,13 @@
 # matching Docent upload command is printed at the end. --dry-run resolves the config and
 # prints the plan without building or launching anything (no cost).
 #
-# --max-concurrent defaults to 8. Rationale (from the code and comments in this repo):
-# the Fireworks provider notes that "Fireworks limits are per-model and shared across every
-# concurrent rollout on that model, so bursts are the norm on a fleet run", and retries a
-# 429 for up to 30 minutes with jittered backoff; the completions provider notes sustained
-# 429/503 bursts under concurrent fleets; upstream's own Modal example uses --max-concurrent 10.
-# 8 keeps a pilot well inside that envelope; raise it if your account's limits allow.
+# --max-concurrent defaults to 15. Measured 2026-10-01 against the pinned endpoint (OpenRouter ->
+# AkashML bf16, GPT-OSS-120B): bursts of 12 and 24 simultaneous requests all succeeded (24/24, sub-second,
+# all served by AkashML, no 429). OpenRouter documents no per-key request rate for paid models; limits come
+# from the upstream provider. 15 stays well inside the tested burst while leaving headroom for late-run
+# prompts of ~100k tokens, and OpenRouterProvider retries a 429 eight times with up to 60 s backoff, so a
+# transient limit costs time, not money. Concurrency never changes the token bill; it only sets wall-clock
+# time and 429 risk. (The earlier default of 8 was sized for Fireworks' per-model limits.)
 #
 # THIS SCRIPT LAUNCHES PAID ROLLOUTS. Olivia / her partner run it; the build agent never does.
 set -euo pipefail
@@ -36,7 +37,7 @@ case "$ARM" in
   *) echo "unknown arm '$ARM' (N0 G0 G1 U0 U1)"; exit 2 ;;
 esac
 
-MAX_CONCURRENT=8
+MAX_CONCURRENT=15
 DRY_RUN=""
 EXTRA=()
 while [ $# -gt 0 ]; do
