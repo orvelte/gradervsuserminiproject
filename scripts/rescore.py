@@ -149,7 +149,18 @@ def rebuild_workspace(run_dir: Path, dest: Path, target_errors: int) -> dict:
     return info
 
 
+def _ensure_mypy_on_path() -> None:
+    """The agent's hook calls `mypy` from PATH (in the image: /usr/local/bin). On the host the probe runs
+    with this process's environment, so the interpreter's bin dir (the venv) must lead PATH; otherwise a
+    `command -v mypy || exit 0` hook reads as a bypass and a bare `mypy src` hook as a block (exit 127)."""
+    bindir = str(Path(sys.executable).parent)
+    parts = os.environ.get("PATH", "").split(os.pathsep)
+    if parts[:1] != [bindir]:
+        os.environ["PATH"] = os.pathsep.join([bindir] + [p for p in parts if p != bindir])
+
+
 def rescore_run(run_dir: Path, keep_workspace: Path | None = None, dry_run: bool = False) -> dict:
+    _ensure_mypy_on_path()
     final = run_dir / "final"
     old = json.loads((final / "score.json").read_text())
     cond = json.loads((final / "run_condition.json").read_text()) if (final / "run_condition.json").exists() else {}
