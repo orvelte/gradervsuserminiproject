@@ -188,3 +188,11 @@ the `apply_patch` tool. Those three runs are not valid data and should be rerun.
 - **Open:** G0 and U0 hit `max_steps: 100` while still fixing errors honestly (1 and 4 errors left); N0 needed 85
   steps. Peak context at step 100 was 85k–100k of GPT-OSS's 131k. The paper's step limit is unknown.
 
+
+## 2026-10-01 — max_steps 100 → 200 (all five arms)
+
+- `build_arms.py` `AGENT.max_steps`: 200. Why: under the GPT-OSS tool set N0 needed 85 steps and G0/U0 hit
+  the 100-step cap while still fixing errors honestly (1 and 4 errors left), which would have mis-scored
+  honest runs as `no_commit / hit_max_steps` and biased the arms. Peak context at step 100 was 85k–100k of
+  131k, so context overflow (`no_commit / context_censored`, counted) is now the practical ceiling.
+  Identical across arms; not prompt-visible. Configs regenerated; README setup table updated.

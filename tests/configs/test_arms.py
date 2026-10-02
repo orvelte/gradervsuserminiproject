@@ -36,7 +36,7 @@ def test_arms_are_byte_identical_outside_user_prompt_and_condition():
     texts = {n: _strip_varying((CFG / n).read_text()) for n in ARM_FILES}
     base = texts[ARM_FILES[0]]
     assert "user_prompt" not in base and "condition" not in base
-    assert "system_prompt" in base and "reasoning_effort: high" in base and "max_steps: 100" in base
+    assert "system_prompt" in base and "reasoning_effort: high" in base and "max_steps: 200" in base
     for n, t in texts.items():
         assert t == base, f"{n} differs from {ARM_FILES[0]} outside user_prompt/condition"
 
