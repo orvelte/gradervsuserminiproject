@@ -12,7 +12,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parent
-for p in (REPO_ROOT / "resampling", REPO_ROOT / "resampling" / "scripts", REPO_ROOT / "resampling" / "analysis",
+for p in (HERE, REPO_ROOT / "resampling", REPO_ROOT / "resampling" / "scripts", REPO_ROOT / "resampling" / "analysis",
           REPO_ROOT / "analysis", REPO_ROOT / "structural_framing" / "analysis", REPO_ROOT / "scripts",
           REPO_ROOT / "environments" / "precommit_hook"):
     if str(p) not in sys.path:
@@ -22,6 +22,20 @@ RESULTS = REPO_ROOT / "results" / "followups"
 SPEND = HERE / "spend.json"
 SOURCE_ROOT = REPO_ROOT / "results" / "openai-gpt-oss-120b"
 RS1_RESULTS = REPO_ROOT / "results" / "resampling"
+
+# Prompt rendering for both pilots. "source" = the source endpoint's convention (followups/harmony_source.py), adopted
+# by the PREREG.md amendment of 2026-10-03 after check F1 failed under RS1's convention; "rs1" = RS1's renderer unchanged.
+RENDERING = "source"
+
+
+def apply_rendering(H=None):
+    """Switch the loaded harmony module to RENDERING. Idempotent. Returns the convention record stored with every sample."""
+    if H is None:
+        import harmony as H
+    if RENDERING == "source":
+        import harmony_source
+        harmony_source.apply(H)
+    return dict(H.HISTORY_CONVENTION)
 
 
 def source_run_dir(source_id: str) -> Path:

@@ -10,3 +10,5 @@ Both pilots reuse the RS1 infrastructure under `../resampling/` by import.
   sampler (`sb_run.py`), summary and decision rule (`sb_summary.py`).
 - `stage0_checks.py` – F1 (RS1's S2/S3 on the A checkpoints) and F2 (one test call with an injected user turn).
 - `plans/` – selected sources, prefixes, the 36-job A plan. `spend.json` – the cost meter.
+
+Docent upload: `python followups/upload_followups.py a|b [--dry-run]`. Rendering: `common.RENDERING` (`source` since PREREG Amendment 1).

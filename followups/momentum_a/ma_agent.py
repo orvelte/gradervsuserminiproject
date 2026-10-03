@@ -17,6 +17,10 @@ import rs_agent
 
 TASK = json.loads(rs_agent.TASK_PATH.read_text())
 INJECT = TASK.get("inject_user_message")
+if TASK.get("history_convention") == "source":      # PREREG amendment 2026-10-03: render history as the source endpoint does
+    import harmony
+    import harmony_source
+    harmony_source.apply(harmony)
 _restore = rs_agent.restore_with
 
 
@@ -45,7 +49,7 @@ def inject_check() -> None:
     expected_tail = f"<|start|>user<|message|>{INJECT}<|end|><|start|>assistant"
     rec = {"mode": "inject_check", "n_messages": len(provider.messages), "last_roles": [m["role"] for m in provider.messages[-3:]],
            "prompt_tokens": len(r.tokens), "prompt_tail": r.text[-(len(expected_tail) + 160):], "ends_with_expected": r.text.endswith(expected_tail),
-           "restored_step": state.step, "init_commit": rs_agent.INIT_RESULT}
+           "history_convention": dict(H.HISTORY_CONVENTION), "restored_step": state.step, "init_commit": rs_agent.INIT_RESULT}
     (final / "inject_check.json").write_text(json.dumps(rec, indent=1))
     rs_agent.print_section("INJECT CHECK", json.dumps({k: v for k, v in rec.items() if k != "prompt_tail"}))
 

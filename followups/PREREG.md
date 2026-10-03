@@ -248,3 +248,41 @@ when it is reached.
 
 Stage 0 (F1–F3, single test calls only) → B (60 replies) → A (36 continuations). B and A do not start until
 `BUDGET_USD` is set.
+
+## Amendment 1 (2026-10-03, before any Fireworks call)
+
+Written after Stage 0 stopped on F1 and after a reviewer note that Olivia pasted in reply to the three open
+decisions. The only paid calls made so far are one-token prompt-count calls to the source endpoint (about $0.02 in
+total). No completion has been sampled for either experiment.
+
+1. **Rendering departs from "copy RS1's settings exactly".** Both pilots render conversation history with the source
+   endpoint's convention (`followups/harmony_source.py`, selected by `common.RENDERING = "source"` and recorded in
+   every sample): tool-call arguments exactly as stored, past tool calls with content type `json`, tool results
+   addressed `to=assistant`. Reason: under RS1's convention the rendered prompt differed from the source endpoint's
+   at 4 of 6 Experiment A checkpoints (by 2 to 75 tokens), so continuations would not start from the source model's
+   input. Faithful prefixes are preferred over comparability with RS1; neither pilot compares its numbers with RS1's.
+   Everything else is RS1's: model, endpoint, reasoning effort, sampling parameters, tools, restore, scorer.
+   - Evidence the convention is right, beyond the eight checkpoints it was derived from: a hold-out of six
+     checkpoints from six other source runs (N0/run-12, N0/run-24, N0/run-3, U0/run-11, U0/run-27, U0/run-5; 104
+     past tool calls, two with malformed arguments). Predictions were written to disk before the endpoint was
+     queried. All six match exactly (`results/followups/stage0/f1_holdout.json`).
+   - F1 rerun under the amended rendering: S2 6/6, S3 6/6. S5 (restore) does not depend on rendering.
+2. **`BUDGET_USD: 30`**, as given in the pasted note. The stop rules are unchanged.
+3. **Experiment B items.** The note names TRAIT's Machiavellianism items as primary if dataset access is arranged,
+   and accepts the fallback items alone for the pilot otherwise. At the time of this amendment there is no
+   `HF_TOKEN` in `.env`, so:
+   - if B runs without TRAIT access, the probe is the spec's fallback items, **unvalidated**, exactly as in the
+     original pre-registration, and TRAIT is required before any scale-up;
+   - if a token is present before B's first call, the primary probe is a fixed random subset of 8 TRAIT
+     Machiavellianism items drawn with seed 20261003 from the pinned dataset revision, scored by TRAIT's own rule,
+     plus the 3 control items; the fallback items are run as a second, separately sampled poll and reported as a
+     secondary, unvalidated probe. That branch needs a further dated amendment listing the drawn item ids before
+     its first call.
+4. **Added caveat for B.** The `post_replace` prefixes are RS1 continuations sampled under RS1's rendering and are
+   re-rendered here as transcript text under the source convention. They are still text the model produced, but
+   they were produced from a slightly different prompt than the `pre_wall` and `post_keep` prefixes.
+5. **`post_replace` hand check.** The detector missed the inference in 3 of the 12 candidate first turns, so
+   detector output alone is not trusted for exclusion. All 12 first turns were read in full; the 9 kept are clean
+   on that reading (the three exclusions are listed in `plans/b_prefixes.json`).
+
+Order is unchanged: F2 (one call) → B → A.

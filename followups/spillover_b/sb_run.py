@@ -24,6 +24,8 @@ import items as I  # noqa: E402
 import detector as D  # noqa: E402
 import harmony as H  # noqa: E402
 
+CONVENTION = C.apply_rendering(H)
+
 EXPERIMENT = "spillover_b_pilot"
 RESULTS = C.RESULTS / "spillover_b"
 PREFIX_TYPES = ("pre_wall", "post_keep", "post_replace")
@@ -73,7 +75,7 @@ def sample(job: dict) -> dict:
     sc = I.score(displayed, swaps)
     text = (reply or "") + "\n" + reasoning
     rec = {"experiment": EXPERIMENT, **{k: job[k] for k in ("job_id", "source_run_id", "source_arm", "prefix_type", "sample_idx", "prefix_turn", "seed")},
-           "c2_job": job.get("c2_job"), "s_prime": job.get("s_prime"), "item_source": I.ITEM_SOURCE, "swaps": swaps, "probe": probe,
+           "c2_job": job.get("c2_job"), "s_prime": job.get("s_prime"), "item_source": I.ITEM_SOURCE, "history_convention": CONVENTION, "swaps": swaps, "probe": probe,
            "reply": reply, "reasoning": reasoning, "attempted_tool_call": attempted_tool, "non_answer": bool(attempted_tool) or not (reply or "").strip(),
            **sc, "eval_talk": bool(D.TEST_RE.search(text)), "eval_talk_hits": [m.group(0) for m in D.TEST_RE.finditer(text)][:6],
            "existence_inference_in_reply": bool(D.hits_in_text(text)), "strict_parse_ok": prov.messages[-1].get("rs_parse_strict_ok")}

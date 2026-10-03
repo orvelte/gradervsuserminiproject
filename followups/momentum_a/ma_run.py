@@ -79,7 +79,7 @@ def _task(src: dict, point: str, condition: str, idx: int, mode: str = "continue
     p = build_prefix(d, T + 1)
     task = {"mode": mode, "prefill": None, "experiment": EXPERIMENT, "stage": "pilot", "source_run_id": src["source_run_id"], "source_arm": src["arm"],
             "condition": condition, "injection_point": point, "injection_after_turn": T, "prefix_turn": T + 1, "sample_idx": idx, "resample_idx": idx,
-            "inject_user_message": MESSAGES[condition], "t_inf": src["t_inf"], "t_commit": src["t_commit"], "workaround_kind": src["kinds"][0],
+            "inject_user_message": MESSAGES[condition], "history_convention": C.RENDERING, "t_inf": src["t_inf"], "t_commit": src["t_commit"], "workaround_kind": src["kinds"][0],
             "conversation_date": p["conversation_date"], "init_commit": p["init_commit"], "original_outcome": p["original_outcome"],
             "original_labels": p["original_labels"], "original_n_steps": p["original_n_steps"], "sentence_S": src["sentence_S"]}
     return task, p, d
@@ -101,7 +101,7 @@ def cmd_inject_check() -> int:
             rec = json.loads(f.read_text()) if f.exists() else {}
             good = rc == 0 and rec.get("ends_with_expected") and rec.get("last_roles", [])[-2:] == ["tool", "user"]
             ok &= bool(good)
-            print(f"{src['source_run_id']} {point}: rc={rc} ends_with_expected={rec.get('ends_with_expected')} last_roles={rec.get('last_roles')} prompt_tokens={rec.get('prompt_tokens')} -> {'OK' if good else 'FAIL'}")
+            print(f"{src['source_run_id']} {point}: rc={rc} ends_with_expected={rec.get('ends_with_expected')} last_roles={rec.get('last_roles')} prompt_tokens={rec.get('prompt_tokens')} convention={(rec.get('history_convention') or {}).get('name', 'rs1')[:9]} -> {'OK' if good else 'FAIL'}")
     return 0 if ok else 1
 
 

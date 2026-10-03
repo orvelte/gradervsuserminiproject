@@ -22,6 +22,8 @@ import harmony as H  # noqa: E402
 import workaround as W  # noqa: E402
 import ma_run  # noqa: E402
 
+CONVENTION = C.apply_rendering(H)
+
 OUT = C.RESULTS / "stage0"
 
 
@@ -64,11 +66,11 @@ def f1() -> int:
             msgs = json.loads((Path(p["checkpoint_dir"]) / "messages.json").read_text())
             cfg, tools = _cfg_tools(p["fleet_config"]); effort = cfg["agent"]["reasoning_effort"]
             mine = len(H.render_prompt(msgs, tools, effort, p["conversation_date"]).tokens)
-            rt = _norm(H.parse_prompt(H.render_history(msgs, tools, effort, p["conversation_date"])), False) == _norm(msgs, True)
+            rt = _norm(H.parse_prompt(H.render_history(msgs, tools, effort, p["conversation_date"])), False) == _norm(msgs, C.RENDERING == "rs1")
             theirs, cost = akash_prompt_tokens(msgs, tools, effort)
             meter.record_spend("stage0", f"f1_s2_{src['source_run_id'].replace('/', '_')}_{point}", cost)
             row = {"source_run_id": src["source_run_id"], "point": point, "checkpoint": Path(p["checkpoint_dir"]).name, "assistant_turns": sum(m["role"] == "assistant" for m in msgs),
-                   "akashml_prompt_tokens": theirs, "rendered_tokens": mine, "s2_match": theirs == mine, "s3_round_trip": rt, "cost_usd": cost}
+                   "rendering": C.RENDERING, "akashml_prompt_tokens": theirs, "rendered_tokens": mine, "s2_match": theirs == mine, "s3_round_trip": rt, "cost_usd": cost}
             rows.append(row); ok &= row["s2_match"] and rt
             print(row, flush=True)
     OUT.mkdir(parents=True, exist_ok=True); (OUT / "f1_s2_s3.json").write_text(json.dumps(rows, indent=1))
@@ -95,7 +97,7 @@ def f2() -> int:
     cost = sum(json.loads(l)["cost_usd_list"] for l in (out / "usage.jsonl").read_text().splitlines() if l.strip())
     C.spend_meter().record_spend("stage0", "f2_injected_user_turn", cost)
     last = prov.messages[-1]
-    rec = {"source_run_id": src["source_run_id"], "injection_after_turn": T, "prompt_tokens": len(r.tokens), "prompt_ends_with_user_then_assistant": tail_ok,
+    rec = {"source_run_id": src["source_run_id"], "rendering": C.RENDERING, "injection_after_turn": T, "prompt_tokens": len(r.tokens), "prompt_ends_with_user_then_assistant": tail_ok,
            "registers_message": W.registers_message("counter", [reply]), "verbal_update": W.verbal_update([reply]),
            "well_formed": bool(last.get("reasoning") or last.get("content")) and (bool(last.get("tool_calls")) or bool(last.get("content"))),
            "strict_parse_ok": last.get("rs_parse_strict_ok"), "finish_reason": last.get("rs_finish_reason"),
@@ -109,5 +111,45 @@ def f2() -> int:
     return 0 if ok else 1
 
 
+HOLDOUT = [  # (source run id, checkpoint step): runs NOT used to derive the source convention (see harmony_source.py)
+    ("N0/run-12", 14), ("N0/run-24", 20), ("N0/run-3", 11), ("U0/run-11", 16), ("U0/run-27", 22), ("U0/run-5", 9),
+]
+
+
+def f1_holdout() -> int:
+    """Out-of-sample test of the source convention: predictions are written to disk BEFORE the endpoint is queried."""
+    import yaml
+    from dotenv import load_dotenv
+    from tools import get_tools
+    import harmony_source
+    load_dotenv(C.REPO_ROOT / ".env")
+    harmony_source.apply(H)
+    meter = C.spend_meter(); OUT.mkdir(parents=True, exist_ok=True); rows = []
+    for sid, step in HOLDOUT:
+        d = C.source_run_dir(sid); cfg = yaml.safe_load((d.parent / "config.yaml").read_text()); tools = get_tools(cfg)
+        msgs = json.loads((d / f"step-{step}" / "messages.json").read_text()); date = d.parent.name[:10]; effort = cfg["agent"]["reasoning_effort"]
+        args = [tc["function"]["arguments"] for m in msgs for tc in m.get("tool_calls") or []]
+        def _compact(a):
+            try:
+                return json.dumps(json.loads(a)) == a
+            except Exception:
+                return None
+        kinds = [_compact(a) for a in args]
+        rt = _norm(H.parse_prompt(H.render_history(msgs, tools, effort, date)), False) == _norm(msgs, False)
+        rows.append({"source_run_id": sid, "checkpoint": f"step-{step}", "assistant_turns": sum(m["role"] == "assistant" for m in msgs),
+                     "tool_calls": len(args), "non_compact_args": kinds.count(False), "malformed_args": kinds.count(None),
+                     "predicted_tokens": len(H.render_prompt(msgs, tools, effort, date).tokens), "s3_round_trip": rt, "_m": (msgs, tools, effort)})
+    (OUT / "f1_holdout_predictions.json").write_text(json.dumps([{k: v for k, v in r.items() if k != "_m"} for r in rows], indent=1))
+    ok = True
+    for r in rows:
+        msgs, tools, effort = r.pop("_m")
+        r["akashml_prompt_tokens"], cost = akash_prompt_tokens(msgs, tools, effort); r["match"] = r["akashml_prompt_tokens"] == r["predicted_tokens"]; r["cost_usd"] = cost
+        meter.record_spend("stage0", f"f1_holdout_{r['source_run_id'].replace('/', '_')}_{r['checkpoint']}", cost)
+        ok &= r["match"] and r["s3_round_trip"]; print(r, flush=True)
+    (OUT / "f1_holdout.json").write_text(json.dumps(rows, indent=1))
+    print("F1 hold-out (source convention, unseen runs):", "PASS" if ok else "FAIL")
+    return 0 if ok else 1
+
+
 if __name__ == "__main__":
-    sys.exit({"f1": f1, "f2": f2}[sys.argv[1]]())
+    sys.exit({"f1": f1, "f2": f2, "f1-holdout": f1_holdout}[sys.argv[1]]())

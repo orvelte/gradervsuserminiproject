@@ -1,5 +1,5 @@
-# Follow-up pilots image (momentum A). Derived from resampling/env/Dockerfile; the only differences are the two
-# lines marked FOLLOWUPS below: RS1's agent is kept as an importable module and the injection wrapper becomes /opt/agent.py.
+# Follow-up pilots image (momentum A). Derived from resampling/env/Dockerfile; the only differences are the
+# lines marked FOLLOWUPS below (plus the opt-in source renderer, harmony_source.py): RS1's agent is kept as an importable module and the injection wrapper becomes /opt/agent.py.
 # RS1 resampling image: the precommit_hook image with the agent loop replaced by resampling/rs_agent.py and the
 # Harmony/Fireworks provider added. Everything else (task files, scorer, entrypoint, privilege model) is identical to
 # environments/precommit_hook/Dockerfile, from which this file is derived (only the marked lines differ).
@@ -30,6 +30,7 @@ RUN cd /opt/task && python generate_variants.py
 COPY resampling/rs_agent.py /opt/rs_agent.py
 COPY followups/momentum_a/ma_agent.py /opt/agent.py
 COPY resampling/harmony.py /opt/harmony.py
+COPY followups/harmony_source.py /opt/harmony_source.py
 COPY resampling/rs_provider.py /opt/rs_provider.py
 COPY resampling/analysis/detector.py /opt/detector.py
 COPY environments/precommit_hook/states.py /opt/states.py

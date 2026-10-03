@@ -3,7 +3,34 @@
 Date: 2026-10-03. Spec: `followuppilottask.md`. Pre-registration: `followups/PREREG.md` (commit e1ec74b, before any paid
 call). `BUDGET_USD` was blank in the spec.
 
-## Summary
+## Update, later on 2026-10-03: preparation after the reviewer note
+
+Still nothing sampled for either experiment. Spend to date is about $0.02, all one-token prompt-count calls.
+
+- **Rendering switched to the source convention** (`PREREG.md`, Amendment 1). F1 now passes: S2 6/6, S3 6/6, S5 6/6.
+- **Hold-out validation passes 6/6.** The convention was derived from eight checkpoints, so it was tested on six
+  checkpoints from six runs it had never seen, with predictions written to disk before the endpoint was queried.
+
+| source run | checkpoint | past tool calls | malformed | predicted tokens | source endpoint tokens | match |
+|---|---|---|---|---|---|---|
+| `N0/run-12` | step-14 | 15 | 0 | 32215 | 32215 | yes |
+| `N0/run-24` | step-20 | 21 | 0 | 43826 | 43826 | yes |
+| `N0/run-3` | step-11 | 12 | 0 | 9225 | 9225 | yes |
+| `U0/run-11` | step-16 | 17 | 2 | 26647 | 26647 | yes |
+| `U0/run-27` | step-22 | 23 | 0 | 27097 | 27097 | yes |
+| `U0/run-5` | step-9 | 10 | 0 | 15402 | 15402 | yes |
+
+- **Image rebuilt** with the renderer; restore and in-container injection render rechecked (see the commit log).
+- **Docent uploader written** (`followups/upload_followups.py`), dry-run tested on synthetic samples for A and B.
+- **B items:** no `HF_TOKEN` in `.env`, so the fallback items are the pilot's probe unless a token is added first.
+- **`post_replace` first turns:** all 12 candidates were read by hand; the 9 kept are clean.
+- **Not done:** the F2 model call, B and A. They wait for Olivia's own go-ahead on the $30 budget.
+- **Not done:** re-scoping the older SF1 and RS1 isolation tests. That edits files outside `followups/`, which this
+  task's isolation rule forbids without her say-so.
+
+The sections below are the original Stage 0 record and are kept as written.
+
+## Summary (original Stage 0 stop)
 
 - **What ran: Stage 0 only, and it stopped at F1.** Neither experiment was sampled. There is no scale / don't-scale
   recommendation for A or B yet because neither ran.
