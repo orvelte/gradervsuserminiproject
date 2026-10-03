@@ -22,7 +22,7 @@ def boot_mean(xs, reps=3000, seed=0):
     rng = random.Random(seed); ms = sorted(sum(rng.choice(xs) for _ in xs) / len(xs) for _ in range(reps))
     return sum(xs) / len(xs), ms[int(0.025 * reps)], ms[int(0.975 * reps) - 1]
 
-fig, (a1, a2) = plt.subplots(1, 2, figsize=(10.5, 5.4))
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(10.5, 4.9))
 x = 0; xt, xl = [], []
 for gname, arms in GROUPS:
     xs = []
@@ -51,7 +51,7 @@ a2.set_title("density", fontsize=10.5, loc="left")
 a2.set_ylim(0, None)
 fig.suptitle("Hints shape the inference: stated oversight suppresses it, a lax line amplifies it", fontsize=12, x=0.01, ha="left")
 fig.text(0.01, 0.012, "Red: graded wrapper.  Green: user / collaborator wrapper.  Blue: paper baseline.\nSF1 arms also carry structural cues and a question tool: the lax-line group is lax line + structural framing, not the line alone.", fontsize=7.5, color="0.35", va="bottom")
-fig.tight_layout(rect=(0, 0.07, 1, 0.93))
+fig.tight_layout(rect=(0, 0.06, 1, 0.93))
 for ext in ("png", "svg"):
     fig.savefig(HERE / "out" / f"fig_hints.{ext}", dpi=170)
 print("wrote", HERE / "out" / "fig_hints.png")
