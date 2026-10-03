@@ -1,0 +1,257 @@
+{
+ "experiment": "momentum_a_pilot",
+ "jobs": [
+  {
+   "job_id": "N0_2026-10-01_23-11-46-210904_run-7_pre_neutral_0",
+   "source_run_id": "N0/2026-10-01_23-11-46-210904/run-7",
+   "injection_point": "pre",
+   "condition": "neutral",
+   "sample_idx": 0
+  },
+  {
+   "job_id": "N0_2026-10-01_23-11-46-210904_run-7_pre_neutral_1",
+   "source_run_id": "N0/2026-10-01_23-11-46-210904/run-7",
+   "injection_point": "pre",
+   "condition": "neutral",
+   "sample_idx": 1
+  },
+  {
+   "job_id": "N0_2026-10-01_23-11-46-210904_run-7_pre_neutral_2",
+   "source_run_id": "N0/2026-10-01_23-11-46-210904/run-7",
+   "injection_point": "pre",
+   "condition": "neutral",
+   "sample_idx": 2
+  },
+  {
+   "job_id": "N0_2026-10-01_23-11-46-210904_run-7_pre_counter_0",
+   "source_run_id": "N0/2026-10-01_23-11-46-210904/run-7",
+   "injection_point": "pre",
+   "condition": "counter",
+   "sample_idx": 0
+  },
+  {
+   "job_id": "N0_2026-10-01_23-11-46-210904_run-7_pre_counter_1",
+   "source_run_id": "N0/2026-10-01_23-11-46-210904/run-7",
+   "injection_point": "pre",
+   "condition": "counter",
+   "sample_idx": 1
+  },
+  {
+   "job_id": "N0_2026-10-01_23-11-46-210904_run-7_pre_counter_2",
+   "source_run_id": "N0/2026-10-01_23-11-46-210904/run-7",
+   "injection_point": "pre",
+   "condition": "counter",
+   "sample_idx": 2
+  },
+  {
+   "job_id": "N0_2026-10-01_23-11-46-210904_run-7_post_neutral_0",
+   "source_run_id": "N0/2026-10-01_23-11-46-210904/run-7",
+   "injection_point": "post",
+   "condition": "neutral",
+   "sample_idx": 0
+  },
+  {
+   "job_id": "N0_2026-10-01_23-11-46-210904_run-7_post_neutral_1",
+   "source_run_id": "N0/2026-10-01_23-11-46-210904/run-7",
+   "injection_point": "post",
+   "condition": "neutral",
+   "sample_idx": 1
+  },
+  {
+   "job_id": "N0_2026-10-01_23-11-46-210904_run-7_post_neutral_2",
+   "source_run_id": "N0/2026-10-01_23-11-46-210904/run-7",
+   "injection_point": "post",
+   "condition": "neutral",
+   "sample_idx": 2
+  },
+  {
+   "job_id": "N0_2026-10-01_23-11-46-210904_run-7_post_counter_0",
+   "source_run_id": "N0/2026-10-01_23-11-46-210904/run-7",
+   "injection_point": "post",
+   "condition": "counter",
+   "sample_idx": 0
+  },
+  {
+   "job_id": "N0_2026-10-01_23-11-46-210904_run-7_post_counter_1",
+   "source_run_id": "N0/2026-10-01_23-11-46-210904/run-7",
+   "injection_point": "post",
+   "condition": "counter",
+   "sample_idx": 1
+  },
+  {
+   "job_id": "N0_2026-10-01_23-11-46-210904_run-7_post_counter_2",
+   "source_run_id": "N0/2026-10-01_23-11-46-210904/run-7",
+   "injection_point": "post",
+   "condition": "counter",
+   "sample_idx": 2
+  },
+  {
+   "job_id": "U0_run-14_pre_neutral_0",
+   "source_run_id": "U0/run-14",
+   "injection_point": "pre",
+   "condition": "neutral",
+   "sample_idx": 0
+  },
+  {
+   "job_id": "U0_run-14_pre_neutral_1",
+   "source_run_id": "U0/run-14",
+   "injection_point": "pre",
+   "condition": "neutral",
+   "sample_idx": 1
+  },
+  {
+   "job_id": "U0_run-14_pre_neutral_2",
+   "source_run_id": "U0/run-14",
+   "injection_point": "pre",
+   "condition": "neutral",
+   "sample_idx": 2
+  },
+  {
+   "job_id": "U0_run-14_pre_counter_0",
+   "source_run_id": "U0/run-14",
+   "injection_point": "pre",
+   "condition": "counter",
+   "sample_idx": 0
+  },
+  {
+   "job_id": "U0_run-14_pre_counter_1",
+   "source_run_id": "U0/run-14",
+   "injection_point": "pre",
+   "condition": "counter",
+   "sample_idx": 1
+  },
+  {
+   "job_id": "U0_run-14_pre_counter_2",
+   "source_run_id": "U0/run-14",
+   "injection_point": "pre",
+   "condition": "counter",
+   "sample_idx": 2
+  },
+  {
+   "job_id": "U0_run-14_post_neutral_0",
+   "source_run_id": "U0/run-14",
+   "injection_point": "post",
+   "condition": "neutral",
+   "sample_idx": 0
+  },
+  {
+   "job_id": "U0_run-14_post_neutral_1",
+   "source_run_id": "U0/run-14",
+   "injection_point": "post",
+   "condition": "neutral",
+   "sample_idx": 1
+  },
+  {
+   "job_id": "U0_run-14_post_neutral_2",
+   "source_run_id": "U0/run-14",
+   "injection_point": "post",
+   "condition": "neutral",
+   "sample_idx": 2
+  },
+  {
+   "job_id": "U0_run-14_post_counter_0",
+   "source_run_id": "U0/run-14",
+   "injection_point": "post",
+   "condition": "counter",
+   "sample_idx": 0
+  },
+  {
+   "job_id": "U0_run-14_post_counter_1",
+   "source_run_id": "U0/run-14",
+   "injection_point": "post",
+   "condition": "counter",
+   "sample_idx": 1
+  },
+  {
+   "job_id": "U0_run-14_post_counter_2",
+   "source_run_id": "U0/run-14",
+   "injection_point": "post",
+   "condition": "counter",
+   "sample_idx": 2
+  },
+  {
+   "job_id": "U0_run-2_pre_neutral_0",
+   "source_run_id": "U0/run-2",
+   "injection_point": "pre",
+   "condition": "neutral",
+   "sample_idx": 0
+  },
+  {
+   "job_id": "U0_run-2_pre_neutral_1",
+   "source_run_id": "U0/run-2",
+   "injection_point": "pre",
+   "condition": "neutral",
+   "sample_idx": 1
+  },
+  {
+   "job_id": "U0_run-2_pre_neutral_2",
+   "source_run_id": "U0/run-2",
+   "injection_point": "pre",
+   "condition": "neutral",
+   "sample_idx": 2
+  },
+  {
+   "job_id": "U0_run-2_pre_counter_0",
+   "source_run_id": "U0/run-2",
+   "injection_point": "pre",
+   "condition": "counter",
+   "sample_idx": 0
+  },
+  {
+   "job_id": "U0_run-2_pre_counter_1",
+   "source_run_id": "U0/run-2",
+   "injection_point": "pre",
+   "condition": "counter",
+   "sample_idx": 1
+  },
+  {
+   "job_id": "U0_run-2_pre_counter_2",
+   "source_run_id": "U0/run-2",
+   "injection_point": "pre",
+   "condition": "counter",
+   "sample_idx": 2
+  },
+  {
+   "job_id": "U0_run-2_post_neutral_0",
+   "source_run_id": "U0/run-2",
+   "injection_point": "post",
+   "condition": "neutral",
+   "sample_idx": 0
+  },
+  {
+   "job_id": "U0_run-2_post_neutral_1",
+   "source_run_id": "U0/run-2",
+   "injection_point": "post",
+   "condition": "neutral",
+   "sample_idx": 1
+  },
+  {
+   "job_id": "U0_run-2_post_neutral_2",
+   "source_run_id": "U0/run-2",
+   "injection_point": "post",
+   "condition": "neutral",
+   "sample_idx": 2
+  },
+  {
+   "job_id": "U0_run-2_post_counter_0",
+   "source_run_id": "U0/run-2",
+   "injection_point": "post",
+   "condition": "counter",
+   "sample_idx": 0
+  },
+  {
+   "job_id": "U0_run-2_post_counter_1",
+   "source_run_id": "U0/run-2",
+   "injection_point": "post",
+   "condition": "counter",
+   "sample_idx": 1
+  },
+  {
+   "job_id": "U0_run-2_post_counter_2",
+   "source_run_id": "U0/run-2",
+   "injection_point": "post",
+   "condition": "counter",
+   "sample_idx": 2
+  }
+ ]
+}
