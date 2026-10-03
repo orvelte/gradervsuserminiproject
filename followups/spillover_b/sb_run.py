@@ -2,7 +2,7 @@
 """Experiment B sampler: append the poll as one user message to an existing prefix and sample ONLY the reply.
 
     python followups/spillover_b/sb_run.py --dry-run                 # render all 60 prompts, no model call
-    python followups/spillover_b/sb_run.py --budget USD [--samples 5] [--max-concurrent 4]
+    python followups/spillover_b/sb_run.py --budget USD [--samples 5] [--max-concurrent 4] [--probe trait]
 
 One Fireworks raw completion per reply through RS1's provider (resampling/rs_provider.py, by import): same Harmony
 rendering, model, reasoning effort, default sampling parameters and tool definitions as RS1. No tool is executed; a
@@ -28,6 +28,10 @@ CONVENTION = C.apply_rendering(H)
 
 EXPERIMENT = "spillover_b_pilot"
 RESULTS = C.RESULTS / "spillover_b"
+PROBE = "fallback"
+if "--probe" in sys.argv and sys.argv[sys.argv.index("--probe") + 1] == "trait":     # PREREG Amendment 3: TRAIT poll, separately sampled
+    import items_trait as I  # noqa: E402,F811
+    PROBE = "trait"; RESULTS = C.RESULTS / "spillover_b_trait"
 PREFIX_TYPES = ("pre_wall", "post_keep", "post_replace")
 
 
@@ -75,7 +79,7 @@ def sample(job: dict) -> dict:
     sc = I.score(displayed, swaps)
     text = (reply or "") + "\n" + reasoning
     rec = {"experiment": EXPERIMENT, **{k: job[k] for k in ("job_id", "source_run_id", "source_arm", "prefix_type", "sample_idx", "prefix_turn", "seed")},
-           "c2_job": job.get("c2_job"), "s_prime": job.get("s_prime"), "item_source": I.ITEM_SOURCE, "history_convention": CONVENTION, "swaps": swaps, "probe": probe,
+           "c2_job": job.get("c2_job"), "s_prime": job.get("s_prime"), "item_source": I.ITEM_SOURCE, "probe_set": PROBE, "history_convention": CONVENTION, "swaps": swaps, "probe": probe,
            "reply": reply, "reasoning": reasoning, "attempted_tool_call": attempted_tool, "non_answer": bool(attempted_tool) or not (reply or "").strip(),
            **sc, "eval_talk": bool(D.TEST_RE.search(text)), "eval_talk_hits": [m.group(0) for m in D.TEST_RE.finditer(text)][:6],
            "existence_inference_in_reply": bool(D.hits_in_text(text)), "strict_parse_ok": prov.messages[-1].get("rs_parse_strict_ok")}
@@ -94,7 +98,7 @@ def main(argv) -> int:
             r = H.render_prompt(msgs, tools, effort, j["conversation_date"]); tot += len(r.tokens)
             ok = r.text.endswith(f"<|start|>user<|message|>{probe}<|end|><|start|>assistant")
             if j["sample_idx"] == 0:
-                print(f"{j['job_id']:34} prompt_tokens={len(r.tokens):>6} ends_with_probe={ok} swaps={''.join('S' if s else '-' for s in swaps)}")
+                print(f"{j['job_id']:34} prompt_tokens={len(r.tokens):>6} ends_with_probe={ok}")
             assert ok, j["job_id"]
         print(f"{len(js)} prompts rendered, {tot} prompt tokens in total (≈ ${tot * 0.15e-6:.2f} at list price before completions)")
         return 0

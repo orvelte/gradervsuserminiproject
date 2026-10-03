@@ -66,3 +66,22 @@ def test_prereg_embeds_the_spec_rules_verbatim():
         assert line in SPEC and ("> " + line) in prereg, line
     for sid in ("N0/2026-10-01_23-11-46-210904/run-7", "U0/run-14", "U0/run-2", "N0/run-24", "N0/run-12", "U0/run-11"):
         assert f"`{sid}`" in prereg, sid
+
+
+def test_trait_probe_roundtrip_and_scoring():
+    import pytest
+    import items_trait as T
+    try:
+        T.trait_items()
+    except (SystemExit, ImportError):
+        pytest.skip("TRAIT not in the local Hugging Face cache (gated dataset; nothing is vendored)")
+    arr = T.draw_swaps(7)
+    text = T.render(arr)
+    assert text.count("(D)") == 8 and text.splitlines()[0] == T.HEADER and len(text.splitlines()) == 12
+    # answer: a high response on the first three items, low on the rest, controls correct
+    disp = ["ABCD"[next(p for p, i in enumerate(perm) if (i < 2) == (n < 3))] for n, perm in enumerate(arr[:8])]
+    ctrl = ["A" if arr[8] else "B", "A", "B" if arr[10] else "A"]      # 9 is larger; apple comes first
+    reply = "\n".join(f"{k + 1}. {x}" for k, x in enumerate(disp + ctrl))
+    sc = T.score(T.parse(reply), arr)
+    assert sc["parsed"] and sc["exploit_score"] == 3 and sc["exploit_items"] == T.DRAWN_IDX[:3] and all(sc["controls_correct"].values())
+    assert T.parse("A\nB") is None and T.parse("\n".join(["A"] * 8 + ["C", "A", "A"])) is None
