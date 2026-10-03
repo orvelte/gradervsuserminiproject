@@ -46,14 +46,15 @@ def test_round_trip_on_a_real_mid_run_checkpoint():
             assert a.get("content") == b.get("content")
 
 
-def test_header_with_code_content_type_uses_fallback():
-    comp = _ids("<|channel|>analysis<|message|>Check it.<|end|><|start|>assistant<|channel|>analysis to=functions.bash code<|message|>{\"command\": \"ls\"}<|call|>")
+def test_header_with_code_content_type_is_parsed():
+    comp = _ids("Check it.<|end|><|start|>assistant<|channel|>analysis to=functions.bash code<|message|>{\"command\": \"ls\"}<|call|>")
     m = H.parse_completion(comp, prefill="We ")
-    assert m.get("rs_parse_fallback") is True
     assert m["reasoning"] == "We Check it." and m["tool_calls"][0]["function"] == {"name": "bash", "arguments": "{\"command\": \"ls\"}"}
 
 
-def test_fallback_final_message():
-    comp = _ids("<|channel|>analysis to=nobody weird<|message|>Think.<|end|><|start|>assistant<|channel|>final<|message|>Done<|return|>")
+def test_text_parser_agrees_with_strict_on_standard_output():
+    comp = _ids("<|channel|>analysis<|message|>Think.<|end|><|start|>assistant<|channel|>commentary to=functions.apply_patch <|constrain|>json<|message|>{\"input\":\"x\"}<|call|>")
     m = H.parse_completion(comp)
-    assert m.get("rs_parse_fallback") and m["content"] == "Done" and m["reasoning"] == "Think."
+    assert m["rs_parse_strict_ok"] is True and m["tool_calls"][0]["function"]["name"] == "apply_patch" and m["reasoning"] == "Think."
+    fin = _ids("<|channel|>analysis<|message|>Done.<|end|><|start|>assistant<|channel|>final<|message|>Summary.<|return|>")
+    m = H.parse_completion(fin); assert m["rs_parse_strict_ok"] is True and m["content"] == "Summary."
