@@ -1,0 +1,105 @@
+{
+ "stage": "calibration",
+ "jobs": [
+  {
+   "job_id": "N0_run-4_t1_CAL_0",
+   "source_run_dir": "results/openai-gpt-oss-120b/N0/precommit_hook/openai-gpt-oss-120b/2026-10-01_23-24-44-967233/run-4",
+   "prefix_turn": 1,
+   "condition": "S13-calibration",
+   "resample_idx": 0,
+   "prefill": null,
+   "prefill_sentence": null,
+   "sentence_kind": "none"
+  },
+  {
+   "job_id": "N0_run-4_t1_CAL_1",
+   "source_run_dir": "results/openai-gpt-oss-120b/N0/precommit_hook/openai-gpt-oss-120b/2026-10-01_23-24-44-967233/run-4",
+   "prefix_turn": 1,
+   "condition": "S13-calibration",
+   "resample_idx": 1,
+   "prefill": null,
+   "prefill_sentence": null,
+   "sentence_kind": "none"
+  },
+  {
+   "job_id": "N0_run-4_t1_CAL_2",
+   "source_run_dir": "results/openai-gpt-oss-120b/N0/precommit_hook/openai-gpt-oss-120b/2026-10-01_23-24-44-967233/run-4",
+   "prefix_turn": 1,
+   "condition": "S13-calibration",
+   "resample_idx": 2,
+   "prefill": null,
+   "prefill_sentence": null,
+   "sentence_kind": "none"
+  },
+  {
+   "job_id": "N0_run-4_t1_CAL_3",
+   "source_run_dir": "results/openai-gpt-oss-120b/N0/precommit_hook/openai-gpt-oss-120b/2026-10-01_23-24-44-967233/run-4",
+   "prefix_turn": 1,
+   "condition": "S13-calibration",
+   "resample_idx": 3,
+   "prefill": null,
+   "prefill_sentence": null,
+   "sentence_kind": "none"
+  },
+  {
+   "job_id": "N0_run-4_t1_CAL_4",
+   "source_run_dir": "results/openai-gpt-oss-120b/N0/precommit_hook/openai-gpt-oss-120b/2026-10-01_23-24-44-967233/run-4",
+   "prefix_turn": 1,
+   "condition": "S13-calibration",
+   "resample_idx": 4,
+   "prefill": null,
+   "prefill_sentence": null,
+   "sentence_kind": "none"
+  },
+  {
+   "job_id": "U0_run-27_t1_CAL_0",
+   "source_run_dir": "results/openai-gpt-oss-120b/U0/precommit_hook/openai-gpt-oss-120b/2026-10-02_11-26-09-124136/run-27",
+   "prefix_turn": 1,
+   "condition": "S13-calibration",
+   "resample_idx": 0,
+   "prefill": null,
+   "prefill_sentence": null,
+   "sentence_kind": "none"
+  },
+  {
+   "job_id": "U0_run-27_t1_CAL_1",
+   "source_run_dir": "results/openai-gpt-oss-120b/U0/precommit_hook/openai-gpt-oss-120b/2026-10-02_11-26-09-124136/run-27",
+   "prefix_turn": 1,
+   "condition": "S13-calibration",
+   "resample_idx": 1,
+   "prefill": null,
+   "prefill_sentence": null,
+   "sentence_kind": "none"
+  },
+  {
+   "job_id": "U0_run-27_t1_CAL_2",
+   "source_run_dir": "results/openai-gpt-oss-120b/U0/precommit_hook/openai-gpt-oss-120b/2026-10-02_11-26-09-124136/run-27",
+   "prefix_turn": 1,
+   "condition": "S13-calibration",
+   "resample_idx": 2,
+   "prefill": null,
+   "prefill_sentence": null,
+   "sentence_kind": "none"
+  },
+  {
+   "job_id": "U0_run-27_t1_CAL_3",
+   "source_run_dir": "results/openai-gpt-oss-120b/U0/precommit_hook/openai-gpt-oss-120b/2026-10-02_11-26-09-124136/run-27",
+   "prefix_turn": 1,
+   "condition": "S13-calibration",
+   "resample_idx": 3,
+   "prefill": null,
+   "prefill_sentence": null,
+   "sentence_kind": "none"
+  },
+  {
+   "job_id": "U0_run-27_t1_CAL_4",
+   "source_run_dir": "results/openai-gpt-oss-120b/U0/precommit_hook/openai-gpt-oss-120b/2026-10-02_11-26-09-124136/run-27",
+   "prefix_turn": 1,
+   "condition": "S13-calibration",
+   "resample_idx": 4,
+   "prefill": null,
+   "prefill_sentence": null,
+   "sentence_kind": "none"
+  }
+ ]
+}

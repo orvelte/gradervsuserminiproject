@@ -53,6 +53,8 @@ def build(run_dir: Path, turn: int | None = None) -> dict:
         sentence = None
     step_turn = run_dir / f"step-{turn - 1}"
     msgs_t = json.loads((step_turn / "messages.json").read_text())
+    if turn == 1:
+        sentence = None
     assistants = [i for i, m in enumerate(msgs_t) if m["role"] == "assistant"]
     a_idx = assistants[turn - 1]
     a = msgs_t[a_idx]

@@ -179,11 +179,11 @@ def cmd_continue(args):
         if budget is not None and total_spend() >= budget:
             return j["job_id"], "skipped: budget reached", 0.0
         p = build_prefix(Path(j["source_run_dir"]), j["prefix_turn"])
-        task = {"mode": "continue", "prefill": j["prefill"], "prefill_sentence": j.get("prefill_sentence"), "sentence_kind": j.get("sentence_kind"),
+        task = {"mode": "continue", "prefill": j.get("prefill"), "prefill_sentence": j.get("prefill_sentence"), "sentence_kind": j.get("sentence_kind"),
                 "condition": j["condition"], "resample_idx": j["resample_idx"], "stage": stage, "experiment": "resampling_v1",
                 **{k: p[k] for k in ("source_run_id", "source_arm", "prefix_turn", "conversation_date", "sentence_S", "original_outcome", "original_labels", "original_n_steps", "init_commit")}}
         tp = out / "rs_task.json"; out.mkdir(parents=True, exist_ok=True); tp.write_text(json.dumps(task, indent=1))
-        rc = run_container(docker, tag, Path(p["fleet_config"]), Path(p["checkpoint_dir"]), Path(j["source_run_dir"]) / "blobs", tp, out)
+        rc = run_container(docker, tag, Path(p["fleet_config"]), Path(p["checkpoint_dir"]) if p["checkpoint_dir"] else None, Path(j["source_run_dir"]) / "blobs", tp, out)
         c = job_cost(out); record_spend(stage, j["job_id"], c)
         return j["job_id"], f"rc={rc}", c
     with ThreadPoolExecutor(max_workers=maxc) as ex:

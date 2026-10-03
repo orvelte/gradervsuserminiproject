@@ -148,12 +148,21 @@ def main() -> None:
     state = provider = None
     crashed = False
     try:
-        state, provider = restore_with(lambda msgs: FireworksHarmonyProvider(
-            model=None, messages=msgs, tools=tools, reasoning_effort=effort, conversation_date=task.get("conversation_date"),
-            usage_log=final / "usage.jsonl"), config, task.get("init_commit"))
-        state.step += 1
-        provider.set_prefill(task["prefill"])
-        print_section("RS1 PREFILL (inherited text, turn %d)" % task.get("prefix_turn", -1), task["prefill"])
+        factory = lambda msgs: FireworksHarmonyProvider(model=None, messages=msgs, tools=tools, reasoning_effort=effort,  # noqa: E731
+                                                        conversation_date=task.get("conversation_date"), usage_log=final / "usage.jsonl")
+        if CHECKPOINT.exists():
+            state, provider = restore_with(factory, config, task.get("init_commit"))
+            state.step += 1
+        else:  # start of turn 1 (S13 calibration): the pristine workspace, the config's prompts, no prefill
+            from states import init_fs_tracking
+            state = CodingAgentState(); state.variant = config.get("task", {}).get("variation", "unknown"); init_fs_tracking()
+            prompts = config.get("prompts") or {}
+            provider = factory([{"role": "system", "content": prompts.get("system_prompt", "")}, {"role": "user", "content": prompts.get("user_prompt", "")}])
+        if task.get("prefill") is not None:
+            provider.set_prefill(task["prefill"])
+            print_section("RS1 PREFILL (inherited text, turn %d)" % task.get("prefix_turn", -1), task["prefill"])
+        else:
+            print_section("RS1", "no prefill: fresh generation from the start of turn 1")
         max_steps = config.get("agent", {}).get("max_steps", 30)
         while state.step < max_steps:
             print_step_header(state.step)
