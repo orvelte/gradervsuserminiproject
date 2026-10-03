@@ -113,10 +113,12 @@ def parse_completion(token_ids: list[int], prefill: str | None = None) -> dict:
     reasoning, content, tool_calls = [], None, []
     for m in msgs:
         text = "".join(c.text for c in m.content if isinstance(c, TextContent))
-        if m.channel == "analysis":
-            reasoning.append(text)
-        elif m.channel == "commentary" and m.recipient and m.recipient.startswith("functions."):
+        # gpt-oss emits function calls on the analysis channel as well as on commentary
+        # (`<|channel|>analysis to=functions.bash <|constrain|>json`); any functions.* recipient is a tool call.
+        if m.recipient and m.recipient.startswith("functions."):
             tool_calls.append({"id": f"call_{uuid.uuid4().hex[:24]}", "type": "function", "function": {"name": m.recipient.split(".", 1)[1], "arguments": text}})
+        elif m.channel == "analysis":
+            reasoning.append(text)
         elif m.channel == "final":
             content = (content or "") + text
         else:  # commentary without recipient: treat as content preamble

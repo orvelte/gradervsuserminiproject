@@ -80,6 +80,13 @@ class FireworksHarmonyProvider(BaseProvider):
         choice = d["choices"][0]
         ids = choice["raw_output"]["completion_token_ids"]
         msg = H.parse_completion(ids, prefill=self.prefill)
+        if self.usage_log is not None:  # raw completion text, for the S8 prefill-coherence reading
+            try:
+                self.usage_log.parent.mkdir(parents=True, exist_ok=True)
+                with (self.usage_log.parent / "raw_completions.jsonl").open("a") as f:
+                    f.write(json.dumps({"call": self.calls + 1, "prefill": self.prefill, "text": choice.get("text"), "finish_reason": choice.get("finish_reason")}) + "\n")
+            except Exception:
+                pass
         if self.prefill is not None:
             msg["rs_prefill_chars"] = len(self.prefill)
             self.prefill = None
