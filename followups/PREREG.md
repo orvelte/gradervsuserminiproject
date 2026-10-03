@@ -286,3 +286,19 @@ total). No completion has been sampled for either experiment.
    on that reading (the three exclusions are listed in `plans/b_prefixes.json`).
 
 Order is unchanged: F2 (one call) → B → A.
+
+## Amendment 2 (2026-10-03, before the F2 call and before any B or A sample)
+
+- Olivia confirmed `BUDGET_USD: 30` in her own words and added `HF_TOKEN`.
+- The token is valid (read role), but the Hugging Face account is not yet on the authorised list for
+  `mirlab/TRAIT` (it resolves to `snupilab/TRAIT`; the download returns "you are not in the authorized list").
+  TRAIT items therefore cannot be drawn today.
+- Consequence, within Amendment 1's two branches: the **fallback poll runs now** (it is part of both branches, as
+  the only probe or as the secondary one) and is labelled unvalidated. If access is granted later, the TRAIT poll is
+  run as a separately sampled poll on the same prefixes with the rule already fixed in Amendment 1 (8
+  Machiavellianism items, seed 20261003, pinned revision, TRAIT's high-response share, 3 controls), after a further
+  amendment listing the drawn item ids. It would then be primary, with the caveat that the fallback results were
+  seen first.
+- TRAIT items have four options (two high-trait, two low-trait), so that poll would be answered with A–D; this is
+  recorded now so the format is not chosen after seeing data.
+- Olivia declined re-scoping the older SF1/RS1 isolation tests; they stay as they are.
