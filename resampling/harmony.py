@@ -103,16 +103,43 @@ def render_prompt(messages: list[dict], tools: list[dict], effort: str, date: st
     return Rendered(toks, ENC.decode(toks))
 
 
+class _Seg:
+    def __init__(self, channel, recipient, text):
+        self.channel, self.recipient, self.text = channel, recipient, text
+
+
+def _parse_completion_text(ids: list[int]) -> list[_Seg]:
+    """Tolerant text-level parse of a completion: segments `<|channel|>X [to=functions.Y] [anything]<|message|>body<|end|/|call|/|return|>`.
+    gpt-oss emits header variants the strict parser rejects (e.g. `analysis to=functions.bash code<|message|>`)."""
+    import re
+    text = ENC.decode(ids)
+    pat = re.compile(r"(?:<\|start\|>assistant)?\s*(?P<header>(?:<\|channel\|>|to=)[^<]*?)<\|message\|>(?P<body>.*?)(?:<\|end\|>|<\|call\|>|<\|return\|>|$)", re.S)
+    out = []
+    for m in pat.finditer(text):
+        h = m.group("header")
+        ch = re.search(r"<\|channel\|>(analysis|commentary|final)", h); rc = re.search(r"to=(functions\.[A-Za-z0-9_]+)", h)
+        out.append(_Seg(ch.group(1) if ch else "analysis", rc.group(1) if rc else None, m.group("body")))
+    return out
+
+
 def parse_completion(token_ids: list[int], prefill: str | None = None) -> dict:
     """Completion tokens -> harness assistant message {role, reasoning, reasoning_content, content, tool_calls}.
-    With a prefill, the analysis text is `prefill + continuation` (the parser is fed the channel header + prefill)."""
+    With a prefill, the analysis text is `prefill + continuation` (the parser is fed the channel header + prefill).
+    The strict openai-harmony parser is tried first; on HarmonyError the text-level parser is used and the message
+    is marked `rs_parse_fallback`."""
+    from openai_harmony import HarmonyError
     ids = list(token_ids)
     if prefill is not None:
         ids = ENC.encode("<|channel|>analysis<|message|>", allowed_special="all") + ENC.encode(prefill, allowed_special=set()) + ids
-    msgs = ENC.parse_messages_from_completion_tokens(ids, Role.ASSISTANT)
+    fallback = False
+    try:
+        parsed = ENC.parse_messages_from_completion_tokens(ids, Role.ASSISTANT)
+        msgs = [_Seg(m.channel, m.recipient, "".join(c.text for c in m.content if isinstance(c, TextContent))) for m in parsed]
+    except HarmonyError:
+        msgs = _parse_completion_text(ids); fallback = True
     reasoning, content, tool_calls = [], None, []
     for m in msgs:
-        text = "".join(c.text for c in m.content if isinstance(c, TextContent))
+        text = m.text
         # gpt-oss emits function calls on the analysis channel as well as on commentary
         # (`<|channel|>analysis to=functions.bash <|constrain|>json`); any functions.* recipient is a tool call.
         if m.recipient and m.recipient.startswith("functions."):
@@ -124,9 +151,12 @@ def parse_completion(token_ids: list[int], prefill: str | None = None) -> dict:
         else:  # commentary without recipient: treat as content preamble
             content = (content or "") + text
     r = "\n".join(reasoning) if reasoning else None
-    return {"role": "assistant", "content": content, "reasoning": r, "reasoning_content": r,
-            "reasoning_details": ([{"type": "reasoning.text", "text": r, "format": "unknown", "index": 0}] if r else None),
-            "tool_calls": tool_calls or None, "refusal": None, "annotations": None, "audio": None, "function_call": None}
+    out = {"role": "assistant", "content": content, "reasoning": r, "reasoning_content": r,
+           "reasoning_details": ([{"type": "reasoning.text", "text": r, "format": "unknown", "index": 0}] if r else None),
+           "tool_calls": tool_calls or None, "refusal": None, "annotations": None, "audio": None, "function_call": None}
+    if fallback:
+        out["rs_parse_fallback"] = True
+    return out
 
 
 def render_history(messages: list[dict], tools: list[dict], effort: str, date: str | None) -> list[int]:

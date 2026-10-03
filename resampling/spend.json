@@ -1,8 +1,9 @@
 {
- "total_usd_list_price": 7.98509,
+ "total_usd_list_price": 19.82643,
  "by_stage": {
   "calibration": 5.41189,
-  "stage1": 2.5732
+  "stage1": 2.5732,
+  "stage3": 11.84134
  },
  "jobs": {
   "N0_run-4_t1_CAL_2": {
@@ -84,6 +85,141 @@
    "stage": "stage1",
    "cost_usd_list": 0.81824,
    "ts": "2026-10-03T03:03:51Z"
+  },
+  "N0_run-4_t4_C0_1": {
+   "stage": "stage3",
+   "cost_usd_list": 0.2786,
+   "ts": "2026-10-03T03:49:22Z"
+  },
+  "N0_run-4_t4_C0_2": {
+   "stage": "stage3",
+   "cost_usd_list": 0.66112,
+   "ts": "2026-10-03T03:51:10Z"
+  },
+  "N0_run-24_t4_C0_0": {
+   "stage": "stage3",
+   "cost_usd_list": 1.05219,
+   "ts": "2026-10-03T03:55:14Z"
+  },
+  "N0_run-4_t4_C0_0": {
+   "stage": "stage3",
+   "cost_usd_list": 0.81417,
+   "ts": "2026-10-03T03:55:35Z"
+  },
+  "N0_run-24_t4_C0_1": {
+   "stage": "stage3",
+   "cost_usd_list": 0.57222,
+   "ts": "2026-10-03T04:04:25Z"
+  },
+  "N0_run-24_t4_C0_2": {
+   "stage": "stage3",
+   "cost_usd_list": 0.83649,
+   "ts": "2026-10-03T04:06:27Z"
+  },
+  "N0_run-12_t5_C0_0": {
+   "stage": "stage3",
+   "cost_usd_list": 0.82218,
+   "ts": "2026-10-03T04:09:23Z"
+  },
+  "N0_run-8_t6_C0_1": {
+   "stage": "stage3",
+   "cost_usd_list": 0.03,
+   "ts": "2026-10-03T04:10:45Z"
+  },
+  "N0_run-8_t6_C0_2": {
+   "stage": "stage3",
+   "cost_usd_list": 0.00473,
+   "ts": "2026-10-03T04:11:10Z"
+  },
+  "N0_run-12_t5_C0_1": {
+   "stage": "stage3",
+   "cost_usd_list": 0.72088,
+   "ts": "2026-10-03T04:11:57Z"
+  },
+  "N0_run-25_t6_C0_0": {
+   "stage": "stage3",
+   "cost_usd_list": 0.0305,
+   "ts": "2026-10-03T04:12:21Z"
+  },
+  "N0_run-25_t6_C0_1": {
+   "stage": "stage3",
+   "cost_usd_list": 0.04119,
+   "ts": "2026-10-03T04:14:04Z"
+  },
+  "N0_run-8_t6_C0_0": {
+   "stage": "stage3",
+   "cost_usd_list": 0.61876,
+   "ts": "2026-10-03T04:18:46Z"
+  },
+  "N0_run-12_t5_C0_2": {
+   "stage": "stage3",
+   "cost_usd_list": 0.75856,
+   "ts": "2026-10-03T04:20:03Z"
+  },
+  "U0_run-11_t12_C0_1": {
+   "stage": "stage3",
+   "cost_usd_list": 0.27896,
+   "ts": "2026-10-03T04:26:19Z"
+  },
+  "U0_run-11_t12_C0_0": {
+   "stage": "stage3",
+   "cost_usd_list": 0.81363,
+   "ts": "2026-10-03T04:30:14Z"
+  },
+  "N0_run-25_t6_C0_2": {
+   "stage": "stage3",
+   "cost_usd_list": 0.9003,
+   "ts": "2026-10-03T04:30:37Z"
+  },
+  "U0_run-4_t13_C0_0": {
+   "stage": "stage3",
+   "cost_usd_list": 0.31531,
+   "ts": "2026-10-03T04:31:37Z"
+  },
+  "U0_run-4_t13_C0_2": {
+   "stage": "stage3",
+   "cost_usd_list": 0.06909,
+   "ts": "2026-10-03T04:32:56Z"
+  },
+  "U0_run-2_t4_C0_0": {
+   "stage": "stage3",
+   "cost_usd_list": 0.08446,
+   "ts": "2026-10-03T04:33:31Z"
+  },
+  "U0_run-4_t13_C0_1": {
+   "stage": "stage3",
+   "cost_usd_list": 0.10769,
+   "ts": "2026-10-03T04:33:37Z"
+  },
+  "U0_run-2_t4_C0_1": {
+   "stage": "stage3",
+   "cost_usd_list": 0.03875,
+   "ts": "2026-10-03T04:34:45Z"
+  },
+  "U0_run-29_t4_C0_0": {
+   "stage": "stage3",
+   "cost_usd_list": 0.04166,
+   "ts": "2026-10-03T04:34:49Z"
+  },
+  "U0_run-29_t4_C0_1": {
+   "stage": "stage3",
+   "cost_usd_list": 0.06029,
+   "ts": "2026-10-03T04:35:59Z"
+  },
+  "U0_run-29_t4_C0_2": {
+   "stage": "stage3",
+   "cost_usd_list": 0.05988,
+   "ts": "2026-10-03T04:36:49Z"
+  },
+  "U0_run-11_t12_C0_2": {
+   "stage": "stage3",
+   "cost_usd_list": 1.29904,
+   "ts": "2026-10-03T04:44:22Z"
+  },
+  "U0_run-2_t4_C0_2": {
+   "stage": "stage3",
+   "cost_usd_list": 0.53069,
+   "ts": "2026-10-03T04:47:22Z"
   }
  }
 }
