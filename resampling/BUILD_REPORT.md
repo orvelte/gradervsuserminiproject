@@ -425,3 +425,36 @@ outcome is locked regardless. Two changes would make a scaled-up run worth its c
 If the goal is only to settle the headline question at this cut point, the answer is already usable: the sentence
 does not materially change whether GPT-OSS-120B games this task, it changes how, and it is mostly a symptom of the
 difficulty judgement that precedes it.
+
+## Erratum (2026-10-03): the S2 "pass" was a token-count coincidence
+
+Found by check F1 of the follow-up pilots (`followups/PILOT_REPORT.md`), which reran S2 on three more source runs.
+
+The S2 row above says the source endpoint's history rendering was pinned by matching its prompt token counts, with a
+two-token-per-turn ambiguity resolved by an echo probe. That conclusion was wrong. The convention that reproduces
+AkashML's reported `prompt_tokens` at **all eight** checkpoints now tested (the two N0/run-1 checkpoints used here plus
+six in the follow-up, including turns with malformed and pretty-printed arguments) is:
+
+- tool-call arguments rendered **exactly as stored**, not re-serialised;
+- past tool calls with the plain content type `json`: `<|start|>assistant to=functions.bash<|channel|>commentary json<|message|>…<|call|>`;
+- tool results addressed to the assistant: `<|start|>functions.bash to=assistant<|channel|>commentary<|message|>…<|end|>`.
+
+RS1 used compact `json.dumps` arguments, `<|constrain|>json` on past calls and no recipient on tool results. On runs
+whose stored arguments are already compact (N0/run-1 is one) that happens to give the same token count: the space
+`json.dumps` adds after the colon and the three-token `<|constrain|>json` marker add up to the same four tokens per
+turn as `json` plus `to=assistant`. On runs with pretty-printed stored arguments (19 of 30 N0 runs, 25 of 30 U0 runs)
+the counts differ. The echo probe that "resolved" the ambiguity was weak evidence and pointed the wrong way.
+
+What this changes for RS1:
+
+- **S2 should read FAIL (now understood), not PASS.** Every RS1 continuation was sampled from a prompt whose history
+  headers and argument whitespace differ from what the source run's model saw. At the ten source prefixes the token
+  count differs by 0 for three runs (N0/run-4, N0/run-25, U0/run-29) and by 12 to 46 tokens for the other seven; where
+  the count is equal the token sequence still differs in the two header forms.
+- The earlier analysis text, the system and developer messages, the tool outputs and the prefill are unaffected, and
+  S3 (round trip) and S5 (restore) stand.
+- C0, C1 and C2 share the rendering, so the contrasts between them are unaffected as internal comparisons. What is
+  weakened is the claim that the continuations start from the source model's exact input. S13 (10 fresh runs, no
+  detectable shift in gaming, length or tool use) is the only evidence on whether the rendering difference matters
+  behaviourally, and at n = 10 it cannot exclude a moderate shift.
+- The corrected convention exists as an opt-in (`followups/harmony_source.py`); nothing in `resampling/` was changed.
