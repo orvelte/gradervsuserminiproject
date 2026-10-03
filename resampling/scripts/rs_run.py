@@ -87,18 +87,28 @@ def job_cost(out_dir: Path) -> float:
     return sum(json.loads(l)["cost_usd_list"] for l in u.read_text().splitlines() if l.strip())
 
 
+def _read_spend() -> dict:
+    """Tolerates a concurrent writer (several launchers may run at once): retries a torn read briefly."""
+    for _ in range(20):
+        try:
+            return json.loads(SPEND.read_text()) if SPEND.exists() else {"total_usd_list_price": 0.0, "by_stage": {}, "jobs": {}}
+        except json.JSONDecodeError:
+            time.sleep(0.1)
+    return json.loads(SPEND.read_text())
+
+
 def record_spend(stage: str, job_id: str, cost: float) -> dict:
     with _lock:
-        s = json.loads(SPEND.read_text()) if SPEND.exists() else {"total_usd_list_price": 0.0, "by_stage": {}, "jobs": {}}
+        s = _read_spend()
         s["jobs"][job_id] = {"stage": stage, "cost_usd_list": round(cost, 5), "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
         s["by_stage"][stage] = round(s["by_stage"].get(stage, 0.0) + cost, 5)
         s["total_usd_list_price"] = round(sum(j["cost_usd_list"] for j in s["jobs"].values()), 5)
-        SPEND.write_text(json.dumps(s, indent=1))
+        tmp = SPEND.with_suffix(".json.tmp"); tmp.write_text(json.dumps(s, indent=1)); os.replace(tmp, SPEND)  # atomic
         return s
 
 
 def total_spend() -> float:
-    return json.loads(SPEND.read_text())["total_usd_list_price"] if SPEND.exists() else 0.0
+    return _read_spend()["total_usd_list_price"]
 
 
 def host_tree(checkpoint: Path, run_dir: Path) -> dict:

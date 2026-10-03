@@ -1,0 +1,64 @@
+{
+ "total_usd_list_price": 0.14835,
+ "by_stage": {
+  "calibration": 0.0,
+  "stage1": 0.14835
+ },
+ "jobs": {
+  "N0_run-4_t1_CAL_2": {
+   "stage": "calibration",
+   "cost_usd_list": 0.0,
+   "ts": "2026-10-03T02:46:44Z"
+  },
+  "N0_run-4_t1_CAL_1": {
+   "stage": "calibration",
+   "cost_usd_list": 0.0,
+   "ts": "2026-10-03T02:46:44Z"
+  },
+  "N0_run-4_t1_CAL_0": {
+   "stage": "calibration",
+   "cost_usd_list": 0.0,
+   "ts": "2026-10-03T02:46:44Z"
+  },
+  "N0_run-4_t1_CAL_4": {
+   "stage": "calibration",
+   "cost_usd_list": 0.0,
+   "ts": "2026-10-03T02:46:44Z"
+  },
+  "U0_run-27_t1_CAL_0": {
+   "stage": "calibration",
+   "cost_usd_list": 0.0,
+   "ts": "2026-10-03T02:46:44Z"
+  },
+  "U0_run-27_t1_CAL_1": {
+   "stage": "calibration",
+   "cost_usd_list": 0.0,
+   "ts": "2026-10-03T02:46:44Z"
+  },
+  "N0_run-4_t1_CAL_3": {
+   "stage": "calibration",
+   "cost_usd_list": 0.0,
+   "ts": "2026-10-03T02:46:44Z"
+  },
+  "U0_run-27_t1_CAL_2": {
+   "stage": "calibration",
+   "cost_usd_list": 0.0,
+   "ts": "2026-10-03T02:46:44Z"
+  },
+  "U0_run-27_t1_CAL_4": {
+   "stage": "calibration",
+   "cost_usd_list": 0.0,
+   "ts": "2026-10-03T02:46:44Z"
+  },
+  "U0_run-27_t1_CAL_3": {
+   "stage": "calibration",
+   "cost_usd_list": 0.0,
+   "ts": "2026-10-03T02:46:44Z"
+  },
+  "U0_run-27_t4_C0_2": {
+   "stage": "stage1",
+   "cost_usd_list": 0.14835,
+   "ts": "2026-10-03T02:46:48Z"
+  }
+ }
+}

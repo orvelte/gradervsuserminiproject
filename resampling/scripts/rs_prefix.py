@@ -43,6 +43,7 @@ def init_commit_info(run_dir: Path) -> dict | None:
 
 
 def build(run_dir: Path, turn: int | None = None) -> dict:
+    run_dir = Path(run_dir).resolve()  # absolute: the launcher bind-mounts these paths
     final_msgs = json.loads((run_dir / "final" / "messages.json").read_text())
     if turn is None:
         hit = D.first_hit(final_msgs)
