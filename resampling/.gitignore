@@ -1,0 +1,3 @@
+analysis/out/
+__pycache__/
+env/o200k_base.tiktoken
