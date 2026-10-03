@@ -71,8 +71,8 @@ def runs_a(sha):
 
 
 def runs_b(sha):
-    root = C.RESULTS / "spillover_b"
-    for job in sorted(p for p in root.iterdir() if (p / "reply.json").exists()) if root.exists() else []:
+    jobs = [(d, p) for d in ("spillover_b", "spillover_b_trait") if (C.RESULTS / d).exists() for p in sorted((C.RESULTS / d).iterdir()) if (p / "reply.json").exists()]
+    for sub, job in jobs:
         rec = json.loads((job / "reply.json").read_text()); msgs = json.loads((job / "messages.json").read_text())
         polls = [m for m in msgs if m.get("role") == "user" and m.get("content") == rec["probe"]]
         assert len(polls) == 1, (job.name, len(polls))
@@ -82,10 +82,10 @@ def runs_b(sha):
         keep = {k: v for k, v in rec.items() if k not in ("probe", "reply", "reasoning", "experiment", "source_run_id", "prefix_type", "sample_idx", "job_id")}
         ar.metadata = {k: v for k, v in ar.metadata.items() if k in ("upstream_sha", "run_dir", "n_assistant_turns")}
         ar.metadata.update({"experiment": rec["experiment"], "source_run_id": rec["source_run_id"], "source_arm": rec["source_arm"], "condition": rec["prefix_type"],
-                            "prefix_type": rec["prefix_type"], "sample_idx": rec["sample_idx"], "provider_used": "fireworks completions gpt-oss-120b (raw Harmony)", **_flat(keep, "sb_")})
-        ar.name = f"B {rec['prefix_type']} {rec['source_run_id']} #{rec['sample_idx']} — exploit {rec.get('exploit_score')}"
+                            "prefix_type": rec["prefix_type"], "probe_set": rec.get("probe_set", "fallback"), "sample_idx": rec["sample_idx"], "provider_used": "fireworks completions gpt-oss-120b (raw Harmony)", **_flat(keep, "sb_")})
+        ar.name = f"B[{rec.get('probe_set', 'fallback')}] {rec['prefix_type']} {rec['source_run_id']} #{rec['sample_idx']} — exploit {rec.get('exploit_score')}"
         ar.description = f"poll reply after prefix {rec['prefix_type']}; parsed={rec.get('parsed')} non_answer={rec.get('non_answer')} eval_talk={rec.get('eval_talk')}"
-        yield f"followups:spillover_b/{job.name}", ar
+        yield f"followups:{sub}/{job.name}", ar
 
 
 def main(argv=None) -> int:

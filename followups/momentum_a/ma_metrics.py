@@ -20,8 +20,15 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent)); sys.path.insert(0, str(HERE))
 import common as C  # noqa: E402
 import workaround as W  # noqa: E402
+# analysis/reanalysis.py and sf_metrics import the repo's analysis/common.py as `common`; this package's own common.py
+# has the same name, so the analysis one is bound to that name only while those modules are imported.
+import importlib.util  # noqa: E402
+_fu = sys.modules.pop("common")
+_spec = importlib.util.spec_from_file_location("common", C.REPO_ROOT / "analysis" / "common.py")
+_ac = importlib.util.module_from_spec(_spec); sys.modules["common"] = _ac; _spec.loader.exec_module(_ac)
 import reanalysis as R  # noqa: E402
 from sf_metrics import to_cache_shape  # noqa: E402
+sys.modules["common"] = _fu
 
 RESULTS = C.RESULTS / "momentum_a"
 OUT = HERE.parent / "analysis_out"
