@@ -9,6 +9,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BASELINE = "5573b54"
 ALLOWED_UNTRACKED_ROOT = {"sfbuildtask.md", "rsbuildtask.md", "followuppilottask.md"}  # Olivia's task specs
+# Additive edits outside followups/, each documented in followups/REMOVAL.md with its revert command.
+ADDITIVE_EXCEPTIONS = {"resampling/BUILD_REPORT.md"}
 
 
 def _git(*a):
@@ -17,7 +19,18 @@ def _git(*a):
 
 def test_no_preexisting_file_modified_deleted_or_renamed():
     out = _git("diff", "--name-status", "--diff-filter=MDRT", BASELINE, "--", ".", ":!followups/", ":!results/")
-    assert out.strip() == "", f"pre-existing files changed since {BASELINE}:\n{out}"
+    changed = [l.split("\t", 1)[1] for l in out.strip().splitlines() if l.strip()]
+    assert all(l.startswith("M") for l in out.strip().splitlines()), out
+    assert set(changed) <= ADDITIVE_EXCEPTIONS, f"pre-existing files changed since {BASELINE}: {sorted(set(changed) - ADDITIVE_EXCEPTIONS)}"
+
+
+def test_documented_exceptions_are_purely_additive():
+    removal = (REPO_ROOT / "followups" / "REMOVAL.md").read_text()
+    for path in ADDITIVE_EXCEPTIONS:
+        assert path in removal, f"{path} is not documented in REMOVAL.md"
+        diff = _git("diff", BASELINE, "--", path)
+        removed = [l for l in diff.splitlines() if l.startswith("-") and not l.startswith("---")]
+        assert not removed, f"{path}: the edit removes or rewrites existing lines: {removed[:3]}"
 
 
 def test_followups_commits_touch_only_followups():
@@ -25,7 +38,7 @@ def test_followups_commits_touch_only_followups():
     bad = []
     for sha in shas:
         for path in _git("show", "--name-only", "--format=", sha).split("\n"):
-            if path and not path.startswith("followups/"):
+            if path and not path.startswith("followups/") and path not in ADDITIVE_EXCEPTIONS:
                 bad.append((sha[:8], path))
     assert not bad, bad
 
@@ -38,4 +51,4 @@ def test_no_stray_untracked_files_outside_followups():
 
 def test_removal_doc():
     t = (REPO_ROOT / "followups" / "REMOVAL.md").read_text()
-    assert "rm -r followups/" in t and "Shared-file changes: none" in t
+    assert "rm -r followups/" in t and "Shared-file changes: one, additive" in t
