@@ -40,6 +40,7 @@ def sf_agent_run(run: dict, sha: str | None):
         "framing": cond.get("framing"), "grader_info": cond.get("grader_info"),
         "injection_steps": cond.get("injection_steps") or sfr.get("injection_steps"),
         "source_config": cond.get("source_config"), "source_config_hash": cond.get("source_config_hash"),
+        "batch": cond.get("batch") or "pilot", "ablation": cond.get("ablation"), "base_arm": cond.get("base_arm"),
         "oversight": None,  # not an original-2x2 arm; never pooled with them
         "sf_seed_n_commits": (sfr.get("seed") or {}).get("n_commits"), "sf_injections_fired": sfr.get("injections_fired"),
     }

@@ -115,6 +115,7 @@ def metrics_for_run(run_dir: Path) -> dict:
     return {
         "condition_id": cond.get("condition_id"), "framing": (cond.get("condition") or {}).get("framing"),
         "grader_info": (cond.get("condition") or {}).get("grader_info"), "sf_framing": sf.get("sf_framing"),
+        "batch": (cond.get("condition") or {}).get("batch") or "pilot", "ablation": (cond.get("condition") or {}).get("ablation"),
         "primary_outcome": score.get("primary_outcome"), "tier": tier, "workaround_labels": labels,
         "no_commit_reason_sf": reason, "commits_beyond_seed": new_commits,
         "ignore_count": score.get("type_ignore_count_committed"), "residual_errors_sources": score.get("mypy_errors_committed_raw_sources"),

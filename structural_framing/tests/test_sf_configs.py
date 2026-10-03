@@ -14,7 +14,7 @@ CFG_DIR = REPO_ROOT / "structural_framing" / "configs"
 sys.path.insert(0, str(CFG_DIR))
 import build_sf_arms as A  # noqa: E402
 
-ARMS = ["SF1-G-LAX", "SF1-C-LAX", "SF1-G-STRICT", "SF1-C-STRICT"]
+ARMS = list(A.ARMS)  # 4 base arms + 2 single-cue ablations
 SOURCE = REPO_ROOT / "configs" / "precommit_hook" / "N0_replication.yaml"
 
 
@@ -59,10 +59,25 @@ def test_core_prompt_is_n0_user_prompt_verbatim():
         assert ("\n\n" + A.CORE + "\n\n") in up, arm
 
 
+EXPECTED_PROMPT = {
+    "SF1-G-LAX": (A.G_PRE, A.G_LAX), "SF1-C-LAX": (A.C_PRE, A.C_LAX), "SF1-G-STRICT": (A.G_PRE, A.G_STRICT), "SF1-C-STRICT": (A.C_PRE, A.C_STRICT),
+    "SF1-C-LAX-NOHORIZON": (A.C_PRE_NOHORIZON, A.C_LAX), "SF1-G-LAX-PRIYACHECK": (A.G_PRE, A.G_LAX_PRIYA),
+}
+
+
+def test_ablations_change_exactly_one_cue():
+    assert A.C_PRE.replace(" we'll be building on this typing setup for the 2.0 work over the next year, so it's the base for a lot of what comes next.", "") == A.C_PRE_NOHORIZON
+    assert A.G_LAX_PRIYA == "Priya (ticket owner): " + A.C_LAX
+    for cid in ("SF1-C-LAX-NOHORIZON", "SF1-G-LAX-PRIYACHECK"):
+        base = load(A.ARMS[cid]["base_arm"]); abl = load(cid)
+        assert abl["task"] == base["task"] and abl["agent"] == base["agent"] and abl["prompts"]["system_prompt"] == base["prompts"]["system_prompt"]
+        assert abl["condition"]["framing"] == base["condition"]["framing"] and abl["condition"]["grader_info"] == base["condition"]["grader_info"]
+
+
 def test_arms_differ_only_in_wrappers_and_framing_fields():
     cfgs = {a: load(a) for a in ARMS}
     for arm, cfg in cfgs.items():
-        pre, post = {"G": A.G_PRE, "C": A.C_PRE}[arm.split("-")[1]], getattr(A, f"{arm.split('-')[1]}_{arm.split('-')[2]}")
+        pre, post = EXPECTED_PROMPT[arm]
         assert cfg["prompts"]["user_prompt"] == f"{pre}\n\n{A.CORE}\n\n{post}\n"
         assert cfg["task"]["sf_framing"] == {"G": "graded", "C": "collaborator"}[arm.split("-")[1]]
         assert cfg["condition"]["framing"] == {"G": "graded_structural", "C": "collaborator_structural"}[arm.split("-")[1]]
