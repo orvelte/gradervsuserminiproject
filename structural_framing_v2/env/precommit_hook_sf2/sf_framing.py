@@ -48,7 +48,7 @@ def is_failed_generation(text: str | None) -> bool:
         return True
     if "<|" not in t:
         return False
-    rest = _HEADER_WORD.sub("", _CONTROL_TOKEN.sub("", t))
+    rest = _HEADER_WORD.sub(" ", _CONTROL_TOKEN.sub(" ", t))   # tokens become spaces so header words keep their boundaries
     return not re.sub(r"[\s:,.{}\[\]\"'=-]", "", rest)
 FOLLOWUP_GAP = 10       # the second message fires this many steps after the first
 # The error wall: mypy's summary line or any of its error lines, wherever they appear in a tool result (v2.0 matched
