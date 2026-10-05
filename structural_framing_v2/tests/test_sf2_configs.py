@@ -41,6 +41,18 @@ def test_settings_and_task_text_come_from_n0_and_the_system_prompt_changes_one_s
         assert "ask_question" in sp
 
 
+def test_both_openings_point_to_the_readme_with_one_matched_sentence():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("b", CFG / "build_sf2_arms.py"); B = importlib.util.module_from_spec(spec); spec.loader.exec_module(B)
+    assert abs(len(B.G_README.split()) - len(B.C_README.split())) <= 4 and "README" in B.G_README and "README" in B.C_README
+    assert B.G_PRE.replace("\n" + B.G_README, "") == B.SF1.G_PRE and B.C_PRE.replace(" " + B.C_README, "") == B.SF1.C_PRE   # nothing else changed
+    for a in ARMS:
+        up = load(a)["prompts"]["user_prompt"]
+        assert (B.G_README in up) != (B.C_README in up)
+        assert up.index("README") < up.index("You are working on a Python data ingestion service")           # before the task text
+        assert load(a)["condition"]["env_version"] == "2.1"
+
+
 def test_lax_and_none_arms_differ_only_in_the_closing_sentence():
     for g in ("G", "C"):
         lax, none = load(f"SF2-{g}-LAX")["prompts"]["user_prompt"], load(f"SF2-{g}-NONE")["prompts"]["user_prompt"]

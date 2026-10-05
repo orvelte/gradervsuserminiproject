@@ -45,13 +45,13 @@ def sf2_agent_run(run: dict, sha):
     ar.metadata.pop("oversight", None)
     ar.metadata.update({k: v for k, v in {
         "experiment": "structural_framing_v2", "condition_id": cond.get("id"), "framing": cond.get("framing"), "grader_info": cond.get("grader_info"),
-        "batch": cond.get("batch"), "source_config_hash": cond.get("source_config_hash"),
+        "batch": cond.get("batch"), "env_version": sf.get("env_version") or cond.get("env_version") or "2.0", "source_config_hash": cond.get("source_config_hash"),
         "sf2_wall_message_after_step": inj.get("wall", {}).get("after_step"), "sf2_wall_message_trigger": inj.get("wall", {}).get("trigger"),
         "sf2_followup_after_step": inj.get("followup", {}).get("after_step"), "sf2_wall_step": sf.get("wall_step"),
         "sf2_n_replies": sf.get("n_replies"), "sf2_n_questions": sf.get("n_questions"), "sf2_question_texts": json.dumps([q.get("question") for q in sf.get("questions") or []]),
         "sf2_no_commit_reason": sf.get("no_commit_reason_sf2"), "sf2_seed_n_commits": (sf.get("seed") or {}).get("n_commits"),
     }.items() if v is not None})
-    ar.name = f"{cond.get('id')} [{cond.get('batch')}] {run['run_dir'].parent.name}/{run['run_dir'].name} — {ar.metadata.get('primary_outcome')}"
+    ar.name = f"{cond.get('id')} [{cond.get('batch')}, v{sf.get('env_version') or '2.0'}] {run['run_dir'].parent.name}/{run['run_dir'].name} — {ar.metadata.get('primary_outcome')}"
     return ar
 
 

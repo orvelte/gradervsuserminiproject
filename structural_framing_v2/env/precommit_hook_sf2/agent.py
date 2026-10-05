@@ -3,8 +3,10 @@
 Agent for the precommit_hook_sf2 task (structural framing v2).
 
 Same loop as SF1's agent with three differences (sf_framing.py explains why):
-- the first injected user turn fires after the step whose tool result first shows mypy's "Found N errors" line
-  (the error wall), or after step FALLBACK_STEP if none has been seen; the second fires FOLLOWUP_GAP steps later;
+- the first injected user turn fires after the step whose tool result first shows mypy errors (the error wall);
+  there is no fallback, so it never precedes the errors; the second fires FOLLOWUP_GAP steps later;
+- a turn with neither text nor a tool call is discarded and sampled again (at most MAX_EMPTY_TURN_RETRIES per run)
+  instead of ending the session; nothing is added to the conversation;
 - a text-only turn in the step right after an injected message is a reply, not the end of the session: the arm's
   REPLY_ACK is appended and the loop continues (once per injected message);
 - final/sf_run.json also records the trigger of each injection, the replies, and a no-commit reason that compares
@@ -38,7 +40,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from run_step import print_final_results, run_step
 from score import finalize
-from sf_framing import FALLBACK_STEP, FOLLOWUP_GAP, INJECTIONS, REPLY_ACK, WALL_RE
+from sf_framing import ENV_VERSION, FOLLOWUP_GAP, INJECTIONS, MAX_EMPTY_TURN_RETRIES, REPLY_ACK, WALL_RE
 from states import CodingAgentState, dump, init_fs_tracking, restore
 from tools import get_tools
 
@@ -108,6 +110,15 @@ def main() -> None:
                 # SF2: prose in the step right after an injected message is a reply to it, not the end.
                 last = provider.messages[-1] if provider.messages else {}
                 text_only = last.get("role") == "assistant" and not last.get("tool_calls")
+                # v2.1: an empty turn (no text, no tool call) is a failed generation, not a decision to stop.
+                if text_only and not (last.get("content") or "").strip() and len(state.empty_turns) < MAX_EMPTY_TURN_RETRIES and state.step < max_steps:
+                    state.empty_turns.append(state.step - 1)
+                    provider.messages.pop()
+                    state.task_completed = False
+                    if state.reply_window == state.step - 1:
+                        state.reply_window = state.step      # the retried turn is still the turn right after the message
+                    print_section(f"EMPTY TURN DISCARDED, SAMPLING AGAIN (step {state.step - 1})", f"{len(state.empty_turns)} of at most {MAX_EMPTY_TURN_RETRIES}")
+                    continue
                 if text_only and state.reply_window == state.step - 1 and state.step < max_steps:
                     ack = REPLY_ACK[framing]
                     state.replies.append({"step": state.step - 1, "text": (last.get("content") or "")[:2000], "ack": ack})
@@ -127,8 +138,6 @@ def main() -> None:
                     state.wall_step = state.step
                 if state.wall_step is not None:
                     name, trigger = "wall", "wall"
-                elif state.step >= FALLBACK_STEP:
-                    name, trigger = "wall", "fallback"
             elif "followup" not in fired and state.step >= state.injections[0]["after_step"] + FOLLOWUP_GAP:
                 name, trigger = "followup", "gap"
             if name and state.step < max_steps:
@@ -185,6 +194,8 @@ def _write_sf_run(state, config) -> None:
         framing = task.get("sf_framing")
         rec = {
             "sf_version": 2,
+            "env_version": ENV_VERSION,
+            "empty_turns": list(getattr(state, "empty_turns", []) or []),
             "sf_framing": framing,
             "condition": config.get("condition") or {},
             "injections": list(getattr(state, "injections", []) or []),

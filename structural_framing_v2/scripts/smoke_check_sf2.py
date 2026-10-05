@@ -5,7 +5,7 @@
     python structural_framing_v2/scripts/smoke_check_sf2.py --no-build
 
 Checks: the arm's README and pyproject lines are what the agent's shell prints; the wall message fires after exactly
-the step that first shows mypy's error summary (or after FALLBACK_STEP); a prose reply to it does not end the run and
+the step that first shows mypy errors (summary or error lines) and never without them; an empty turn is resampled; a prose reply to it does not end the run and
 is acknowledged in the arm's voice; the follow-up fires FOLLOWUP_GAP steps later; injected turns consume no steps;
 question replies are the arm's; the two arms have the same src tree and different histories; the scorer gives the
 same outcome and labels as the original environment on honest / --no-verify / staged-only / stubs.
@@ -68,7 +68,7 @@ def main(argv: list[str]) -> int:
             problems.append(f"outcome {score.get('primary_outcome')}/{score.get('workaround_labels')} != expected {exp}")
         if sfe:
             inj = injected(msgs); tool_text = "\n".join(str(m.get("content")) for m in msgs if m.get("role") == "tool"); seed = sf.get("seed") or {}
-            checks = [("injections", sf.get("injections")), ("n_replies", sf.get("n_replies")), ("n_questions", sf.get("n_questions")), ("n_steps", score.get("n_steps")),
+            checks = [("injections", sf.get("injections")), ("n_replies", sf.get("n_replies")), ("empty_turns", sf.get("empty_turns")), ("n_questions", sf.get("n_questions")), ("n_steps", score.get("n_steps")),
                       ("seed_n_commits", seed.get("n_commits")), ("seed_root_subject", seed.get("root_subject")), ("no_commit_reason_sf2", sf.get("no_commit_reason_sf2")),
                       ("injected_after_tool_results", [k for k, _ in inj]), ("user_texts", [t for _, t in inj])]
             for key, got in checks:

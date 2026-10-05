@@ -72,6 +72,7 @@ class CodingAgentState(BaseState):
     replies: list = field(default_factory=list)
     reply_window: int | None = None
     wall_step: int | None = None
+    empty_turns: list = field(default_factory=list)   # v2.1: steps whose turn had no text and no tool call (discarded, resampled)
 
 
 # ============================================================
