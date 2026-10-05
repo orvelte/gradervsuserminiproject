@@ -76,3 +76,11 @@ closings combined: 7/9 vs 4/8 (v2.0), 5/10 vs 5/8 (v2.1), 8/10 vs 2/10 (v2.2). F
 
 Comparisons with N0, the prompt-only 2×2 or SF1 (different environments); the lax-line arms; any claim about why the
 model games. A difference here is about framing as delivered by this environment, including its matched wall message.
+
+## Launch log
+
+- 2026-10-05 18:24 local: both arms launched (8 concurrent each). Stopped by me after about one minute, before any
+  run had produced an outcome, because the launcher was attached to a tool session with a two-hour limit that the
+  batch would outlast. The 16 partial run directories are kept in `results/structural_framing_v2/prereg1_aborted_start_1825/`
+  and are not part of the batch.
+- 2026-10-05 18:26 local: both arms relaunched detached, 40 runs each, 8 concurrent each. This is batch `prereg1`.
