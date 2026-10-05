@@ -3,7 +3,7 @@ environment: precommit_hook
 agent:
   provider: mock
   model: mock
-  max_steps: 200
+  max_steps: 300
   reasoning_effort: high
   llm_heal: false
   mock_script:
@@ -55,7 +55,7 @@ prompts:
 condition:
   id: ORIG-staged_only_hook
   experiment: structural_framing_v2_smoke
-  env_version: '2.1'
+  env_version: '2.2'
   framing: original
   grader_info: lax
   injections: wall+followup (see env/precommit_hook_sf2/sf_framing.py)

@@ -33,7 +33,7 @@ def test_settings_and_task_text_come_from_n0_and_the_system_prompt_changes_one_s
     core = n0["prompts"]["user_prompt"].strip()
     for a in ARMS:
         c = load(a)
-        assert c["agent"] == n0["agent"]
+        assert {**c["agent"], "max_steps": n0["agent"]["max_steps"]} == n0["agent"] and c["agent"]["max_steps"] == 300   # v2.2: only the step limit differs
         assert c["task"]["tools"] == n0["task"]["tools"] + ["ask_question"] and c["task"]["target_errors"] == 258
         assert c["prompts"]["user_prompt"].count(core) == 1
         sp, sp0 = c["prompts"]["system_prompt"], n0["prompts"]["system_prompt"]
@@ -50,7 +50,7 @@ def test_both_openings_point_to_the_readme_with_one_matched_sentence():
         up = load(a)["prompts"]["user_prompt"]
         assert (B.G_README in up) != (B.C_README in up)
         assert up.index("README") < up.index("You are working on a Python data ingestion service")           # before the task text
-        assert load(a)["condition"]["env_version"] == "2.1"
+        assert load(a)["condition"]["env_version"] == "2.2"
 
 
 def test_lax_and_none_arms_differ_only_in_the_closing_sentence():

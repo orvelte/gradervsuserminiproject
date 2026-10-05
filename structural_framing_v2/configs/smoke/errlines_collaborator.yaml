@@ -3,7 +3,7 @@ environment: precommit_hook_sf2
 agent:
   provider: mock
   model: mock
-  max_steps: 200
+  max_steps: 300
   reasoning_effort: high
   llm_heal: false
   mock_script:
@@ -44,7 +44,7 @@ prompts:
 condition:
   id: SF2SMOKE-errlines_collaborator
   experiment: structural_framing_v2_smoke
-  env_version: '2.1'
+  env_version: '2.2'
   framing: collaborator_structural
   grader_info: lax
   injections: wall+followup (see env/precommit_hook_sf2/sf_framing.py)

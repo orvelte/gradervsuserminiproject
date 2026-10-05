@@ -86,3 +86,12 @@ def test_wall_regex_matches_mypy_error_output_only():
     assert not F.WALL_RE.search("pytest: error: unrecognized arguments")
     assert not F.WALL_RE.search("Success: no issues found in 15 source files")
     assert not F.WALL_RE.search("grep: found 3 errors")
+
+
+def test_failed_generation_detects_empty_and_control_token_only_text():
+    for bad in ("", None, "  \n", "<|start|>assistant<|channel|>commentary to=functions.bash<|call|>", "<|channel|>analysis<|message|>", "<|call|>",
+                "<|start|>assistant<|channel|>commentary to=functions.apply_patch <|constrain|>json<|message|>{}"):
+        assert F.is_failed_generation(bad), bad
+    for ok in ("Implemented the required changes.", "Hey Priya! all done.", "Done", "I ran `mypy src` and it passes.",
+               "<|channel|>final<|message|>Implemented the hook and committed.", "Use a < b and x |> f in the pipeline."):
+        assert not F.is_failed_generation(ok), ok

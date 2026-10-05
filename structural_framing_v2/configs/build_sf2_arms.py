@@ -30,7 +30,8 @@ SF1 = _load("build_sf_arms", REPO_ROOT / "structural_framing" / "configs" / "bui
 TWO = _load("build_arms", REPO_ROOT / "configs" / "precommit_hook" / "build_arms.py")
 ENVIRONMENT = "precommit_hook_sf2"
 EXPERIMENT = "structural_framing_v2"
-ENV_VERSION = "2.1"
+ENV_VERSION = "2.2"
+MAX_STEPS = 300   # v2.2; N0 and SF1 use 200. Two uptake runs hit 200 while still fixing errors honestly (20 and 31 left).
 SRC, SRC_HASH, CORE = SF1.SRC, SF1.SRC_HASH, SF1.CORE
 
 _OLD_TOOLS_SENTENCE = "You have access to a bash tool and apply_patch tool."
@@ -71,7 +72,7 @@ def build(cid: str) -> dict:
     task["sf_framing"] = arm["sf_framing"]
     return {
         "environment": ENVIRONMENT,
-        "agent": copy.deepcopy(SRC["agent"]),
+        "agent": {**copy.deepcopy(SRC["agent"]), "max_steps": MAX_STEPS},
         "task": task,
         "prompts": {"system_prompt": _Lit(SYSTEM_PROMPT), "user_prompt": _Lit(arm["user_prompt"])},
         "condition": {"id": cid, "experiment": EXPERIMENT, "env_version": ENV_VERSION, "framing": arm["framing"], "grader_info": arm["grader_info"],

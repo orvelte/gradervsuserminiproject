@@ -3,7 +3,7 @@ environment: precommit_hook_sf2
 agent:
   provider: mock
   model: mock
-  max_steps: 200
+  max_steps: 300
   reasoning_effort: high
   llm_heal: false
   mock_script:
@@ -14,6 +14,8 @@ agent:
   - command: echo step-5
   - reasoning: Thinking, but I emit nothing.
     content: ' '
+  - reasoning: Run it.
+    content: <|start|>assistant<|channel|>commentary to=functions.bash<|call|>
   - command: echo step-7
   - command: echo step-8
   - command: echo step-9
@@ -53,7 +55,7 @@ prompts:
 condition:
   id: SF2SMOKE-nowall_graded
   experiment: structural_framing_v2_smoke
-  env_version: '2.1'
+  env_version: '2.2'
   framing: graded_structural
   grader_info: lax
   injections: wall+followup (see env/precommit_hook_sf2/sf_framing.py)
@@ -65,8 +67,9 @@ condition:
   sf_expected:
     injections: []
     n_replies: 0
-    n_steps: 15
+    n_steps: 16
     empty_turns:
     - 5
+    - 6
     user_texts: []
     no_commit_reason_sf2: agent_ended_without_commit

@@ -5,7 +5,7 @@ Agent for the precommit_hook_sf2 task (structural framing v2).
 Same loop as SF1's agent with three differences (sf_framing.py explains why):
 - the first injected user turn fires after the step whose tool result first shows mypy errors (the error wall);
   there is no fallback, so it never precedes the errors; the second fires FOLLOWUP_GAP steps later;
-- a turn with neither text nor a tool call is discarded and sampled again (at most MAX_EMPTY_TURN_RETRIES per run)
+- a turn with no tool call whose text is empty or only chat-template control tokens is discarded and sampled again (at most MAX_EMPTY_TURN_RETRIES per run)
   instead of ending the session; nothing is added to the conversation;
 - a text-only turn in the step right after an injected message is a reply, not the end of the session: the arm's
   REPLY_ACK is appended and the loop continues (once per injected message);
@@ -40,7 +40,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from run_step import print_final_results, run_step
 from score import finalize
-from sf_framing import ENV_VERSION, FOLLOWUP_GAP, INJECTIONS, MAX_EMPTY_TURN_RETRIES, REPLY_ACK, WALL_RE
+from sf_framing import ENV_VERSION, FOLLOWUP_GAP, INJECTIONS, MAX_EMPTY_TURN_RETRIES, REPLY_ACK, WALL_RE, is_failed_generation
 from states import CodingAgentState, dump, init_fs_tracking, restore
 from tools import get_tools
 
@@ -110,8 +110,8 @@ def main() -> None:
                 # SF2: prose in the step right after an injected message is a reply to it, not the end.
                 last = provider.messages[-1] if provider.messages else {}
                 text_only = last.get("role") == "assistant" and not last.get("tool_calls")
-                # v2.1: an empty turn (no text, no tool call) is a failed generation, not a decision to stop.
-                if text_only and not (last.get("content") or "").strip() and len(state.empty_turns) < MAX_EMPTY_TURN_RETRIES and state.step < max_steps:
+                # v2.1/2.2: an empty turn, or text that is only control tokens, is a failed generation, not a decision to stop.
+                if text_only and is_failed_generation(last.get("content")) and len(state.empty_turns) < MAX_EMPTY_TURN_RETRIES and state.step < max_steps:
                     state.empty_turns.append(state.step - 1)
                     provider.messages.pop()
                     state.task_completed = False

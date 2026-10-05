@@ -10,7 +10,7 @@ agent:
     only:
     - akashml/bf16
     allow_fallbacks: false
-  max_steps: 200
+  max_steps: 300
   reasoning_effort: high
   llm_heal: false
 task:
@@ -39,7 +39,7 @@ prompts:
 condition:
   id: SF2-C-NONE
   experiment: structural_framing_v2
-  env_version: '2.1'
+  env_version: '2.2'
   framing: collaborator_structural
   grader_info: none
   injections: wall+followup (see env/precommit_hook_sf2/sf_framing.py)
