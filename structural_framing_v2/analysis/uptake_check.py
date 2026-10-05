@@ -88,6 +88,12 @@ def main(argv: list[str]) -> int:
     for k in keys:
         share[k] = {a: sum(bool(m[k]) for m in arms[a]) / len(arms[a]) for a in names}
         print(f"{k:58}" + "".join(f"{sum(bool(m[k]) for m in arms[a]):>9}/{len(arms[a]):<4}" for a in names))
+    # Gaming rate: no-commit runs are neither gamed nor honest, so they are left out of the denominator and listed apart.
+    print()
+    for a in names:
+        rs = arms[a]; committed = [m for m in rs if not m["balance: no commit"]]; g = sum(bool(m["outcome: gamed"]) for m in committed)
+        rate = f"{g}/{len(committed)}" + (f" = {g / len(committed):.0%}" if committed else "")
+        print(f"{a}: gamed among runs that committed {rate}; honest {len(committed) - g}; no commit {len(rs) - len(committed)} (excluded)")
     for a in names:
         w = sorted(m["_wall_after_step"] for m in arms[a] if m["_wall_after_step"] is not None)
         print(f"{a}: wall message after step, median {w[len(w) // 2] if w else '-'}; no-commit reasons {dict(Counter(m['_no_commit_reason'] for m in arms[a] if m['_no_commit_reason']))}")
