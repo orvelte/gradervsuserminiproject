@@ -6,6 +6,7 @@ below; `python figures/collect.py` refreshes this folder.
 | figure | what it shows | script |
 |---|---|---|
 | `fig_prompts` | The framing manipulations, verbatim: prompt-only 2×2 and structural framing (SF1) | `structural_framing/analysis/fig_prompts.py` |
+| `fig_prompts_sf2` | The rebalanced structural-framing arms (SF2), verbatim; built and mock-tested, not yet run | `structural_framing_v2/analysis/fig_prompts_sf2.py` |
 | `fig_onset` | When the "they'll only check the files exist" inference first appears, relative to the error wall | `structural_framing/analysis/fig_onset.py` |
 | `fig_belief` | Gaming rate per arm next to the share of runs whose reasoning models a checker | `structural_framing/analysis/fig_belief.py` |
 | `fig_timing` | Inference turn against error-wall turn, no-hint arms | `structural_framing/analysis/fig_timing.py` |

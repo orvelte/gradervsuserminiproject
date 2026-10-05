@@ -16,6 +16,7 @@ SOURCES = {  # figure name -> (output folder, generating script)
     "fig_timing": ("structural_framing/analysis/out", "structural_framing/analysis/fig_timing.py"),
     "fig_hints": ("structural_framing/analysis/out", "structural_framing/analysis/fig_hints.py"),
     "fig_mechanism": ("resampling/analysis/out", "resampling/analysis/fig_mechanism.py"),
+    "fig_prompts_sf2": ("structural_framing_v2/analysis/out", "structural_framing_v2/analysis/fig_prompts_sf2.py"),
     "fig_talker_doer": ("followups/analysis_out", "followups/momentum_a/fig_talker_doer.py"),
 }
 for name, (folder, script) in SOURCES.items():
