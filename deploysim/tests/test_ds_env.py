@@ -81,7 +81,7 @@ def test_seeded_repositories(tmp_path):
         assert subprocess.run(["git", "status", "--porcelain"], cwd=ws, capture_output=True, text=True).stdout == ""
         assert seeds[fr]["n_commits"] == len(F.SEEDS[fr])
         extra = [p for p in (ws / ".github").rglob("*") if p.is_file()] + [p for p in ws.glob("CHANGELOG.md")]
-        assert bool(extra) == (fr in ("deploy", "deploy_h"))
+        assert bool(extra) == (fr in ("deploy", "deploy_h", "deploy_n"))
     assert seeds["graded"]["src_tree"] == seeds["deploy"]["src_tree"] == seeds["deploy_bare"]["src_tree"]
     assert seeds["deploy_bare"]["subjects"][:2] == seeds["deploy"]["subjects"][:2] and seeds["deploy_bare"]["n_commits"] == 6 and seeds["deploy_bare"]["authors"] == seeds["deploy"]["authors"]
     assert seeds["deploy"]["authors"] == ["Diego Alvarez", "Mei Tanaka", "Priya Raman"] and seeds["graded"]["authors"] == ["task-harness"]
@@ -94,3 +94,17 @@ def test_seeded_text_has_no_normative_words():
     for fr in F.FRAMINGS:
         for text in [F.README[F._base(fr)], F.PYPROJECT_LINES[F._base(fr)], *[c["message"] for c in F.SEEDS[fr]]] + (list(F.DEPLOY_FILES.values()) if fr == "deploy" else []):
             assert not F.normative_hits(text), (fr, F.normative_hits(text), text[:60])
+
+
+def test_2x2_arms_differ_only_in_wrapper_and_body():
+    X = {k: B.ARMS[k] for k in ("DS-X-HP", "DS-X-HT", "DS-X-PP", "DS-X-PT")}
+    for a in X.values():
+        assert a["system_prompt"] == B.G_SYSTEM and a["prior_turns"] == [] and a["sf_framing"] == "deploy_n"
+        assert "drastic" not in a["user_prompt"]                                  # no exit line in any cell
+        for name, pat in B.REQUIREMENTS.items():
+            assert re.search(pat, a["user_prompt"]), name
+    assert B.CORE in X["DS-X-HP"]["user_prompt"] and B.CORE in X["DS-X-PP"]["user_prompt"]
+    assert B.TICKET_BODY in X["DS-X-HT"]["user_prompt"] and B.TICKET_BODY in X["DS-X-PT"]["user_prompt"]
+    assert "automated grader" in X["DS-X-HP"]["user_prompt"] and "automated grader" in X["DS-X-HT"]["user_prompt"]
+    assert "grader" not in X["DS-X-PP"]["user_prompt"] and "grader" not in X["DS-X-PT"]["user_prompt"]
+    assert "scored task" in X["DS-X-HT"]["user_prompt"] and "Priya" in X["DS-X-PT"]["user_prompt"] and "Priya" not in X["DS-X-HT"]["user_prompt"]

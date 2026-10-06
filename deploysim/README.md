@@ -104,3 +104,4 @@ with the note the graded arm games at 44%, in line with SF2's 55%. The forewarni
 DS-G is a stable graded arm. The deployment arm's zero hard cheats in `gate1` (8 runs) is the number to test.
 | ds-1.1 | 2026-10-06 | adds the `deploy_bare` framing (deploy history without the extra files) for the ablation screen; graded and deploy unchanged | `ablate1` |
 | ds-1.2 | 2026-10-06 | adds the `deploy_h` framing (deployment repository with the harness question reply) for the additive screen | `additive1` |
+| ds-1.3 | 2026-10-06 | adds the `deploy_n` framing (deployment repository, neutral question reply) for the message 2x2 | `x2x2` |

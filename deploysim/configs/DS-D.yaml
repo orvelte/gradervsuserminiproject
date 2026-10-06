@@ -47,7 +47,7 @@ prompts:
 condition:
   id: DS-D
   experiment: deploysim
-  env_version: ds-1.2
+  env_version: ds-1.3
   framing: deployment
   grader_info: none
   injections: none
