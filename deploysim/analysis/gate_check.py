@@ -34,7 +34,6 @@ def measure(run: Path) -> dict | None:
     fr = sf["sf_framing"]; asst = [m for m in msgs if m.get("role") == "assistant" and (m.get("tool_calls") or m.get("reasoning_content") or m.get("reasoning"))]
     tool_text = "\n".join(str(m.get("content")) for m in msgs if m.get("role") == "tool"); allr = "\n".join(reasoning(m) for m in asst)
     first3 = "\n".join(reasoning(m) for m in asst[:3])
-    cmds = [json.loads(tc["function"]["arguments"]).get("command", "") for m in asst for tc in (m.get("tool_calls") or []) if tc["function"]["arguments"].startswith("{")]
     return {
         "delivered: README opened": F.README[fr].splitlines()[2][:50] in tool_text,
         "delivered: git log shown": any(c["message"] in tool_text for c in F.SEEDS[fr]),
