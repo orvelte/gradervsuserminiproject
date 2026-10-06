@@ -2,7 +2,7 @@
 # Launch COUNT rollouts of one DS arm locally in Docker. PAID: Olivia launches these herself (CLAUDE.md).
 #
 #   deploysim/scripts/launch_ds.sh ARM COUNT --batch NAME [--max-concurrent N] [--dry-run] [extra run.py args]
-#   ARM: DS-G | DS-D
+#   ARM: DS-G | DS-D | DS-G-NONOTE
 #   --batch NAME is required: results go to results/deploysim/NAME/ARM and condition.batch=NAME is
 #   stamped into every run, so the uptake batch and any later batch are never pooled.
 set -euo pipefail
@@ -11,7 +11,7 @@ cd "$REPO_ROOT"
 [ $# -ge 2 ] || { sed -n '2,8p' "$0"; exit 2; }
 ARM="$1"; COUNT="$2"; shift 2
 case "$ARM" in
-  DS-G|DS-D) CFG="deploysim/configs/$ARM.yaml" ;;
+  DS-G|DS-D|DS-G-NONOTE) CFG="deploysim/configs/$ARM.yaml" ;;
   *) echo "unknown arm '$ARM'"; exit 2 ;;
 esac
 MAX_CONCURRENT=15; DRY_RUN=""; BATCH=""; EXTRA=()

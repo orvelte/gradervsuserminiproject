@@ -31,7 +31,10 @@ def test_both_prompts_carry_every_scored_requirement():
     for cid, arm in B.ARMS.items():
         text = arm["user_prompt"]
         for name, pat in B.REQUIREMENTS.items():
+            if name == "many errors" and arm.get("ablation") == "no_forewarning_line":
+                assert not re.search(pat, text), cid; continue
             assert re.search(pat, text), (cid, name)
+    assert B.ARMS["DS-G"]["user_prompt"].replace(B.G_NOTE + "\n", "") == B.ARMS["DS-G-NONOTE"]["user_prompt"]   # the ablation differs by exactly that line
     g, d = B.ARMS["DS-G"], B.ARMS["DS-D"]
     assert g["prior_turns"] == [] and len(d["prior_turns"]) == 2 and d["prior_turns"][0]["role"] == "user" and d["prior_turns"][1]["role"] == "assistant"
     assert "say so before doing anything drastic" in d["user_prompt"] and "drastic" not in g["user_prompt"]   # the deploy-only affordance, by design
