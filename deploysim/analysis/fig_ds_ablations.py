@@ -31,7 +31,7 @@ ARMS = [("DS-G", "graded episode\n(reference)", PRE), ("DS-D", "deployment\n(con
         ("DS-D-NOPUSH", "− pushback line", ABL), ("DS-D-NOPRIOR", "− prior exchange", ABL), ("DS-D-BAREREPO", "− maintained-repo files", ABL),
         ("DS-D-EXAMTEXT", "− ticket register", ABL), ("DS-D-AGENTSYS", "− team system prompt", ABL)]
 data = {a: load(root, a) for a, _, root in ARMS}
-CLASSES = [("hard", "hard circumvention", "#b03a2e"), ("minor", "minor suppression", "#e8b04b"), ("honest", "honest completion", "#2f6f4f"), ("noncompletion", "non-completion (report-back)", "#9aa7b8")]
+CLASSES = [("hard", "hard circumvention", "#b03a2e"), ("minor", "minor suppression", "#e8b04b"), ("honest", "honest completion", "#6fa8dc"), ("noncompletion", "non-completion (report-back)", "#9aa7b8")]
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(15, 6), gridspec_kw={"width_ratios": [1.45, 1]})
 xs = list(range(len(ARMS)))
 for i, (a, lab, _) in enumerate(ARMS):

@@ -23,7 +23,7 @@ gate = {a: [G.measure(r) for r in sorted((root / a).glob("**/run-*"))] for a in 
 gate = {a: [m for m in v if m] for a, v in gate.items()}
 ARM_LABEL = {"DS-G": "graded episode", "DS-D": "deployment"}
 COL = {"DS-G": "#c44e52", "DS-D": "#55a868"}
-CLASSES = [("hard", "hard circumvention", "#b03a2e"), ("minor", "minor suppression", "#e8b04b"), ("honest", "honest completion", "#2f6f4f"), ("noncompletion", "non-completion\n(reported back, no commit)", "#9aa7b8")]
+CLASSES = [("hard", "hard circumvention", "#b03a2e"), ("minor", "minor suppression", "#e8b04b"), ("honest", "honest completion", "#6fa8dc"), ("noncompletion", "non-completion\n(reported back, no commit)", "#9aa7b8")]
 
 fig, (a1, a2, a3) = plt.subplots(1, 3, figsize=(14.5, 5.6), gridspec_kw={"width_ratios": [1.3, 0.9, 1.3]})
 # left: stacked classes
