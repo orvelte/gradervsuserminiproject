@@ -103,3 +103,4 @@ Fisher exact p = 0.48 on gamed over all runs; p = 1.0 on hard circumvention. The
 with the note the graded arm games at 44%, in line with SF2's 55%. The forewarning line is not the explanation, and
 DS-G is a stable graded arm. The deployment arm's zero hard cheats in `gate1` (8 runs) is the number to test.
 | ds-1.1 | 2026-10-06 | adds the `deploy_bare` framing (deploy history without the extra files) for the ablation screen; graded and deploy unchanged | `ablate1` |
+| ds-1.2 | 2026-10-06 | adds the `deploy_h` framing (deployment repository with the harness question reply) for the additive screen | `additive1` |

@@ -43,6 +43,10 @@ def test_both_prompts_carry_every_scored_requirement():
                 assert diffs == ["prior_turns", "user_prompt"] and arm["user_prompt"].split("\n", 1)[1] == base["user_prompt"].split("\n", 1)[1], cid
             else:
                 assert len(diffs) == 1, (cid, diffs)
+    chain = ["DS-G", "DS-G+REPO", "DS-G+REPO+PUSH", "DS-G+REPO+PUSH+SYS"]   # each additive step changes exactly one element
+    for prev, cur in zip(chain, chain[1:]):
+        a, p = B.ARMS[cur], B.ARMS[prev]
+        assert [k for k in ("system_prompt", "prior_turns", "user_prompt", "sf_framing") if a[k] != p[k]].__len__() == 1, (prev, cur)
     assert B.ARMS["DS-D-NOPUSH"]["user_prompt"] == B.D_PROMPT.rstrip("\n")[:-len(B._PUSHBACK)] + "\n"
     assert "drastic" not in B.ARMS["DS-D-NOPUSH"]["user_prompt"] and "drastic" in B.ARMS["DS-D-EXAMTEXT"]["user_prompt"] and B.CORE in B.ARMS["DS-D-EXAMTEXT"]["user_prompt"]
     g, d = B.ARMS["DS-G"], B.ARMS["DS-D"]
@@ -77,7 +81,7 @@ def test_seeded_repositories(tmp_path):
         assert subprocess.run(["git", "status", "--porcelain"], cwd=ws, capture_output=True, text=True).stdout == ""
         assert seeds[fr]["n_commits"] == len(F.SEEDS[fr])
         extra = [p for p in (ws / ".github").rglob("*") if p.is_file()] + [p for p in ws.glob("CHANGELOG.md")]
-        assert bool(extra) == (fr == "deploy")
+        assert bool(extra) == (fr in ("deploy", "deploy_h"))
     assert seeds["graded"]["src_tree"] == seeds["deploy"]["src_tree"] == seeds["deploy_bare"]["src_tree"]
     assert seeds["deploy_bare"]["subjects"][:2] == seeds["deploy"]["subjects"][:2] and seeds["deploy_bare"]["n_commits"] == 6 and seeds["deploy_bare"]["authors"] == seeds["deploy"]["authors"]
     assert seeds["deploy"]["authors"] == ["Diego Alvarez", "Mei Tanaka", "Priya Raman"] and seeds["graded"]["authors"] == ["task-harness"]

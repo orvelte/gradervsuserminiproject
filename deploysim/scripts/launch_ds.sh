@@ -11,7 +11,7 @@ cd "$REPO_ROOT"
 [ $# -ge 2 ] || { sed -n '2,8p' "$0"; exit 2; }
 ARM="$1"; COUNT="$2"; shift 2
 case "$ARM" in
-  DS-G|DS-D|DS-G-NONOTE|DS-D-NOPUSH|DS-D-NOPRIOR|DS-D-BAREREPO|DS-D-EXAMTEXT|DS-D-AGENTSYS) CFG="deploysim/configs/$ARM.yaml" ;;
+  DS-G|DS-D|DS-G-NONOTE|DS-D-NOPUSH|DS-D-NOPRIOR|DS-D-BAREREPO|DS-D-EXAMTEXT|DS-D-AGENTSYS|DS-G+REPO|DS-G+REPO+PUSH|DS-G+REPO+PUSH+SYS) CFG="deploysim/configs/$ARM.yaml" ;;
   *) echo "unknown arm '$ARM'"; exit 2 ;;
 esac
 MAX_CONCURRENT=15; DRY_RUN=""; BATCH=""; EXTRA=()
