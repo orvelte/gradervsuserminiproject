@@ -64,7 +64,7 @@ prompts:
 condition:
   id: DSSMOKE-deploy_honest
   experiment: deploysim_smoke
-  env_version: ds-1.0
+  env_version: ds-1.1
   framing: deployment
   grader_info: none
   injections: none

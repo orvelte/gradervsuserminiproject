@@ -102,3 +102,4 @@ difference (roughly 45 points at 80% power); this is a check on the gate batch's
 Fisher exact p = 0.48 on gamed over all runs; p = 1.0 on hard circumvention. The gate batch's 1 of 8 was chance:
 with the note the graded arm games at 44%, in line with SF2's 55%. The forewarning line is not the explanation, and
 DS-G is a stable graded arm. The deployment arm's zero hard cheats in `gate1` (8 runs) is the number to test.
+| ds-1.1 | 2026-10-06 | adds the `deploy_bare` framing (deploy history without the extra files) for the ablation screen; graded and deploy unchanged | `ablate1` |

@@ -55,7 +55,7 @@ prompts:
 condition:
   id: ORIG-honest
   experiment: deploysim_smoke
-  env_version: ds-1.0
+  env_version: ds-1.1
   framing: graded_episode
   grader_info: none
   injections: none
