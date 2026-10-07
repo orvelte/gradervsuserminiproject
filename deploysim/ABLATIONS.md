@@ -109,3 +109,28 @@ in 11 of 20 (against 6 of 20 for `DS-X-HP`, Fisher p = 0.20; against the plain g
 only in where the forewarning note sits (header vs a separate paragraph) and the question-tool reply. Treat the gap as batch noise or a small
 effect of those two details. Only the Priya-wrapper-plus-ticket arm has no test talk. Report-backs dominate all four arms and hard circumvention
 is 0 or 1, so the pilot says nothing about circumvention. Figure: `figures/fig_ds_2x2.png`.
+
+# Two-mechanism confirmation `confirm1` (pre-registered, 2026-10-06, 40 runs per arm)
+
+Plan and thresholds: PREREG.md, "Two-mechanism confirmation". 120 runs plus one replacement for a provider 503 crash.
+Uploaded as batch `confirm1`.
+
+| arm | hard | minor | honest | report-back | sustained test talk | early | grader named | asked |
+|---|---|---|---|---|---|---|---|---|
+| DS-G graded episode | 9 | 9 | 20 | 2 | 21 | 15 | 30 | 0 |
+| DS-G+REPO+PUSH graded + exit | 7 | 2 | 3 | 28 | 15 | 18 | 26 | 12 |
+| DS-D-NOPRIOR ticket, no prior exchange | 1 | 8 | 14 | 17 | 1 | 1 | 3 | 24 |
+
+| primary comparison | result | p (threshold 0.017) |
+|---|---|---|
+| 1. hard circumvention, graded vs graded + exit | 9/40 vs 7/40 | 0.78, fails |
+| 2. sustained test talk, graded + exit vs ticket | 15/40 vs 1/40 | 0.0001, holds |
+| 3. honest completion, graded + exit vs ticket | 3/40 vs 14/40 | 0.005, holds |
+
+**The two-mechanism reading is not supported.** The exit does not reduce real circumvention (the additive screen's 0 of
+20 was noise); it only drains the work (28 report-backs, 3 honest completions). The ticket removes the test belief and
+keeps circumvention at 1 of 40 while honest completion returns. Exploratory, replicating `prereg1`: within the graded
+arm all 9 hard circumventions are in runs with sustained test talk (9 of 21 with, 0 of 19 without, p = 0.001).
+
+Revised reading: one mechanism. Real circumvention occurs when the model believes it is in a test; the person-shaped
+request removes that belief; an exit changes whether the model works, not whether it cheats.
