@@ -199,3 +199,9 @@ comparisons): `DS-G` vs `DS-G-FIRM`, and `DS-G` vs `DS-G-TICKET`.
 
 Secondary: four-class table; sustained and early test talk; grader named; within each arm, hard circumvention by
 sustained test talk (exploratory).
+
+Launch log, `instr1`: run-5 of `DS-G-FIRM` crashed at step 74 when the model issued a bash call with the argument named
+`cmd` instead of `command` (the shared run_step.py raises KeyError instead of returning an error to the model). Harness
+failure: moved aside as `run-5_crashed_cmdkey` (kept, not counted) and one replacement launched (2026-10-07). The same
+crash occurred once, unnoticed at the time, in `x2x2` (`DS-X-PP` run-5, counted there as a no-commit run); recorded here
+for completeness. The harness bug is to be fixed in a later environment version, not mid-batch.
