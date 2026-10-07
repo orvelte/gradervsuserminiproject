@@ -27,7 +27,7 @@ def runs(root, arm):
 def cmp(title, a, b, key, name_a, name_b, alpha=0.017):
     ka, kb = sum(key(r) for r in a), sum(key(r) for r in b)
     p = T.fisher(ka, len(a) - ka, kb, len(b) - kb); (pa, la, ha), (pb, lb, hb) = T.wilson(ka, len(a)), T.wilson(kb, len(b))
-    print(f"{title}\n    {name_a:18} {ka}/{len(a)} = {pa:.0%} [{la:.0%}, {ha:.0%}]\n    {name_b:18} {kb}/{len(b)} = {pb:.0%} [{lb:.0%}, {hb:.0%}]\n    Fisher two-sided p = {p:.4f}  ({'below' if p < alpha else 'not below'} the 0.017 threshold)")
+    print(f"{title}\n    {name_a:18} {ka}/{len(a)} = {pa:.0%} [{la:.0%}, {ha:.0%}]\n    {name_b:18} {kb}/{len(b)} = {pb:.0%} [{lb:.0%}, {hb:.0%}]\n    Fisher two-sided p = {p:.4f}  ({'below' if p < alpha else 'not below'} the {alpha} threshold)")
     return p
 
 

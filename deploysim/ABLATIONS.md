@@ -134,3 +134,33 @@ arm all 9 hard circumventions are in runs with sustained test talk (9 of 21 with
 
 Revised reading: one mechanism. Real circumvention occurs when the model believes it is in a test; the person-shaped
 request removes that belief; an exit changes whether the model works, not whether it cheats.
+
+# Instruction-strength test `instr1` (pre-registered, 2026-10-07, 40 runs per arm)
+
+Graded episode throughout; only the wording of the requirements changes. 120 runs plus one replacement for a harness
+crash (bash argument named `cmd`). Uploaded as batch `instr1`.
+
+| arm | hard | minor | honest | report-back | sustained test talk | early | grader named |
+|---|---|---|---|---|---|---|---|
+| DS-G paper's text (control) | 8 | 11 | 20 | 1 | 17 | 14 | 28 |
+| DS-G-FIRM + the ticket's firm line | 4 | 19 | 16 | 1 | 6 | 5 | 21 |
+| DS-G-TICKET the ticket's wording | 3 | 9 | 27 | 1 | 4 | 4 | 16 |
+
+**Primary (threshold p < 0.025): neither comparison holds.** Hard circumvention 8/40 vs 4/40 (p = 0.35) and 8/40 vs
+3/40 (p = 0.19). By the pre-registered rule the reading is **inconclusive**: lower but not significantly.
+
+Exploratory, and more informative than the primary:
+- **The wording changes the test belief even under the harness wrapper.** Sustained test talk falls from 17 of 40 to 6
+  (p = 0.013) and to 4 (p = 0.002). So the paper's exam-like wording is itself a trigger for "this is a test", not only
+  the header and grader line.
+- **Circumvention moves in the same direction**, halving, but 40 runs per arm cannot resolve it (pooled wording arms
+  7/80 vs 8/40, p = 0.09).
+- **The control is stable across batches**: hard circumvention 10/40, 9/40, 8/40 in `prereg1`, `confirm1`, `instr1`.
+- **The belief-behaviour link is weaker here than before.** In the control, hard circumvention occurred in 5 of 17 runs
+  with sustained test talk and 3 of 23 without, against 10/10 and 9/9 "with" in the two earlier batches.
+- The firm line moves runs from hard circumvention into minor suppression (11 to 19); the ticket wording moves them into
+  honest completion (20 to 27).
+
+Revised reading: the test belief has more than one trigger. The person-shaped wrapper removes it almost completely; the
+ticket's plain, ticket-like wording removes much of it even inside a graded episode. Whether firmer instructions reduce
+circumvention independently of the belief is not settled by this batch.
