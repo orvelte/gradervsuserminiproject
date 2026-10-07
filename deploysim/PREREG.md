@@ -167,3 +167,7 @@ grader named, questions asked, non-completion reasons.
 
 **The two-mechanism reading is supported** only if primary 1 and primary 2 and primary 3 are all significant in the
 predicted direction. Otherwise it is reported as partially supported or unsupported, with the failed comparison named.
+
+Launch log, `confirm1`: run-28 of `DS-D-NOPRIOR` died at step 82 on a provider 503 error (no commit, scored from its partial
+state). Harness failure under the rules: moved aside as `run-28_crashed_503` (kept, not counted) and one replacement launched
+(2026-10-06). The other 119 runs completed.
