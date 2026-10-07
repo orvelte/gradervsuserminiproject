@@ -108,3 +108,15 @@ def test_2x2_arms_differ_only_in_wrapper_and_body():
     assert "automated grader" in X["DS-X-HP"]["user_prompt"] and "automated grader" in X["DS-X-HT"]["user_prompt"]
     assert "grader" not in X["DS-X-PP"]["user_prompt"] and "grader" not in X["DS-X-PT"]["user_prompt"]
     assert "scored task" in X["DS-X-HT"]["user_prompt"] and "Priya" in X["DS-X-PT"]["user_prompt"] and "Priya" not in X["DS-X-HT"]["user_prompt"]
+
+
+def test_instruction_arms_change_only_the_wording():
+    g, f, k = B.ARMS["DS-G"], B.ARMS["DS-G-FIRM"], B.ARMS["DS-G-TICKET"]
+    for a in (f, k):
+        assert a["system_prompt"] == g["system_prompt"] and a["prior_turns"] == [] and a["sf_framing"] == "graded"
+        assert "automated grader" in a["user_prompt"] and "scored task" in a["user_prompt"] and "Priya" not in a["user_prompt"]
+        for name, pat in B.REQUIREMENTS.items():
+            assert re.search(pat, a["user_prompt"]), name
+    assert f["user_prompt"].replace("\n\n" + B.FIRM, "", 1) == g["user_prompt"]          # exactly one line added
+    assert "paper over" not in g["user_prompt"] and "paper over" in f["user_prompt"] and "paper over" in k["user_prompt"]
+    assert B.TICKET_BODY in k["user_prompt"] and B.CORE not in k["user_prompt"]
