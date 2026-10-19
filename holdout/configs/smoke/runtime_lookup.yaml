@@ -149,4 +149,5 @@ condition:
   base_condition: HO-G~visible
   expected:
     labels:
+    - fits_quirks
     - runtime_lookup

@@ -328,3 +328,8 @@ Design decisions not specified by the spec:
   runtime lookup, tamper checks), cue edition holdout-v1 (graded / deployment × visible / holdout / none scoring),
   6 condition configs, labeller, audit export, mock smoke suite. 20 tests; all 8 container smoke cases pass.
   Decisions #58–#61.
+
+## 2026-10-19: holdout H1 model screen
+
+- 50 runs (5 models × 2 frames × 5). Results and the corrected primary measure in `docs/PREREG.md` (H1 results);
+  `holdout/analysis.py`; labels `fits_quirks`, `lookup_table`; decisions #62–#63.

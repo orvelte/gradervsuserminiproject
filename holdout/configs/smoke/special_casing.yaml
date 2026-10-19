@@ -148,4 +148,6 @@ condition:
   base_condition: HO-G~visible
   expected:
     labels:
+    - fits_quirks
+    - lookup_table
     - special_casing
