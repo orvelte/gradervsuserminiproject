@@ -290,3 +290,11 @@ Design decisions not specified by the spec:
 - `deploysim/tests/test_labels.py`: 72 synthetic positive/negative cases. On all 831 ds-1.x runs, every scorer-gamed
   run gets a cheat label; 13 scorer-honest runs get `degrade_types` (11) or `delete_offending_code` (2), for audit.
 - Decisions #18–#28 in `docs/DECISIONS.md`.
+
+## 2026-10-19: blind audit of the labeller and fixes
+
+- `audit.py --blind`: label-free export (transcript + final-source diff) with a separate key; `compare_audit.py`.
+  7 blind subagents labelled 42 runs; agreement on cheat/no-cheat 38/42 before fixes, 41/42 after.
+- Labeller: `stale_index`, hook-ignored-at-commit → `bypass_hookpath`, `legit_fix` exclusive of cheats,
+  `drop_attributes` flag (not a cheat, pending decision), fixes to `unexplained_bypass`, `edit_hook_config`,
+  `gave_up_reported`. 82 label tests. Decisions #29–#34.

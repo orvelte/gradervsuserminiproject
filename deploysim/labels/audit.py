@@ -31,8 +31,30 @@ def cells(batch: Path) -> dict[str, list[Path]]:
     return out
 
 
-def render(run: Path, lab: dict, disc: dict | None) -> str:
+def source_diff(run: Path) -> str:
+    """Unified diff src_258 -> final src (committed src for ds-1.7, else rebuilt from the last fs snapshot)."""
+    import difflib
+    src = T.final_src(run) or {}
+    pri = {p.name: p.read_text() for p in T.PRISTINE.iterdir() if p.is_file()}
+    out = []
+    for name in sorted(set(src) | set(pri)):
+        a, b = pri.get(name, ""), src.get(name, "")
+        if a != b:
+            out += difflib.unified_diff(a.splitlines(), b.splitlines(), f"a/src/{name}" if name in pri else "/dev/null", f"b/src/{name}" if name in src else "/dev/null", lineterm="")
+    return "\n".join(out)
+
+
+def render_blind(run: Path, rid: str) -> str:
+    """The transcript and final source only: no scorer verdict, labels, evidence, arm, batch or path."""
+    body = render(run, None, None, blind=True)
+    return f"# Rollout {rid}\n\n" + body
+
+
+def render(run: Path, lab: dict | None, disc: dict | None, blind: bool = False) -> str:
     msgs = json.loads((run / "final" / "messages.json").read_text())
+    if blind:
+        L = ["## Transcript"]
+        return _transcript(L, msgs, run, blind)
     L = [f"# {run.parent.parent.parent.parent.name} / {run.name}", "", f"`{run}`", "",
          f"**Scorer:** {lab['primary_outcome']} {lab['scorer_labels']}  ", f"**Taxonomy:** {lab['labels']}  ", f"**Attempted:** {lab['attempted']}  ",
          f"**Counts:** {lab['counts']}"]
@@ -40,6 +62,10 @@ def render(run: Path, lab: dict, disc: dict | None) -> str:
         L.append(f"**Disclosed:** {disc.get('disclosed')} — quote: {disc.get('quote')!r} (verified {disc.get('verified_quote')})")
     L += ["", "## Evidence", "```json", json.dumps(lab["evidence"], indent=1, default=str)[:4000], "```", "",
           "## Auditor checklist", "- [ ] labels correct  - [ ] missing label: ____  - [ ] wrong label: ____  - [ ] disclosed: yes / no", "", "## Transcript"]
+    return _transcript(L, msgs, run, blind)
+
+
+def _transcript(L: list, msgs: list, run: Path, blind: bool) -> str:
     for i, m in enumerate(msgs):
         role = m.get("role")
         if role == "system":
@@ -62,7 +88,11 @@ def render(run: Path, lab: dict, disc: dict | None) -> str:
         else:
             L += [f"**{role} ({i}):** {str(m.get('content'))[:CLIP * 2]}", ""]
     rd = run / "final" / "release.diff"
-    if rd.exists():
+    if blind:
+        L += ["## Final source vs the original repository (src/)", "```diff", source_diff(run)[:250000], "```"]
+        if (run / "final" / "git_log.txt").exists():
+            L += ["## Final git log", "```", (run / "final" / "git_log.txt").read_text()[:4000], "```"]
+    elif rd.exists():
         L += ["## Release diff (seeded head -> HEAD)", "```diff", rd.read_text()[:20000], "```"]
     return "\n".join(L) + "\n"
 
@@ -71,7 +101,11 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("batch", type=Path); ap.add_argument("--n", type=int, default=10); ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--judge", action="store_true"); ap.add_argument("--out", type=Path, default=T.REPO / "audit")
+    ap.add_argument("--blind", nargs="?", const="", default=None, metavar="EXTRA_RUNS",
+                    help="blind export for independent auditors: random sample plus the runs listed (one path per line) in EXTRA_RUNS")
     a = ap.parse_args(argv)
+    if a.blind is not None:
+        return blind(a)
     rng = random.Random(a.seed); n = 0
     for cell, runs in cells(a.batch).items():
         pick = sorted(rng.sample(runs, min(a.n, len(runs))), key=lambda p: str(p))
@@ -87,6 +121,23 @@ def main(argv=None) -> int:
             index.append(f"- [{run.name}]({name}) — {lab['primary_outcome']} {lab['labels']}")
         (d / "INDEX.md").write_text("\n".join(index) + "\n")
     print(f"wrote {n} audit files under {a.out / a.batch.name}")
+    return 0
+
+
+def blind(a) -> int:
+    """audit/blind/<batch>/R01.md ... plus key.json (rollout id -> run path), which the auditors must not read."""
+    rng = random.Random(a.seed); runs = []
+    for cell, rs in cells(a.batch).items():
+        runs += rng.sample(rs, min(a.n, len(rs)))
+    if a.blind:
+        runs += [Path(l.strip()) for l in Path(a.blind).read_text().splitlines() if l.strip()]
+    runs = sorted(set(runs), key=str); rng.shuffle(runs)
+    d = a.out / "blind" / a.batch.name; d.mkdir(parents=True, exist_ok=True); key = {}
+    for i, run in enumerate(runs, 1):
+        rid = f"R{i:02d}"; key[rid] = str(run)
+        (d / f"{rid}.md").write_text(render_blind(run, rid))
+    (a.out / "blind" / f"{a.batch.name}_key.json").write_text(json.dumps(key, indent=1))
+    print(f"wrote {len(runs)} blind files to {d}; key outside it")
     return 0
 
 
