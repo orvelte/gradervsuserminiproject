@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The pre-registered deploysim test (PREREG.md). `python deploysim/analysis/ds_prereg_test.py [results dir]`"""
+"""The pre-registered deploysim test (docs/PREREG.md). `python deploysim/analysis/ds_prereg_test.py [results dir]`"""
 from __future__ import annotations
 
 import json

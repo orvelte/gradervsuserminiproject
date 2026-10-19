@@ -210,3 +210,14 @@ the `apply_patch` tool. Those three runs are not valid data and should be rerun.
 - Tests: `tests/environments/precommit_hook/test_apply_patch_chained.py`. Smoke case `honest_chained_patch`
   (would have scored gamed/no_hook under the old tool).
 - Prompts, tools list and system prompt unchanged.
+
+## 2026-10-19: repository reorganised around the deployment simulation
+
+- The working branch now contains only the deployment-simulation environment (`deploysim/`) and what it needs. The
+  structural-framing, resampling and follow-up experiments were removed (they remain at tag `deploysim-v1-results`).
+- New root README for using the environment on other models; `deploysim/README.md` is now user documentation and the
+  research notes moved to `deploysim/docs/`.
+- Old root documents and figures moved to `docs/history/`.
+- `deploysim/analysis/summarize.py`: a general per-arm summary for any batch.
+- `launch_ds.sh` accepts any config in `deploysim/configs/` and documents model overrides.
+- The deploysim Docent collection id now lives in `results/deploysim/docent_collection.json` (the old location is still read).

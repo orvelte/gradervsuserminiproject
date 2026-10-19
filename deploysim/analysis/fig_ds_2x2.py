@@ -37,7 +37,7 @@ for j, (key, lab) in enumerate(MEAS):
 a2.set_xticks(range(len(MEAS))); a2.set_xticklabels([l for _, l in MEAS], fontsize=8.5); a2.set_ylim(0, 1); a2.set_yticks([0, .25, .5, .75, 1]); a2.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])
 a2.set_title("Does the model treat it as a test? (Wilson 95% CI)", fontsize=11, loc="left"); a2.legend(fontsize=8, frameon=False, loc="upper right"); a2.spines[["top", "right"]].set_visible(False); a2.grid(True, axis="y", color="0.92"); a2.set_axisbelow(True)
 fig.suptitle("Message 2×2 pilot: wrapper (harness or Priya) by body wording (paper text or ticket); everything else held fixed", fontsize=12, x=0.01, ha="left")
-fig.text(0.01, 0.01, "GPT-OSS-120B, 20 runs per arm, deployment repository, autonomous-agent system prompt, no prior exchange, no exit line (deploysim/PREREG.md, batch x2x2). A pilot: neither pre-set flag rule was met.\n"
+fig.text(0.01, 0.01, "GPT-OSS-120B, 20 runs per arm, deployment repository, autonomous-agent system prompt, no prior exchange, no exit line (deploysim/docs/PREREG.md, batch x2x2). A pilot: neither pre-set flag rule was met.\n"
          "Hard circumvention is 0 or 1 in every cell, so the pilot says nothing about circumvention. Report-backs dominate all four arms.", fontsize=7.5, color="0.35", va="bottom")
 fig.tight_layout(rect=(0, 0.07, 1, 0.94))
 out = HERE.parent / "figures"

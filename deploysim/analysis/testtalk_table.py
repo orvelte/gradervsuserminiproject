@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test talk across every batch of the project with one consistent pair of measures (deploysim/RESULTS.md, correction).
+"""Test talk across every batch of the project with one consistent pair of measures (deploysim/docs/RESULTS.md, correction).
 
     python deploysim/analysis/testtalk_table.py
 

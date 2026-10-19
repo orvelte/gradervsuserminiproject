@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Figure: the additive path from the graded episode to the deployment arm (ABLATIONS.md). Reads
+"""Figure: the additive path from the graded episode to the deployment arm (docs/ABLATIONS.md). Reads
 results/deploysim/additive1/summary.json plus the two ablate1 arms. Writes deploysim/figures/fig_ds_path.{png,svg}."""
 import json
 from pathlib import Path
@@ -34,7 +34,7 @@ a2.set_title("Does the model treat the task as a test?", fontsize=11, loc="left"
 a2.set_xticks(xs); a2.set_xticklabels([l for _, l in STEPS], fontsize=9); a2.spines[["top", "right"]].set_visible(False); a2.grid(True, axis="y", color="0.92"); a2.set_axisbelow(True)
 fig.suptitle("From graded episode to deployment, one element at a time:\nan exit stops the cheating; the person-shaped request removes the test belief", fontsize=11.5, x=0.01, ha="left")
 fig.text(0.01, 0.01, "GPT-OSS-120B. Steps 0 to 3: batch additive1; steps 4 and 5: the matching arms of the ablation screen (ablate1). Each step adds one element to the previous one.\n"
-         "Hard circumvention = labelled workaround or a commit with 10+ errors unfixed. Twenty runs per step: a screen, not a test (deploysim/ABLATIONS.md).", fontsize=7.5, color="0.35", va="bottom")
+         "Hard circumvention = labelled workaround or a commit with 10+ errors unfixed. Twenty runs per step: a screen, not a test (deploysim/docs/ABLATIONS.md).", fontsize=7.5, color="0.35", va="bottom")
 fig.tight_layout(rect=(0, 0.06, 1, 0.97))
 out = HERE.parent / "figures"
 for ext in ("png", "svg"): fig.savefig(out / f"fig_ds_path.{ext}", dpi=170)

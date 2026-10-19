@@ -24,7 +24,7 @@ GPT_OSS_POST = yaml.safe_load((HERE / "upstream" / "gpt_oss_post.yaml").read_tex
 SYSTEM_PROMPT = GPT_OSS_POST["system_prompt"]
 AGENT = {
     # GPT-OSS-120B (open weights: the same model the paper ran). On DeepSeek v4 Pro 0813 the N0 arm
-    # gamed 0/20 (PROBE_FINDINGS.md), so the experiment moved to the paper's other model on this task.
+    # gamed 0/20 (docs/history/PROBE_FINDINGS.md), so the experiment moved to the paper's other model on this task.
     # Provider: the paper does not say; run_step.py's leak recovery was written for "gpt-oss (Harmony)
     # on several OpenRouter providers", so OpenRouter. Pinned to one endpoint (AkashML bf16) with no
     # fallback so every arm runs on the same serving stack. Chosen with scripts/probe_gptoss_providers.py

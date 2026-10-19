@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The pre-registered confirm1 comparisons (PREREG.md). `python deploysim/analysis/confirm1_test.py [results dir]`"""
+"""The pre-registered confirm1 comparisons (docs/PREREG.md). `python deploysim/analysis/confirm1_test.py [results dir]`"""
 import importlib.util, json, re, sys, collections
 from pathlib import Path
 

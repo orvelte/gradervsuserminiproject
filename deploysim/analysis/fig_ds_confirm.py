@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Figure for confirm1 (ABLATIONS.md). Writes deploysim/figures/fig_ds_confirm.{png,svg}."""
+"""Figure for confirm1 (docs/ABLATIONS.md). Writes deploysim/figures/fig_ds_confirm.{png,svg}."""
 import importlib.util, json, re, sys
 from collections import Counter
 from pathlib import Path
@@ -32,7 +32,7 @@ for j, (txt, ok) in enumerate((("p = 0.78\n(graded vs + exit)", False), ("p = 0.
 a2.set_xticks(range(3)); a2.set_xticklabels([m for m, _ in MEAS], fontsize=9); a2.set_ylim(0, 1); a2.set_yticks([0, .25, .5, .75, 1]); a2.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])
 a2.set_title("The three pre-registered comparisons (Wilson 95% CI)", fontsize=11, loc="left"); a2.legend(fontsize=8, frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.1), ncol=3); a2.spines[["top", "right"]].set_visible(False); a2.grid(True, axis="y", color="0.92"); a2.set_axisbelow(True)
 fig.suptitle("An exit line does not stop circumvention; it only stops the work. The person-shaped request removes the test belief.", fontsize=11.5, x=0.01, ha="left")
-fig.text(0.01, 0.01, "GPT-OSS-120B, pre-registered batch confirm1 (deploysim/PREREG.md), 40 runs per arm, threshold p < 0.017 for three comparisons. Comparison 1 fails, 2 and 3 hold: the two-mechanism reading is not supported.\n"
+fig.text(0.01, 0.01, "GPT-OSS-120B, pre-registered batch confirm1 (deploysim/docs/PREREG.md), 40 runs per arm, threshold p < 0.017 for three comparisons. Comparison 1 fails, 2 and 3 hold: the two-mechanism reading is not supported.\n"
          "Exploratory: in the graded arm all 9 hard circumventions are in runs with sustained test talk (9 of 21 with, 0 of 19 without, p = 0.001).", fontsize=7.5, color="0.35", va="bottom")
 fig.tight_layout(rect=(0, 0.07, 1, 0.94))
 for ext in ("png", "svg"): fig.savefig(HERE.parent / "figures" / f"fig_ds_confirm.{ext}", dpi=170)

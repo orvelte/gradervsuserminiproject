@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
-# Launch COUNT rollouts of one DS arm locally in Docker. PAID: Olivia launches these herself (CLAUDE.md).
+# Launch COUNT rollouts of one arm in Docker. Uses your provider key from .env, so this costs money unless the
+# config's provider is `mock`.
 #
-#   deploysim/scripts/launch_ds.sh ARM COUNT --batch NAME [--max-concurrent N] [--dry-run] [extra run.py args]
-#   ARM: DS-G | DS-D | DS-G-NONOTE
-#   --batch NAME is required: results go to results/deploysim/NAME/ARM and condition.batch=NAME is
-#   stamped into every run, so the uptake batch and any later batch are never pooled.
+#   deploysim/scripts/launch_ds.sh ARM COUNT --batch NAME [--max-concurrent N] [--dry-run] [key=value overrides ...]
+#   e.g. deploysim/scripts/launch_ds.sh DS-D 20 --batch mymodel agent.model=<openrouter-model-id> agent.provider_preferences=null
+#   ARM: any config in deploysim/configs/ (DS-G graded episode, DS-D deployment, DS-D-NOPUSH, ablations, ...)
+#   Results go to results/deploysim/NAME/ARM; condition.batch=NAME is stamped into every run.
 set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$REPO_ROOT"
 [ $# -ge 2 ] || { sed -n '2,8p' "$0"; exit 2; }
 ARM="$1"; COUNT="$2"; shift 2
-case "$ARM" in
-  DS-G|DS-D|DS-G-NONOTE|DS-D-NOPUSH|DS-D-NOPRIOR|DS-D-BAREREPO|DS-D-EXAMTEXT|DS-D-AGENTSYS|DS-G+REPO|DS-G+REPO+PUSH|DS-G+REPO+PUSH+SYS|DS-X-HP|DS-X-HT|DS-X-PP|DS-X-PT|DS-G-FIRM|DS-G-TICKET|DS-D2) CFG="deploysim/configs/$ARM.yaml" ;;
-  *) echo "unknown arm '$ARM'"; exit 2 ;;
-esac
+CFG="deploysim/configs/$ARM.yaml"
+[ -f "$CFG" ] || { echo "unknown arm '$ARM' (no $CFG)"; ls deploysim/configs/*.yaml | sed 's#.*/##; s#\.yaml$##' | tr '\n' ' '; echo; exit 2; }
 MAX_CONCURRENT=15; DRY_RUN=""; BATCH=""; EXTRA=()
 while [ $# -gt 0 ]; do
   case "$1" in

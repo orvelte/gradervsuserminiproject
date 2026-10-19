@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Figure for instr1 (ABLATIONS.md). Writes deploysim/figures/fig_ds_instr.{png,svg}."""
+"""Figure for instr1 (docs/ABLATIONS.md). Writes deploysim/figures/fig_ds_instr.{png,svg}."""
 import importlib.util
 from collections import Counter
 from pathlib import Path
@@ -35,7 +35,7 @@ a2.set_xticks(range(3)); a2.set_xticklabels([m for m, _ in MEAS], fontsize=9); a
 a2.set_title("Circumvention and the test belief (Wilson 95% CI)", fontsize=11, loc="left"); a2.legend(fontsize=8, frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.15), ncol=3)
 a2.spines[["top", "right"]].set_visible(False); a2.grid(True, axis="y", color="0.92"); a2.set_axisbelow(True)
 fig.suptitle("Inside a graded episode, ticket-like wording cuts the test belief; circumvention halves but the drop is not significant", fontsize=11.5, x=0.01, ha="left")
-fig.text(0.01, 0.01, "GPT-OSS-120B, pre-registered batch instr1 (deploysim/PREREG.md), 40 runs per arm. Primary: hard circumvention vs the control, threshold p < 0.025 for two comparisons; neither holds, so the\n"
+fig.text(0.01, 0.01, "GPT-OSS-120B, pre-registered batch instr1 (deploysim/docs/PREREG.md), 40 runs per arm. Primary: hard circumvention vs the control, threshold p < 0.025 for two comparisons; neither holds, so the\n"
          "pre-registered reading is inconclusive. p-values on test talk are exploratory (control vs each wording arm). Hard circumvention in the control was 10, 9 and 8 of 40 across three batches.", fontsize=7.5, color="0.35", va="bottom")
 fig.tight_layout(rect=(0, 0.08, 1, 0.94))
 for ext in ("png", "svg"): fig.savefig(HERE.parent / "figures" / f"fig_ds_instr.{ext}", dpi=170)

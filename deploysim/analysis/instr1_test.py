@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The pre-registered instr1 comparisons (PREREG.md). `python deploysim/analysis/instr1_test.py [results dir]`"""
+"""The pre-registered instr1 comparisons (docs/PREREG.md). `python deploysim/analysis/instr1_test.py [results dir]`"""
 import importlib.util, sys, collections
 from pathlib import Path
 

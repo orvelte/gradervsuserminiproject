@@ -24,7 +24,10 @@ import upload_to_docent as U  # noqa: E402
 from common import load_run, upstream_sha  # noqa: E402
 
 RESULTS = REPO_ROOT / "results" / "deploysim"
-COLLECTION_FILE = REPO_ROOT / "results" / "structural_framing_v2" / "docent_collection.json"   # the same separate collection as SF2 (never the main one)
+COLLECTION_FILE = RESULTS / "docent_collection.json"            # created by --create-collection; never the main collection
+_LEGACY_COLLECTION_FILE = REPO_ROOT / "results" / "structural_framing_v2" / "docent_collection.json"   # where earlier batches recorded it
+if not COLLECTION_FILE.exists() and _LEGACY_COLLECTION_FILE.exists():
+    COLLECTION_FILE = _LEGACY_COLLECTION_FILE
 U.MANIFEST = RESULTS / "docent_manifest.json"
 MARK = "⟂ SEEDED PRIOR TURN (part of the environment, not sampled) ⟂  "
 
