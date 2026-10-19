@@ -10,14 +10,9 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent
 SOURCES = {  # figure name -> (output folder, generating script)
-    "fig_prompts": ("structural_framing/analysis/out", "structural_framing/analysis/fig_prompts.py"),
-    "fig_onset": ("structural_framing/analysis/out", "structural_framing/analysis/fig_onset.py"),
-    "fig_belief": ("structural_framing/analysis/out", "structural_framing/analysis/fig_belief.py"),
-    "fig_timing": ("structural_framing/analysis/out", "structural_framing/analysis/fig_timing.py"),
-    "fig_hints": ("structural_framing/analysis/out", "structural_framing/analysis/fig_hints.py"),
-    "fig_mechanism": ("resampling/analysis/out", "resampling/analysis/fig_mechanism.py"),
-    "fig_prompts_sf2": ("structural_framing_v2/analysis/out", "structural_framing_v2/analysis/fig_prompts_sf2.py"),
-    "fig_talker_doer": ("followups/analysis_out", "followups/momentum_a/fig_talker_doer.py"),
+    # Earlier figures (fig_prompts, fig_onset, fig_belief, fig_timing, fig_hints, fig_mechanism, fig_prompts_sf2,
+    # fig_talker_doer) are kept here as images only; their scripts were removed with their experiments on 2026-10-19
+    # and remain at tag `deploysim-v1-results`. Deployment-simulation figures live in deploysim/figures/.
 }
 for name, (folder, script) in SOURCES.items():
     for ext in ("png", "svg"):

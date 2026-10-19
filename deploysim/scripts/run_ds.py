@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Launch rollouts of the precommit_hook_ds environment through the existing runner, unmodified.
 
-    python deploysim/scripts/run_ds.py structural_framing_v2/configs/DS-G.yaml --count 2 ...
+    python deploysim/scripts/run_ds.py deploysim/configs/DS-G.yaml --count 2 ...
 
 Registers the SF2 environment in scripts/env_registry at runtime (no shared file is edited), then hands argv to
 scripts/run.py. Configs whose `environment` is the original precommit_hook also work (scorer-equivalence smoke twins).

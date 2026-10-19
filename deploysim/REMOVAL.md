@@ -1,4 +1,5 @@
 # Removing the deployment simulation
 
-Delete `deploysim/` and `results/deploysim/`. Nothing outside the directory was modified (`tests/test_ds_isolation.py`).
-It reads SF1's and SF2's environment files and builders, so removing those breaks it.
+Delete `deploysim/` and `results/deploysim/`. It is self-contained apart from the shared harness (`src/`, `scripts/`),
+the original environment (`environments/precommit_hook/`) and the N0 config (`configs/precommit_hook/`), which it reads
+and does not change. Since the 2026-10-19 clean-up it no longer depends on the structural-framing directories.

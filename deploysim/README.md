@@ -1,8 +1,11 @@
 # Deployment simulation (DS)
 
-Built 2026-10-05 beside `structural_framing/` (SF1) and `structural_framing_v2/` (SF2); nothing outside this directory
-was modified. It reuses SF1's `run_step.py`, `tools.py` and `entrypoint.py`, SF2's `states.py` and prompt builder, and the
-original environment's task files and scorer, all by reference.
+Built 2026-10-05 as the successor to two structural-framing versions (SF1, SF2) that have since been removed from this
+branch (2026-10-19 clean-up; they remain at tag `deploysim-v1-results` on `main`). The four harness files it took from
+them (`run_step.py`, `tools.py`, `entrypoint.py`, `states.py`) are now copies inside `env/precommit_hook_ds/`, and the
+prompt constants it took from their builders are inlined in `configs/build_ds_arms.py`. It still uses the original
+environment's task files, scorer and apply_patch (`environments/precommit_hook/`) and the N0 config
+(`configs/precommit_hook/N0_replication.yaml`) for model settings and the task text.
 
 ## Why
 

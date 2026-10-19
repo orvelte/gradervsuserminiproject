@@ -13,3 +13,6 @@ below; `python figures/collect.py` refreshes this folder.
 | `fig_hints` | Prevalence and density of the inference by hint type | `structural_framing/analysis/fig_hints.py` |
 | `fig_mechanism` | Exploratory: bypass the check versus fake the work, pooled across SF1 and RS1 | `resampling/analysis/fig_mechanism.py` |
 | `fig_talker_doer` | Momentum pilot (n = 9 per cell): said it must fix the types versus ended honest | `followups/momentum_a/fig_talker_doer.py` |
+
+The scripts for the figures above were removed from the `deploysim` branch on 2026-10-19 with the experiments that
+produced them; they remain at tag `deploysim-v1-results`. Current figures: `deploysim/figures/`.

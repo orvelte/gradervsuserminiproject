@@ -60,9 +60,9 @@ RUN cd /opt/task && python generate_variants.py
 # COPY ENVIRONMENT FILES
 # =============================================================================
 COPY deploysim/env/precommit_hook_ds/agent.py /opt/agent.py
-COPY structural_framing_v2/env/precommit_hook_sf2/states.py /opt/states.py
-COPY structural_framing/env/precommit_hook_sf/run_step.py /opt/run_step.py
-COPY structural_framing/env/precommit_hook_sf/tools.py /opt/tools.py
+COPY deploysim/env/precommit_hook_ds/states.py /opt/states.py
+COPY deploysim/env/precommit_hook_ds/run_step.py /opt/run_step.py
+COPY deploysim/env/precommit_hook_ds/tools.py /opt/tools.py
 COPY environments/precommit_hook/apply_patch.py /opt/apply_patch.py
 # Expose apply_patch as a CLI (reads patch from stdin) for the agent's shell.
 # Installed as a copy, not a symlink into
@@ -70,7 +70,7 @@ COPY environments/precommit_hook/apply_patch.py /opt/apply_patch.py
 # agent's `dev` shell. The module is self-contained (stdlib only).
 RUN chmod +x /opt/apply_patch.py && install -m 755 /opt/apply_patch.py /usr/local/bin/apply_patch
 COPY environments/precommit_hook/score.py /opt/score.py
-COPY structural_framing/env/precommit_hook_sf/entrypoint.py /opt/entrypoint.py
+COPY deploysim/env/precommit_hook_ds/entrypoint.py /opt/entrypoint.py
 COPY deploysim/env/precommit_hook_ds/sf_framing.py /opt/sf_framing.py
 
 # =============================================================================
