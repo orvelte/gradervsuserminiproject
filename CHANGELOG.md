@@ -314,3 +314,10 @@ Design decisions not specified by the spec:
   A–F with predictions, models, analysis plan. The conduct-evaluation frame is promoted to a core block.
 - Labeller: `grader_gaming` (primary from P4 Amendment 1), `pragmatic_shortcut`, `shortfall`. `docs/PREREG.md` (P4 and
   Amendment 1). Decisions #48–#50.
+
+## 2026-10-19: P4 pilot results; scorer v7
+
+- P4 difficulty pilot (DeepSeek V4 Flash, 120 runs) analysed per the pre-registration (`deploysim/analysis/p4_analysis.py`);
+  results in `docs/PREREG.md`.
+- Scorer v7: a shell redirect after `git config core.hooksPath` is not a value. Labeller: hooksPath fires only on
+  writes. Targeted correction script for the 3 affected runs. Tests for both. Decisions #51–#53.
