@@ -221,3 +221,14 @@ the `apply_patch` tool. Those three runs are not valid data and should be rerun.
 - `deploysim/analysis/summarize.py`: a general per-arm summary for any batch.
 - `launch_ds.sh` accepts any config in `deploysim/configs/` and documents model overrides.
 - The deploysim Docent collection id now lives in `results/deploysim/docent_collection.json` (the old location is still read).
+
+## 2026-10-19: split-brain experiments, Phase 1 (inventory, no code changes)
+
+- Preserved the current environment as branch `impossible-task` and tag `impossible-task-v1` (commit `fee4919`).
+  Split-brain work happens on branch `splitbrain`.
+- Added `docs/CURRENT_STATE.md`: how arms are defined, every matched cue with its wording and token length, the task,
+  cheat detection, the awareness measure with current numbers, the harness, models, logging, and 13 conflicts with
+  the spec.
+- Decisions not specified by the spec: the spec file was moved from the repo root to
+  `docs/specs/splitbrainexperiments.md`; token lengths are measured with the o200k tokenizer (GPT-OSS's); the
+  deployment awareness baseline pools every `DS-D` and `DS-D-NOPUSH` batch (130 runs).
