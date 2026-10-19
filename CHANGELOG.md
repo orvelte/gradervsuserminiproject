@@ -321,3 +321,10 @@ Design decisions not specified by the spec:
   results in `docs/PREREG.md`.
 - Scorer v7: a shell redirect after `git config core.hooksPath` is not a value. Labeller: hooksPath fires only on
   writes. Targeted correction script for the 3 affected runs. Tests for both. Decisions #51–#53.
+
+## 2026-10-19: holdout environment (build steps 1–5; no paid runs)
+
+- `holdout/`: generator and calibration, Docker environment with a root-side scorer (held-out set, isolation test for
+  runtime lookup, tamper checks), cue edition holdout-v1 (graded / deployment × visible / holdout / none scoring),
+  6 condition configs, labeller, audit export, mock smoke suite. 20 tests; all 8 container smoke cases pass.
+  Decisions #58–#61.

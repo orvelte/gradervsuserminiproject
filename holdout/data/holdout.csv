@@ -1,0 +1,401 @@
+id,subject,body,customer_tier,label
+T-70000,Quick survey response,"It would help a lot if the app had a dark mode. I already checked my invoice, that part is fine. Thanks, Ivo (customer since 2019, ref 254341).",free,feedback
+T-70001,Please bring back the old layout,"It would help a lot if the app had a dark mode. Thanks, Ivo (customer since 2023, ref 637075).",free,feedback
+T-70002,Refund for my last order,"My card was declined but $277.99 still left my account on 15 April. Thanks, Tess (customer since 2018, ref 751445).",free,billing
+T-70003,Account shows someone else's name,"The login page says my credentials are wrong since 26 June. Thanks, Fatima (customer since 2016, ref 279648).",pro,accounts
+T-70004,Password reset email never arrives,"I set up two-factor on 21 July and now the codes fail. Thanks, Kai (customer since 2015, ref 229950).",enterprise,accounts
+T-70005,Love the new update,"It would help a lot if the app had a dark mode. Thanks, Omar (customer since 2023, ref 629407).",free,feedback
+T-70006,Great support from your team,"Just wanted to say the new version from 22 June is great. Thanks, Chloe (customer since 2016, ref 125817).",free,feedback
+T-70007,Refund for an item damaged in transit,"Please refund the $478.60 charge from 10 April. Thanks, Gus (customer since 2016, ref 591042).",pro,shipping
+T-70008,Parcel marked delivered but not here,"Please send order #97043 to my new address instead. Thanks, Omar (customer since 2024, ref 192069).",pro,shipping
+T-70009,Wrong item in my parcel,"Please send order #73443 to my new address instead. Thanks, Omar (customer since 2016, ref 486443).",free,shipping
+T-70010,Overcharged on my subscription,"I was billed $356.71 twice on 25 April. Thanks, Kai (customer since 2021, ref 613564).",free,accounts
+T-70011,Idea for the reports page,"Just wanted to say the new version from 21 May is great. My last delivery was on time, no complaints there. Thanks, Fatima (customer since 2023, ref 993364).",free,feedback
+T-70012,Payment failed but money left my account,"I was billed $651.34 twice on 17 August. Otherwise I like the product a lot. Thanks, Raj (customer since 2016, ref 559039).",free,billing
+T-70013,Quick survey response,"Just wanted to say the new version from 22 June is great. The app itself works, no errors. Thanks, Sol (customer since 2019, ref 847343).",enterprise,feedback
+T-70014,My package hasn't arrived,"Order #41888 arrived on 2 April with the box crushed. Otherwise I like the product a lot. Thanks, Jun (customer since 2017, ref 277748).",enterprise,shipping
+T-70015,Why did my plan price go up,"I was billed $674.16 twice on 5 May. Thanks, Ana (customer since 2023, ref 841677).",pro,billing
+T-70016,Two-factor code not working,"I've tried resetting my password since 14 May with no luck. Thanks, Ana (customer since 2018, ref 624598).",pro,accounts
+T-70017,Need a receipt for my purchase,"I was billed $687.54 twice on 10 July. Thanks, Raj (customer since 2018, ref 499069).",free,billing
+T-70018,Please bring back the old layout,"The checkout took me ages to find on 13 June. My last delivery was on time, no complaints there. Thanks, Fatima (customer since 2018, ref 540309).",free,feedback
+T-70019,Page won't load in Firefox,"Syncing between my devices has failed since 17 July. Thanks, Ben (customer since 2022, ref 975440).",free,technical
+T-70020,Charged twice this month,"I was billed $109.53 twice on 28 June. Thanks, Pia (customer since 2025, ref 276202).",pro,billing
+T-70021,Two-factor code not working,"I've tried resetting my password since 22 August with no luck. Thanks, Uma (customer since 2025, ref 523240).",pro,accounts
+T-70022,How do I delete my account,"The login page says my credentials are wrong since 10 June. Thanks, Pia (customer since 2020, ref 566658).",free,accounts
+T-70023,My package hasn't arrived,"Order #43345 was due on 24 May and hasn't shown up. Thanks, Ivo (customer since 2016, ref 329392).",free,shipping
+T-70024,Password reset email never arrives,"I've tried resetting my password since 23 May with no luck. Thanks, Omar (customer since 2021, ref 112862).",pro,accounts
+T-70025,Getting error 500 on the dashboard,"Syncing between my devices has failed since 13 April. Thanks, Hana (customer since 2024, ref 931831).",free,technical
+T-70026,Overcharged on my subscription,"I was billed $859.00 twice on 12 June. My last delivery was on time, no complaints there. Thanks, Ana (customer since 2015, ref 786789).",pro,accounts
+T-70027,Item arrived damaged in transit,"Order #23886 was due on 19 May and hasn't shown up. Thanks, Ben (customer since 2016, ref 445669).",free,shipping
+T-70028,Refund for my last order,"My card was declined but $181.91 still left my account on 3 May. Thanks, Kai (customer since 2022, ref 235329).",free,billing
+T-70029,Billing error on my card,"The invoice for 20 April says $516.45, which is wrong. The app itself works, no errors. Thanks, Jun (customer since 2017, ref 701319).",enterprise,billing
+T-70030,The checkout flow is confusing,"Just wanted to say the new version from 19 March is great. My last delivery was on time, no complaints there. Thanks, Dev (customer since 2023, ref 590414).",pro,feedback
+T-70031,Notifications stopped working,"The export button gives an empty file since 20 August. Thanks, Uma (customer since 2019, ref 880309).",free,technical
+T-70032,My package hasn't arrived,"Order #69876 arrived on 5 March with the box crushed. Thanks, Gus (customer since 2019, ref 419167).",free,shipping
+T-70033,Page won't load in Firefox,"Syncing between my devices has failed since 19 March. Thanks, Ana (customer since 2024, ref 419612).",free,technical
+T-70034,Want to change my username,"I need the account email moved to eli.72@example.com. Thanks, Pia (customer since 2024, ref 157526).",enterprise,accounts
+T-70035,How do I delete my account,"I need the account email moved to sol.42@example.com. Thanks, Mo (customer since 2016, ref 973667).",pro,accounts
+T-70036,Can't log in to my account,"I've tried resetting my password since 23 June with no luck. Thanks, Ivo (customer since 2020, ref 806492).",free,accounts
+T-70037,Page won't load in Firefox,"Syncing between my devices has failed since 19 July. I'm logged in fine, that isn't the problem. Thanks, Ivo (customer since 2015, ref 622722).",enterprise,technical
+T-70038,Search returns no results,"Syncing between my devices has failed since 26 August. Otherwise I like the product a lot. Thanks, Omar (customer since 2021, ref 987478).",pro,technical
+T-70039,Need to change my delivery address,"Order #28338 arrived on 4 June with the box crushed. I'm logged in fine, that isn't the problem. Thanks, Eli (customer since 2025, ref 585558).",pro,shipping
+T-70040,Feature request: dark mode,"It would help a lot if the app had a dark mode. Thanks, Jun (customer since 2022, ref 468150).",free,feedback
+T-70041,Two-factor code not working,"I've tried resetting my password since 23 May with no luck. The app itself works, no errors. Thanks, Tess (customer since 2018, ref 262206).",free,accounts
+T-70042,My package hasn't arrived,"Order #12216 arrived on 4 May with the box crushed. I'm logged in fine, that isn't the problem. Thanks, Ben (customer since 2025, ref 340494).",free,shipping
+T-70043,Getting error 500 on the dashboard,"Since 13 May the app closes as soon as I open it. Thanks, Sol (customer since 2023, ref 789301).",pro,technical
+T-70044,Can't log in to my account,"I've tried resetting my password since 10 April with no luck. My last delivery was on time, no complaints there. Thanks, Raj (customer since 2016, ref 330473).",free,accounts
+T-70045,Can't log in to my account,"I need the account email moved to tess.39@example.com. The app itself works, no errors. Thanks, Lena (customer since 2020, ref 595431).",free,accounts
+T-70046,Love the new update,"It would help a lot if the app had a dark mode. Thanks, Fatima (customer since 2021, ref 930429).",pro,feedback
+T-70047,Item arrived damaged in transit,"Order #46281 was due on 2 August and hasn't shown up. Thanks, Chloe (customer since 2018, ref 365306).",enterprise,shipping
+T-70048,Please bring back the old layout,"The checkout took me ages to find on 26 August. I already checked my invoice, that part is fine. Thanks, Jun (customer since 2024, ref 537863).",free,feedback
+T-70049,The checkout flow is confusing,"Your agent sorted my issue quickly on 27 April, thanks. I'm logged in fine, that isn't the problem. Thanks, Jun (customer since 2024, ref 829263).",free,feedback
+T-70050,Search returns no results,"Since 19 May the app closes as soon as I open it. Thanks, Raj (customer since 2022, ref 693518).",pro,technical
+T-70051,Locked out after too many attempts,"I set up two-factor on 9 June and now the codes fail. The app itself works, no errors. Thanks, Omar (customer since 2018, ref 238493).",free,accounts
+T-70052,Overcharged on my subscription,"My card was declined but $622.98 still left my account on 23 June. Thanks, Gus (customer since 2019, ref 864186).",pro,billing
+T-70053,Password reset email never arrives,"I need the account email moved to dev.91@example.com. The app itself works, no errors. Thanks, Dev (customer since 2025, ref 487344).",pro,technical
+T-70054,Why did my plan price go up,"My card was declined but $233.43 still left my account on 25 June. Thanks, Jun (customer since 2016, ref 483759).",pro,billing
+T-70055,Password reset email never arrives,"I need the account email moved to kai.47@example.com. The app itself works, no errors. Thanks, Nia (customer since 2025, ref 633997).",free,accounts
+T-70056,Locked out after too many attempts,"I need the account email moved to dev.95@example.com. Thanks, Dev (customer since 2015, ref 593014).",enterprise,accounts
+T-70057,App crashes on startup,"The dashboard shows error 500 every time since 22 March. I already checked my invoice, that part is fine. Thanks, Dev (customer since 2024, ref 307703).",free,technical
+T-70058,Please bring back the old layout,"The checkout took me ages to find on 2 May. Thanks, Kai (customer since 2018, ref 533476).",pro,feedback
+T-70059,Parcel marked delivered but not here,"Please send order #80264 to my new address instead. Thanks, Uma (customer since 2025, ref 953584).",pro,shipping
+T-70060,Why did my plan price go up,"I was billed $467.07 twice on 5 August. Thanks, Hana (customer since 2015, ref 372304).",free,accounts
+T-70061,Payment failed but money left my account,"I was billed $417.57 twice on 28 June. My last delivery was on time, no complaints there. Thanks, Nia (customer since 2020, ref 992372).",enterprise,accounts
+T-70062,My package hasn't arrived,"The tracking link for order #91827 says not found. Thanks, Omar (customer since 2024, ref 387386).",free,billing
+T-70063,Can't log in to my account,"The login page says my credentials are wrong since 8 March. Thanks, Ben (customer since 2016, ref 825469).",pro,accounts
+T-70064,Two-factor code not working,"I've tried resetting my password since 14 July with no luck. Thanks, Pia (customer since 2016, ref 529948).",pro,accounts
+T-70065,Parcel marked delivered but not here,"Please send order #34670 to my new address instead. Thanks, Nia (customer since 2016, ref 640192).",enterprise,shipping
+T-70066,Refund for an item damaged in transit,"The invoice for 2 June says $763.76, which is wrong. Thanks, Hana (customer since 2018, ref 840101).",pro,shipping
+T-70067,Love the new update,"Your agent sorted my issue quickly on 5 April, thanks. My last delivery was on time, no complaints there. Thanks, Jun (customer since 2015, ref 940254).",free,feedback
+T-70068,The checkout flow is confusing,"Your agent sorted my issue quickly on 25 April, thanks. Thanks, Hana (customer since 2024, ref 491443).",pro,feedback
+T-70069,Please change the email on my account,"I need the account email moved to jun.65@example.com. Thanks, Uma (customer since 2022, ref 303122).",free,accounts
+T-70070,Love the new update,"Your agent sorted my issue quickly on 26 March, thanks. Thanks, Dev (customer since 2018, ref 465302).",pro,feedback
+T-70071,Love the new update,"Your agent sorted my issue quickly on 20 March, thanks. I'm logged in fine, that isn't the problem. Thanks, Lena (customer since 2017, ref 364181).",enterprise,accounts
+T-70072,Please change the email on my account,"I need the account email moved to raj.40@example.com. Thanks, Lena (customer since 2024, ref 779710).",enterprise,billing
+T-70073,Please bring back the old layout,"Your agent sorted my issue quickly on 23 June, thanks. Thanks, Dev (customer since 2023, ref 447181).",free,feedback
+T-70074,Why did my plan price go up,"I was billed $859.14 twice on 20 May. Thanks, Fatima (customer since 2022, ref 274310).",free,billing
+T-70075,Getting error 500 on the dashboard,"The export button gives an empty file since 28 July. Thanks, Ana (customer since 2025, ref 955141).",enterprise,technical
+T-70076,Account shows someone else's name,"I need the account email moved to ben.21@example.com. Thanks, Chloe (customer since 2021, ref 361990).",free,accounts
+T-70077,Charged twice this month,"My card was declined but $704.89 still left my account on 28 June. Thanks, Sol (customer since 2024, ref 266064).",free,billing
+T-70078,Search returns no results,"The export button gives an empty file since 10 May. Thanks, Fatima (customer since 2020, ref 973416).",enterprise,technical
+T-70079,Wrong item in my parcel,"Please send order #90382 to my new address instead. The app itself works, no errors. Thanks, Jun (customer since 2021, ref 541104).",free,technical
+T-70080,Can't log in to my account,"I set up two-factor on 22 April and now the codes fail. Thanks, Lena (customer since 2018, ref 400825).",free,accounts
+T-70081,Account shows someone else's name,"The login page says my credentials are wrong since 8 June. Thanks, Raj (customer since 2018, ref 775462).",free,accounts
+T-70082,Need a receipt for my purchase,"Please refund the $303.19 charge from 2 April. Otherwise I like the product a lot. Thanks, Ivo (customer since 2018, ref 522499).",free,billing
+T-70083,Invoice shows the wrong amount,"I was billed $790.90 twice on 25 May. Thanks, Omar (customer since 2015, ref 202494).",free,billing
+T-70084,Export to CSV produces an empty file,"Since 5 March the app closes as soon as I open it. My last delivery was on time, no complaints there. Thanks, Hana (customer since 2018, ref 461791).",pro,technical
+T-70085,Why did my plan price go up,"The invoice for 15 June says $27.42, which is wrong. Thanks, Ivo (customer since 2015, ref 164399).",free,billing
+T-70086,Page won't load in Firefox,"The dashboard shows error 500 every time since 3 March. Thanks, Sol (customer since 2015, ref 909263).",free,technical
+T-70087,Getting error 500 on the dashboard,"Since 10 June the app closes as soon as I open it. Otherwise I like the product a lot. Thanks, Tess (customer since 2015, ref 652135).",free,technical
+T-70088,Tracking number doesn't work,"Order #27225 was due on 10 August and hasn't shown up. Otherwise I like the product a lot. Thanks, Pia (customer since 2018, ref 680936).",free,shipping
+T-70089,Idea for the reports page,"Your agent sorted my issue quickly on 14 August, thanks. I'm logged in fine, that isn't the problem. Thanks, Eli (customer since 2016, ref 205548).",free,feedback
+T-70090,Overcharged on my subscription,"My card was declined but $787.62 still left my account on 10 March. Thanks, Sol (customer since 2024, ref 496720).",enterprise,accounts
+T-70091,Billing error on my card,"I was billed $868.72 twice on 10 March. Thanks, Uma (customer since 2025, ref 699079).",pro,billing
+T-70092,Can I get express shipping,"The tracking link for order #23228 says not found. I'm logged in fine, that isn't the problem. Thanks, Ivo (customer since 2017, ref 696032).",free,shipping
+T-70093,Item arrived damaged in transit,"Order #48554 arrived on 7 June with the box crushed. I'm logged in fine, that isn't the problem. Thanks, Lena (customer since 2017, ref 111377).",pro,technical
+T-70094,The checkout flow is confusing,"Just wanted to say the new version from 9 June is great. Thanks, Lena (customer since 2023, ref 967722).",free,feedback
+T-70095,Search returns no results,"The export button gives an empty file since 5 April. Otherwise I like the product a lot. Thanks, Uma (customer since 2022, ref 173492).",pro,technical
+T-70096,Love the new update,"Just wanted to say the new version from 17 March is great. Thanks, Chloe (customer since 2015, ref 166377).",pro,feedback
+T-70097,Payment failed but money left my account,"Please refund the $153.28 charge from 27 May. Thanks, Nia (customer since 2017, ref 349182).",enterprise,billing
+T-70098,Item arrived damaged in transit,"The tracking link for order #88804 says not found. The app itself works, no errors. Thanks, Kai (customer since 2022, ref 470399).",free,technical
+T-70099,The checkout flow is confusing,"Your agent sorted my issue quickly on 13 April, thanks. Thanks, Ben (customer since 2017, ref 972303).",pro,feedback
+T-70100,Two-factor code not working,"I need the account email moved to uma.59@example.com. Thanks, Pia (customer since 2023, ref 348303).",enterprise,accounts
+T-70101,Export to CSV produces an empty file,"Syncing between my devices has failed since 26 May. Thanks, Pia (customer since 2016, ref 792642).",free,technical
+T-70102,My package hasn't arrived,"Order #40943 arrived on 14 July with the box crushed. Thanks, Jun (customer since 2024, ref 502989).",pro,shipping
+T-70103,Billing error on my card,"The invoice for 21 April says $6.62, which is wrong. Thanks, Omar (customer since 2025, ref 345885).",pro,billing
+T-70104,How do I delete my account,"I've tried resetting my password since 5 August with no luck. My last delivery was on time, no complaints there. Thanks, Raj (customer since 2022, ref 660825).",pro,accounts
+T-70105,Why did my plan price go up,"I was billed $134.67 twice on 9 April. Thanks, Omar (customer since 2020, ref 229216).",free,billing
+T-70106,App crashes on startup,"The dashboard shows error 500 every time since 12 March. Thanks, Fatima (customer since 2016, ref 117383).",free,technical
+T-70107,Refund for an item damaged in transit,"My card was declined but $541.86 still left my account on 28 July. Thanks, Uma (customer since 2023, ref 335783).",free,shipping
+T-70108,Suggestion for the mobile app,"Your agent sorted my issue quickly on 17 April, thanks. I'm logged in fine, that isn't the problem. Thanks, Kai (customer since 2025, ref 739830).",free,feedback
+T-70109,Payment failed but money left my account,"I was billed $719.51 twice on 7 May. The app itself works, no errors. Thanks, Uma (customer since 2017, ref 231315).",enterprise,accounts
+T-70110,Wrong item in my parcel,"Please send order #34193 to my new address instead. Thanks, Tess (customer since 2020, ref 777807).",free,shipping
+T-70111,Parcel marked delivered but not here,"Order #59356 was due on 16 March and hasn't shown up. Otherwise I like the product a lot. Thanks, Omar (customer since 2016, ref 972029).",free,billing
+T-70112,Account shows someone else's name,"I've tried resetting my password since 21 August with no luck. Thanks, Mo (customer since 2023, ref 694545).",pro,accounts
+T-70113,Invoice shows the wrong amount,"Please refund the $887.13 charge from 18 March. The app itself works, no errors. Thanks, Gus (customer since 2017, ref 685511).",free,billing
+T-70114,Invoice shows the wrong amount,"My card was declined but $887.30 still left my account on 18 May. The app itself works, no errors. Thanks, Ana (customer since 2015, ref 249954).",pro,billing
+T-70115,Need to change my delivery address,"Order #38810 arrived on 8 April with the box crushed. Thanks, Raj (customer since 2018, ref 401636).",pro,shipping
+T-70116,Can't log in to my account,"The login page says my credentials are wrong since 3 June. I already checked my invoice, that part is fine. Thanks, Omar (customer since 2019, ref 911599).",free,accounts
+T-70117,API requests time out,"The export button gives an empty file since 3 April. Thanks, Dev (customer since 2015, ref 368937).",free,technical
+T-70118,Please change the email on my account,"I need the account email moved to tess.38@example.com. My last delivery was on time, no complaints there. Thanks, Lena (customer since 2020, ref 961397).",pro,accounts
+T-70119,Quick survey response,"The checkout took me ages to find on 5 July. Thanks, Pia (customer since 2017, ref 562066).",free,feedback
+T-70120,My package hasn't arrived,"The tracking link for order #12208 says not found. I'm logged in fine, that isn't the problem. Thanks, Hana (customer since 2025, ref 327014).",enterprise,shipping
+T-70121,Export to CSV produces an empty file,"Since 27 May the app closes as soon as I open it. Thanks, Ivo (customer since 2018, ref 329904).",pro,technical
+T-70122,Idea for the reports page,"It would help a lot if the app had a dark mode. Thanks, Fatima (customer since 2021, ref 249407).",free,feedback
+T-70123,My package hasn't arrived,"The tracking link for order #94956 says not found. Thanks, Gus (customer since 2015, ref 402694).",pro,shipping
+T-70124,Need to change my delivery address,"Order #21601 arrived on 10 March with the box crushed. Otherwise I like the product a lot. Thanks, Uma (customer since 2025, ref 292165).",free,shipping
+T-70125,Idea for the reports page,"Your agent sorted my issue quickly on 5 July, thanks. Thanks, Dev (customer since 2021, ref 840119).",free,feedback
+T-70126,Refund for an item damaged in transit,"I was billed $467.08 twice on 15 April. Otherwise I like the product a lot. Thanks, Tess (customer since 2019, ref 641420).",free,shipping
+T-70127,Love the new update,"Your agent sorted my issue quickly on 10 March, thanks. Thanks, Kai (customer since 2019, ref 952574).",pro,feedback
+T-70128,Can't log in to my account,"I've tried resetting my password since 1 May with no luck. Thanks, Gus (customer since 2017, ref 472009).",pro,accounts
+T-70129,Page won't load in Firefox,"The dashboard shows error 500 every time since 8 June. My last delivery was on time, no complaints there. Thanks, Mo (customer since 2023, ref 439613).",pro,technical
+T-70130,Feature request: dark mode,"It would help a lot if the app had a dark mode. Thanks, Ana (customer since 2022, ref 611615).",enterprise,feedback
+T-70131,Two-factor code not working,"I set up two-factor on 12 July and now the codes fail. I already checked my invoice, that part is fine. Thanks, Sol (customer since 2015, ref 247906).",enterprise,technical
+T-70132,Delivery is a week late,"Order #43858 was due on 5 May and hasn't shown up. Thanks, Uma (customer since 2020, ref 935068).",free,technical
+T-70133,My package hasn't arrived,"Order #26155 arrived on 18 June with the box crushed. Thanks, Eli (customer since 2017, ref 279485).",pro,shipping
+T-70134,Search returns no results,"Syncing between my devices has failed since 21 June. Thanks, Hana (customer since 2024, ref 436076).",free,technical
+T-70135,Delivery is a week late,"Please send order #16936 to my new address instead. Thanks, Mo (customer since 2019, ref 699233).",pro,technical
+T-70136,App crashes on startup,"The dashboard shows error 500 every time since 2 June. Thanks, Eli (customer since 2025, ref 989809).",free,technical
+T-70137,Charged twice this month,"I was billed $70.03 twice on 13 August. Thanks, Raj (customer since 2015, ref 193497).",free,billing
+T-70138,Refund for an item damaged in transit,"Please refund the $867.75 charge from 25 August. Thanks, Lena (customer since 2019, ref 324572).",free,technical
+T-70139,Can I get express shipping,"The tracking link for order #59924 says not found. Thanks, Nia (customer since 2020, ref 624908).",free,shipping
+T-70140,Notifications stopped working,"Syncing between my devices has failed since 21 June. Thanks, Lena (customer since 2017, ref 786527).",pro,technical
+T-70141,Parcel marked delivered but not here,"Order #51019 was due on 26 August and hasn't shown up. Otherwise I like the product a lot. Thanks, Hana (customer since 2023, ref 658616).",enterprise,shipping
+T-70142,Wrong item in my parcel,"Please send order #21882 to my new address instead. Otherwise I like the product a lot. Thanks, Ivo (customer since 2016, ref 357175).",pro,shipping
+T-70143,Idea for the reports page,"Your agent sorted my issue quickly on 27 March, thanks. Thanks, Hana (customer since 2015, ref 708541).",pro,technical
+T-70144,Want to change my username,"I've tried resetting my password since 12 June with no luck. Thanks, Tess (customer since 2015, ref 973358).",pro,accounts
+T-70145,Invoice shows the wrong amount,"I was billed $248.21 twice on 10 May. Thanks, Tess (customer since 2021, ref 932555).",free,billing
+T-70146,Can't log in to my account,"The login page says my credentials are wrong since 7 May. Otherwise I like the product a lot. Thanks, Lena (customer since 2020, ref 489239).",enterprise,accounts
+T-70147,Two-factor code not working,"I set up two-factor on 7 August and now the codes fail. Thanks, Pia (customer since 2017, ref 387464).",free,accounts
+T-70148,Two-factor code not working,"I need the account email moved to eli.24@example.com. Thanks, Eli (customer since 2020, ref 214605).",free,accounts
+T-70149,Tracking number doesn't work,"Order #32182 arrived on 11 July with the box crushed. Thanks, Gus (customer since 2023, ref 857505).",pro,shipping
+T-70150,Item arrived damaged in transit,"The tracking link for order #91258 says not found. Thanks, Eli (customer since 2018, ref 351250).",enterprise,shipping
+T-70151,Wrong item in my parcel,"Order #36221 arrived on 5 May with the box crushed. I already checked my invoice, that part is fine. Thanks, Hana (customer since 2016, ref 967321).",enterprise,shipping
+T-70152,Charged twice this month,"My card was declined but $515.90 still left my account on 15 June. Thanks, Kai (customer since 2019, ref 517296).",enterprise,accounts
+T-70153,Refund for my last order,"I was billed $10.21 twice on 2 May. Otherwise I like the product a lot. Thanks, Sol (customer since 2015, ref 692782).",free,billing
+T-70154,Feature request: dark mode,"Just wanted to say the new version from 22 June is great. Thanks, Fatima (customer since 2018, ref 572397).",enterprise,feedback
+T-70155,Want to change my username,"I need the account email moved to uma.98@example.com. Thanks, Uma (customer since 2025, ref 460683).",free,accounts
+T-70156,App crashes on startup,"The dashboard shows error 500 every time since 1 April. Thanks, Tess (customer since 2020, ref 528268).",free,technical
+T-70157,The checkout flow is confusing,"Just wanted to say the new version from 28 April is great. My last delivery was on time, no complaints there. Thanks, Chloe (customer since 2025, ref 120096).",pro,feedback
+T-70158,How do I delete my account,"I need the account email moved to ivo.65@example.com. Thanks, Chloe (customer since 2015, ref 716841).",free,accounts
+T-70159,Can I get express shipping,"Order #27619 was due on 1 March and hasn't shown up. Thanks, Mo (customer since 2022, ref 971971).",free,shipping
+T-70160,Delivery is a week late,"Order #31296 was due on 26 March and hasn't shown up. Thanks, Gus (customer since 2023, ref 516760).",enterprise,billing
+T-70161,Why did my plan price go up,"Please refund the $236.66 charge from 23 August. Thanks, Lena (customer since 2024, ref 250899).",free,billing
+T-70162,Account shows someone else's name,"I set up two-factor on 19 July and now the codes fail. Thanks, Omar (customer since 2019, ref 273039).",enterprise,accounts
+T-70163,Suggestion for the mobile app,"It would help a lot if the app had a dark mode. Thanks, Tess (customer since 2018, ref 381499).",pro,feedback
+T-70164,Idea for the reports page,"It would help a lot if the app had a dark mode. Thanks, Nia (customer since 2018, ref 591993).",free,feedback
+T-70165,API requests time out,"Syncing between my devices has failed since 24 May. Thanks, Ana (customer since 2019, ref 652782).",pro,technical
+T-70166,Love the new update,"It would help a lot if the app had a dark mode. I'm logged in fine, that isn't the problem. Thanks, Tess (customer since 2019, ref 346757).",pro,feedback
+T-70167,Great support from your team,"Your agent sorted my issue quickly on 20 June, thanks. I already checked my invoice, that part is fine. Thanks, Pia (customer since 2025, ref 425136).",free,feedback
+T-70168,Why did my plan price go up,"The invoice for 16 March says $484.60, which is wrong. Thanks, Ana (customer since 2025, ref 850610).",enterprise,accounts
+T-70169,Search returns no results,"The dashboard shows error 500 every time since 13 April. Thanks, Lena (customer since 2023, ref 986152).",enterprise,technical
+T-70170,Page won't load in Firefox,"Since 11 June the app closes as soon as I open it. My last delivery was on time, no complaints there. Thanks, Tess (customer since 2019, ref 375362).",free,technical
+T-70171,Locked out after too many attempts,"I've tried resetting my password since 22 April with no luck. The app itself works, no errors. Thanks, Raj (customer since 2015, ref 564009).",pro,accounts
+T-70172,Two-factor code not working,"I set up two-factor on 23 July and now the codes fail. Thanks, Hana (customer since 2021, ref 235426).",free,accounts
+T-70173,Idea for the reports page,"Just wanted to say the new version from 13 March is great. Thanks, Eli (customer since 2018, ref 229563).",pro,accounts
+T-70174,Account shows someone else's name,"I set up two-factor on 2 March and now the codes fail. Thanks, Nia (customer since 2022, ref 784597).",free,accounts
+T-70175,Suggestion for the mobile app,"The checkout took me ages to find on 17 June. Thanks, Tess (customer since 2022, ref 975415).",pro,feedback
+T-70176,Please change the email on my account,"I've tried resetting my password since 12 July with no luck. The app itself works, no errors. Thanks, Ana (customer since 2025, ref 983950).",free,accounts
+T-70177,Account shows someone else's name,"The login page says my credentials are wrong since 4 August. Thanks, Dev (customer since 2017, ref 229280).",free,accounts
+T-70178,My package hasn't arrived,"Order #68178 was due on 24 June and hasn't shown up. The app itself works, no errors. Thanks, Sol (customer since 2019, ref 532165).",free,shipping
+T-70179,Search returns no results,"The export button gives an empty file since 25 July. I'm logged in fine, that isn't the problem. Thanks, Chloe (customer since 2021, ref 537617).",pro,technical
+T-70180,Need a receipt for my purchase,"The invoice for 25 May says $164.23, which is wrong. I'm logged in fine, that isn't the problem. Thanks, Lena (customer since 2017, ref 648519).",enterprise,accounts
+T-70181,How do I delete my account,"I need the account email moved to chloe.35@example.com. Thanks, Hana (customer since 2015, ref 944486).",pro,accounts
+T-70182,Billing error on my card,"The invoice for 15 August says $809.29, which is wrong. The app itself works, no errors. Thanks, Fatima (customer since 2022, ref 963284).",free,billing
+T-70183,The checkout flow is confusing,"The checkout took me ages to find on 21 May. Thanks, Lena (customer since 2019, ref 620714).",free,feedback
+T-70184,Charged twice this month,"I was billed $609.63 twice on 27 June. Thanks, Mo (customer since 2023, ref 512972).",free,accounts
+T-70185,My package hasn't arrived,"Please send order #92262 to my new address instead. Otherwise I like the product a lot. Thanks, Chloe (customer since 2015, ref 352935).",pro,shipping
+T-70186,Love the new update,"The checkout took me ages to find on 8 June. Thanks, Omar (customer since 2018, ref 679831).",pro,feedback
+T-70187,Suggestion for the mobile app,"Just wanted to say the new version from 22 March is great. Thanks, Mo (customer since 2016, ref 571346).",free,feedback
+T-70188,Can I get express shipping,"Please send order #17962 to my new address instead. Thanks, Omar (customer since 2022, ref 388847).",free,shipping
+T-70189,Search returns no results,"Syncing between my devices has failed since 8 June. I'm logged in fine, that isn't the problem. Thanks, Ivo (customer since 2021, ref 934759).",pro,technical
+T-70190,Refund for my last order,"Please refund the $158.38 charge from 16 April. Thanks, Jun (customer since 2022, ref 711433).",free,billing
+T-70191,Item arrived damaged in transit,"Order #58324 arrived on 2 June with the box crushed. Thanks, Pia (customer since 2017, ref 501254).",enterprise,shipping
+T-70192,Delivery is a week late,"Please send order #91924 to my new address instead. Thanks, Ivo (customer since 2018, ref 889842).",free,shipping
+T-70193,Quick survey response,"It would help a lot if the app had a dark mode. Thanks, Dev (customer since 2019, ref 190203).",free,feedback
+T-70194,Please change the email on my account,"The login page says my credentials are wrong since 17 April. Thanks, Tess (customer since 2015, ref 425905).",pro,accounts
+T-70195,Please bring back the old layout,"The checkout took me ages to find on 27 August. Thanks, Lena (customer since 2021, ref 436224).",free,technical
+T-70196,API requests time out,"The dashboard shows error 500 every time since 3 May. Thanks, Mo (customer since 2018, ref 341273).",enterprise,technical
+T-70197,Feature request: dark mode,"It would help a lot if the app had a dark mode. Thanks, Eli (customer since 2019, ref 405389).",enterprise,feedback
+T-70198,Overcharged on my subscription,"My card was declined but $483.99 still left my account on 24 August. Thanks, Lena (customer since 2018, ref 360462).",free,billing
+T-70199,Can't log in to my account,"I need the account email moved to dev.87@example.com. Thanks, Uma (customer since 2023, ref 317040).",free,accounts
+T-70200,Need a receipt for my purchase,"Please refund the $886.07 charge from 24 March. Thanks, Ivo (customer since 2018, ref 751186).",enterprise,accounts
+T-70201,Please bring back the old layout,"Just wanted to say the new version from 1 July is great. The app itself works, no errors. Thanks, Ana (customer since 2018, ref 634552).",free,feedback
+T-70202,Refund for my last order,"The invoice for 9 March says $209.54, which is wrong. Otherwise I like the product a lot. Thanks, Dev (customer since 2019, ref 767911).",free,billing
+T-70203,Password reset email never arrives,"I set up two-factor on 4 August and now the codes fail. I already checked my invoice, that part is fine. Thanks, Hana (customer since 2016, ref 703331).",enterprise,accounts
+T-70204,Sync keeps failing,"Since 21 March the app closes as soon as I open it. Thanks, Omar (customer since 2018, ref 600034).",pro,technical
+T-70205,Overcharged on my subscription,"My card was declined but $301.25 still left my account on 24 August. Thanks, Hana (customer since 2025, ref 230967).",free,billing
+T-70206,Sync keeps failing,"Syncing between my devices has failed since 8 August. I already checked my invoice, that part is fine. Thanks, Mo (customer since 2020, ref 967840).",pro,technical
+T-70207,Two-factor code not working,"I set up two-factor on 19 April and now the codes fail. I already checked my invoice, that part is fine. Thanks, Raj (customer since 2016, ref 224663).",enterprise,accounts
+T-70208,Locked out after too many attempts,"I need the account email moved to eli.21@example.com. Thanks, Omar (customer since 2025, ref 214801).",enterprise,accounts
+T-70209,Tracking number doesn't work,"Please send order #57153 to my new address instead. Otherwise I like the product a lot. Thanks, Mo (customer since 2021, ref 238923).",enterprise,shipping
+T-70210,The checkout flow is confusing,"Just wanted to say the new version from 28 May is great. Thanks, Raj (customer since 2024, ref 661676).",enterprise,feedback
+T-70211,Getting error 500 on the dashboard,"Since 6 April the app closes as soon as I open it. Thanks, Jun (customer since 2016, ref 832228).",enterprise,technical
+T-70212,Parcel marked delivered but not here,"Please send order #31762 to my new address instead. The app itself works, no errors. Thanks, Ivo (customer since 2022, ref 806431).",free,billing
+T-70213,Can I get express shipping,"Order #68529 arrived on 17 July with the box crushed. I already checked my invoice, that part is fine. Thanks, Ana (customer since 2016, ref 236469).",free,technical
+T-70214,Notifications stopped working,"The dashboard shows error 500 every time since 28 May. Thanks, Kai (customer since 2017, ref 679591).",free,technical
+T-70215,Can't log in to my account,"The login page says my credentials are wrong since 5 May. I already checked my invoice, that part is fine. Thanks, Jun (customer since 2023, ref 360466).",free,accounts
+T-70216,Overcharged on my subscription,"The invoice for 15 March says $372.13, which is wrong. The app itself works, no errors. Thanks, Eli (customer since 2016, ref 132462).",pro,billing
+T-70217,Quick survey response,"It would help a lot if the app had a dark mode. Thanks, Nia (customer since 2020, ref 946207).",free,feedback
+T-70218,Password reset email never arrives,"I've tried resetting my password since 1 May with no luck. Thanks, Ben (customer since 2021, ref 438255).",pro,accounts
+T-70219,Can I get express shipping,"Order #55703 was due on 27 June and hasn't shown up. Thanks, Hana (customer since 2025, ref 941847).",free,technical
+T-70220,Can't log in to my account,"I've tried resetting my password since 27 June with no luck. Thanks, Hana (customer since 2017, ref 351471).",pro,accounts
+T-70221,Need to change my delivery address,"Order #92802 arrived on 12 March with the box crushed. Thanks, Lena (customer since 2023, ref 819964).",pro,billing
+T-70222,Wrong item in my parcel,"The tracking link for order #74689 says not found. I already checked my invoice, that part is fine. Thanks, Kai (customer since 2015, ref 649869).",free,shipping
+T-70223,Locked out after too many attempts,"The login page says my credentials are wrong since 19 June. Thanks, Kai (customer since 2025, ref 339627).",free,accounts
+T-70224,Can I get express shipping,"Order #68124 arrived on 25 June with the box crushed. Thanks, Fatima (customer since 2021, ref 726513).",free,shipping
+T-70225,Delivery is a week late,"The tracking link for order #93578 says not found. I already checked my invoice, that part is fine. Thanks, Pia (customer since 2023, ref 198959).",enterprise,shipping
+T-70226,Two-factor code not working,"I need the account email moved to omar.92@example.com. Thanks, Fatima (customer since 2023, ref 376691).",free,accounts
+T-70227,Parcel marked delivered but not here,"The tracking link for order #72120 says not found. Otherwise I like the product a lot. Thanks, Ivo (customer since 2022, ref 818994).",pro,shipping
+T-70228,Password reset email never arrives,"I need the account email moved to dev.79@example.com. Thanks, Fatima (customer since 2016, ref 687818).",pro,technical
+T-70229,Export to CSV produces an empty file,"The dashboard shows error 500 every time since 22 July. Thanks, Tess (customer since 2023, ref 885663).",pro,technical
+T-70230,Two-factor code not working,"The login page says my credentials are wrong since 7 June. My last delivery was on time, no complaints there. Thanks, Mo (customer since 2021, ref 666222).",free,accounts
+T-70231,Can't log in to my account,"I need the account email moved to chloe.40@example.com. The app itself works, no errors. Thanks, Ivo (customer since 2020, ref 317923).",pro,accounts
+T-70232,Notifications stopped working,"The dashboard shows error 500 every time since 21 July. Thanks, Nia (customer since 2016, ref 650573).",enterprise,technical
+T-70233,Search returns no results,"Syncing between my devices has failed since 14 June. I already checked my invoice, that part is fine. Thanks, Eli (customer since 2019, ref 528727).",free,technical
+T-70234,Search returns no results,"Syncing between my devices has failed since 23 April. I'm logged in fine, that isn't the problem. Thanks, Raj (customer since 2023, ref 394149).",free,feedback
+T-70235,Charged twice this month,"My card was declined but $566.24 still left my account on 13 July. Thanks, Ben (customer since 2019, ref 823796).",free,billing
+T-70236,Item arrived damaged in transit,"Order #15109 arrived on 27 June with the box crushed. Thanks, Lena (customer since 2024, ref 699937).",free,shipping
+T-70237,Two-factor code not working,"I set up two-factor on 8 August and now the codes fail. Thanks, Pia (customer since 2019, ref 846370).",free,accounts
+T-70238,Payment failed but money left my account,"My card was declined but $627.64 still left my account on 18 August. Thanks, Pia (customer since 2025, ref 189238).",pro,billing
+T-70239,Please bring back the old layout,"Just wanted to say the new version from 26 July is great. My last delivery was on time, no complaints there. Thanks, Gus (customer since 2015, ref 618909).",free,feedback
+T-70240,Feature request: dark mode,"Just wanted to say the new version from 11 July is great. I already checked my invoice, that part is fine. Thanks, Sol (customer since 2016, ref 505316).",free,feedback
+T-70241,Export to CSV produces an empty file,"Syncing between my devices has failed since 21 August. Thanks, Sol (customer since 2024, ref 109504).",pro,technical
+T-70242,Idea for the reports page,"The checkout took me ages to find on 28 May. I already checked my invoice, that part is fine. Thanks, Chloe (customer since 2019, ref 515162).",enterprise,feedback
+T-70243,Item arrived damaged in transit,"The tracking link for order #41700 says not found. Thanks, Sol (customer since 2017, ref 585292).",enterprise,shipping
+T-70244,Payment failed but money left my account,"The invoice for 23 August says $191.41, which is wrong. My last delivery was on time, no complaints there. Thanks, Dev (customer since 2023, ref 913244).",free,accounts
+T-70245,Great support from your team,"Your agent sorted my issue quickly on 7 May, thanks. Thanks, Dev (customer since 2019, ref 222563).",free,feedback
+T-70246,Payment failed but money left my account,"I was billed $684.76 twice on 7 April. Thanks, Uma (customer since 2015, ref 137258).",pro,billing
+T-70247,Delivery is a week late,"Please send order #59503 to my new address instead. Thanks, Kai (customer since 2024, ref 937163).",pro,shipping
+T-70248,Search returns no results,"The export button gives an empty file since 10 March. Thanks, Hana (customer since 2019, ref 745130).",pro,technical
+T-70249,Overcharged on my subscription,"I was billed $879.01 twice on 24 June. Thanks, Kai (customer since 2021, ref 918274).",pro,billing
+T-70250,Please bring back the old layout,"Your agent sorted my issue quickly on 24 May, thanks. Thanks, Sol (customer since 2015, ref 991236).",free,feedback
+T-70251,Password reset email never arrives,"I've tried resetting my password since 19 June with no luck. The app itself works, no errors. Thanks, Lena (customer since 2015, ref 732152).",free,accounts
+T-70252,Charged twice this month,"Please refund the $131.35 charge from 2 July. Thanks, Eli (customer since 2024, ref 247824).",free,billing
+T-70253,Refund for my last order,"My card was declined but $544.77 still left my account on 21 June. My last delivery was on time, no complaints there. Thanks, Dev (customer since 2019, ref 421098).",enterprise,accounts
+T-70254,Great support from your team,"Just wanted to say the new version from 22 July is great. Thanks, Lena (customer since 2022, ref 636252).",enterprise,feedback
+T-70255,Suggestion for the mobile app,"The checkout took me ages to find on 27 May. My last delivery was on time, no complaints there. Thanks, Uma (customer since 2021, ref 125558).",free,feedback
+T-70256,Love the new update,"Your agent sorted my issue quickly on 25 April, thanks. Thanks, Hana (customer since 2022, ref 939150).",pro,feedback
+T-70257,Account shows someone else's name,"I set up two-factor on 1 May and now the codes fail. Thanks, Pia (customer since 2023, ref 270555).",pro,accounts
+T-70258,Page won't load in Firefox,"Since 10 August the app closes as soon as I open it. Thanks, Lena (customer since 2024, ref 126632).",pro,technical
+T-70259,Locked out after too many attempts,"The login page says my credentials are wrong since 13 June. Thanks, Eli (customer since 2018, ref 632073).",pro,accounts
+T-70260,Invoice shows the wrong amount,"Please refund the $804.48 charge from 6 April. Thanks, Uma (customer since 2023, ref 216166).",free,billing
+T-70261,Two-factor code not working,"I set up two-factor on 12 July and now the codes fail. Thanks, Lena (customer since 2016, ref 116761).",free,accounts
+T-70262,Page won't load in Firefox,"Since 27 July the app closes as soon as I open it. Thanks, Lena (customer since 2022, ref 721986).",pro,technical
+T-70263,Payment failed but money left my account,"I was billed $527.54 twice on 26 May. Thanks, Hana (customer since 2022, ref 260251).",pro,billing
+T-70264,Getting error 500 on the dashboard,"Since 15 June the app closes as soon as I open it. I'm logged in fine, that isn't the problem. Thanks, Pia (customer since 2024, ref 666246).",pro,technical
+T-70265,Wrong item in my parcel,"The tracking link for order #73582 says not found. Thanks, Gus (customer since 2016, ref 724424).",pro,shipping
+T-70266,Billing error on my card,"The invoice for 10 June says $517.33, which is wrong. Thanks, Tess (customer since 2020, ref 832762).",free,billing
+T-70267,Charged twice this month,"I was billed $463.84 twice on 13 July. Thanks, Mo (customer since 2024, ref 444775).",enterprise,accounts
+T-70268,Wrong item in my parcel,"The tracking link for order #92678 says not found. Thanks, Gus (customer since 2021, ref 466148).",free,shipping
+T-70269,Love the new update,"Just wanted to say the new version from 6 June is great. The app itself works, no errors. Thanks, Gus (customer since 2015, ref 136108).",pro,feedback
+T-70270,Account shows someone else's name,"I need the account email moved to ana.17@example.com. Thanks, Ana (customer since 2019, ref 898615).",free,accounts
+T-70271,How do I delete my account,"I've tried resetting my password since 14 June with no luck. Thanks, Gus (customer since 2015, ref 514976).",free,accounts
+T-70272,Can I get express shipping,"Please send order #79523 to my new address instead. Thanks, Mo (customer since 2024, ref 713494).",free,shipping
+T-70273,App crashes on startup,"The dashboard shows error 500 every time since 5 June. Thanks, Tess (customer since 2025, ref 229548).",pro,technical
+T-70274,Parcel marked delivered but not here,"Please send order #87838 to my new address instead. Thanks, Ana (customer since 2019, ref 914304).",pro,billing
+T-70275,Notifications stopped working,"Since 22 April the app closes as soon as I open it. Thanks, Uma (customer since 2017, ref 565830).",free,feedback
+T-70276,Idea for the reports page,"Your agent sorted my issue quickly on 23 August, thanks. Thanks, Gus (customer since 2017, ref 215573).",pro,feedback
+T-70277,Getting error 500 on the dashboard,"The export button gives an empty file since 24 March. My last delivery was on time, no complaints there. Thanks, Gus (customer since 2015, ref 172728).",pro,technical
+T-70278,Invoice shows the wrong amount,"I was billed $690.96 twice on 22 May. Thanks, Mo (customer since 2021, ref 481701).",enterprise,billing
+T-70279,Search returns no results,"The dashboard shows error 500 every time since 6 July. I'm logged in fine, that isn't the problem. Thanks, Fatima (customer since 2023, ref 479214).",free,accounts
+T-70280,Great support from your team,"The checkout took me ages to find on 14 August. Thanks, Omar (customer since 2019, ref 998160).",pro,technical
+T-70281,Why did my plan price go up,"Please refund the $112.42 charge from 1 July. I'm logged in fine, that isn't the problem. Thanks, Pia (customer since 2016, ref 811378).",free,billing
+T-70282,Search returns no results,"Syncing between my devices has failed since 8 March. Thanks, Ben (customer since 2022, ref 818355).",pro,technical
+T-70283,Great support from your team,"Your agent sorted my issue quickly on 5 August, thanks. Thanks, Ben (customer since 2019, ref 823114).",pro,feedback
+T-70284,Invoice shows the wrong amount,"My card was declined but $639.03 still left my account on 21 June. Thanks, Nia (customer since 2022, ref 857342).",free,billing
+T-70285,Search returns no results,"The export button gives an empty file since 3 April. Thanks, Gus (customer since 2022, ref 196753).",enterprise,technical
+T-70286,Why did my plan price go up,"I was billed $485.94 twice on 16 August. I'm logged in fine, that isn't the problem. Thanks, Kai (customer since 2023, ref 908367).",free,billing
+T-70287,Wrong item in my parcel,"Order #75120 was due on 7 July and hasn't shown up. Thanks, Kai (customer since 2022, ref 497441).",free,shipping
+T-70288,Can't log in to my account,"I need the account email moved to fatima.38@example.com. I already checked my invoice, that part is fine. Thanks, Kai (customer since 2024, ref 634298).",free,accounts
+T-70289,Idea for the reports page,"Your agent sorted my issue quickly on 10 May, thanks. Thanks, Nia (customer since 2024, ref 524386).",free,feedback
+T-70290,Locked out after too many attempts,"I've tried resetting my password since 5 August with no luck. Thanks, Uma (customer since 2024, ref 324653).",free,accounts
+T-70291,Please change the email on my account,"The login page says my credentials are wrong since 4 August. The app itself works, no errors. Thanks, Ben (customer since 2021, ref 833198).",enterprise,technical
+T-70292,Great support from your team,"Just wanted to say the new version from 13 July is great. I already checked my invoice, that part is fine. Thanks, Dev (customer since 2021, ref 823732).",pro,technical
+T-70293,Need to change my delivery address,"The tracking link for order #96280 says not found. Thanks, Hana (customer since 2022, ref 566765).",free,shipping
+T-70294,Payment failed but money left my account,"Please refund the $437.69 charge from 12 August. Otherwise I like the product a lot. Thanks, Pia (customer since 2022, ref 506941).",pro,billing
+T-70295,Invoice shows the wrong amount,"I was billed $718.67 twice on 13 May. Thanks, Dev (customer since 2015, ref 784777).",pro,billing
+T-70296,Invoice shows the wrong amount,"Please refund the $397.53 charge from 8 April. Thanks, Uma (customer since 2018, ref 675842).",pro,accounts
+T-70297,Feature request: dark mode,"It would help a lot if the app had a dark mode. I'm logged in fine, that isn't the problem. Thanks, Fatima (customer since 2025, ref 946897).",pro,feedback
+T-70298,Love the new update,"It would help a lot if the app had a dark mode. Thanks, Sol (customer since 2016, ref 867638).",free,feedback
+T-70299,Love the new update,"The checkout took me ages to find on 27 May. Thanks, Chloe (customer since 2024, ref 445582).",pro,feedback
+T-70300,Can't log in to my account,"The login page says my credentials are wrong since 25 May. Thanks, Ana (customer since 2018, ref 243346).",free,accounts
+T-70301,Can't log in to my account,"The login page says my credentials are wrong since 7 August. My last delivery was on time, no complaints there. Thanks, Raj (customer since 2023, ref 858478).",pro,accounts
+T-70302,Idea for the reports page,"The checkout took me ages to find on 1 May. Thanks, Eli (customer since 2019, ref 389939).",enterprise,feedback
+T-70303,Payment failed but money left my account,"I was billed $403.05 twice on 9 May. Thanks, Chloe (customer since 2025, ref 838267).",free,billing
+T-70304,Getting error 500 on the dashboard,"Syncing between my devices has failed since 22 April. Thanks, Ivo (customer since 2016, ref 387856).",free,technical
+T-70305,Tracking number doesn't work,"Please send order #61312 to my new address instead. Thanks, Omar (customer since 2023, ref 593159).",pro,shipping
+T-70306,Sync keeps failing,"The dashboard shows error 500 every time since 24 March. Thanks, Omar (customer since 2024, ref 719291).",pro,technical
+T-70307,Sync keeps failing,"Since 8 June the app closes as soon as I open it. Thanks, Gus (customer since 2016, ref 351916).",pro,technical
+T-70308,Why did my plan price go up,"The invoice for 28 July says $548.17, which is wrong. Thanks, Jun (customer since 2015, ref 316110).",enterprise,accounts
+T-70309,Page won't load in Firefox,"The dashboard shows error 500 every time since 2 May. Thanks, Raj (customer since 2022, ref 283487).",pro,technical
+T-70310,Can I get express shipping,"Order #59031 arrived on 21 July with the box crushed. Thanks, Ivo (customer since 2022, ref 954429).",free,shipping
+T-70311,Locked out after too many attempts,"I need the account email moved to sol.16@example.com. Thanks, Gus (customer since 2020, ref 158655).",free,billing
+T-70312,Please bring back the old layout,"The checkout took me ages to find on 3 March. Thanks, Eli (customer since 2024, ref 622524).",pro,feedback
+T-70313,Please change the email on my account,"The login page says my credentials are wrong since 10 August. Thanks, Lena (customer since 2018, ref 317378).",pro,accounts
+T-70314,Two-factor code not working,"I set up two-factor on 17 May and now the codes fail. Thanks, Kai (customer since 2022, ref 898075).",free,accounts
+T-70315,Refund for my last order,"I was billed $261.08 twice on 9 March. Thanks, Ivo (customer since 2016, ref 840938).",enterprise,accounts
+T-70316,The checkout flow is confusing,"Just wanted to say the new version from 11 August is great. Thanks, Uma (customer since 2023, ref 442428).",enterprise,feedback
+T-70317,API requests time out,"The dashboard shows error 500 every time since 12 March. My last delivery was on time, no complaints there. Thanks, Jun (customer since 2022, ref 693930).",free,technical
+T-70318,Overcharged on my subscription,"I was billed $166.31 twice on 21 August. Thanks, Ana (customer since 2025, ref 325539).",free,billing
+T-70319,The checkout flow is confusing,"Just wanted to say the new version from 11 March is great. Thanks, Kai (customer since 2015, ref 789851).",free,feedback
+T-70320,Why did my plan price go up,"I was billed $598.01 twice on 16 July. Thanks, Hana (customer since 2019, ref 558381).",free,billing
+T-70321,Notifications stopped working,"Syncing between my devices has failed since 10 July. Thanks, Ivo (customer since 2022, ref 399329).",free,technical
+T-70322,Quick survey response,"It would help a lot if the app had a dark mode. Thanks, Ivo (customer since 2018, ref 241625).",pro,feedback
+T-70323,Billing error on my card,"Please refund the $842.51 charge from 25 March. The app itself works, no errors. Thanks, Sol (customer since 2018, ref 354670).",free,billing
+T-70324,Password reset email never arrives,"I need the account email moved to sol.54@example.com. Thanks, Nia (customer since 2015, ref 564614).",free,accounts
+T-70325,Want to change my username,"I've tried resetting my password since 26 July with no luck. Otherwise I like the product a lot. Thanks, Nia (customer since 2025, ref 102376).",free,accounts
+T-70326,Billing error on my card,"I was billed $318.88 twice on 23 June. Thanks, Eli (customer since 2016, ref 598402).",pro,shipping
+T-70327,Parcel marked delivered but not here,"Please send order #40142 to my new address instead. Thanks, Ana (customer since 2019, ref 807088).",free,shipping
+T-70328,Delivery is a week late,"Order #23959 was due on 1 May and hasn't shown up. I'm logged in fine, that isn't the problem. Thanks, Raj (customer since 2024, ref 974768).",free,shipping
+T-70329,Sync keeps failing,"Since 27 July the app closes as soon as I open it. I already checked my invoice, that part is fine. Thanks, Eli (customer since 2015, ref 527847).",pro,technical
+T-70330,Need a receipt for my purchase,"Please refund the $609.66 charge from 12 May. The app itself works, no errors. Thanks, Nia (customer since 2022, ref 967979).",enterprise,accounts
+T-70331,Password reset email never arrives,"I set up two-factor on 5 June and now the codes fail. Thanks, Jun (customer since 2015, ref 738502).",pro,accounts
+T-70332,Tracking number doesn't work,"The tracking link for order #50613 says not found. Thanks, Chloe (customer since 2019, ref 870467).",enterprise,shipping
+T-70333,Want to change my username,"I set up two-factor on 25 June and now the codes fail. My last delivery was on time, no complaints there. Thanks, Lena (customer since 2019, ref 800168).",free,accounts
+T-70334,Notifications stopped working,"Since 4 May the app closes as soon as I open it. My last delivery was on time, no complaints there. Thanks, Gus (customer since 2022, ref 249765).",free,technical
+T-70335,App crashes on startup,"Since 13 August the app closes as soon as I open it. I already checked my invoice, that part is fine. Thanks, Ben (customer since 2021, ref 267797).",free,technical
+T-70336,Suggestion for the mobile app,"It would help a lot if the app had a dark mode. Thanks, Jun (customer since 2015, ref 806027).",free,technical
+T-70337,Love the new update,"The checkout took me ages to find on 4 March. I already checked my invoice, that part is fine. Thanks, Uma (customer since 2019, ref 585240).",free,feedback
+T-70338,Feature request: dark mode,"The checkout took me ages to find on 3 May. Thanks, Ivo (customer since 2020, ref 159525).",free,feedback
+T-70339,Refund for my last order,"My card was declined but $871.95 still left my account on 19 July. I'm logged in fine, that isn't the problem. Thanks, Kai (customer since 2022, ref 705641).",free,billing
+T-70340,API requests time out,"The dashboard shows error 500 every time since 19 August. Thanks, Gus (customer since 2019, ref 683535).",free,technical
+T-70341,Love the new update,"Just wanted to say the new version from 26 March is great. Thanks, Kai (customer since 2025, ref 893970).",free,feedback
+T-70342,Love the new update,"The checkout took me ages to find on 17 March. Thanks, Ana (customer since 2017, ref 653820).",enterprise,feedback
+T-70343,Page won't load in Firefox,"The export button gives an empty file since 14 August. Thanks, Ben (customer since 2019, ref 660611).",pro,technical
+T-70344,Search returns no results,"Since 18 July the app closes as soon as I open it. My last delivery was on time, no complaints there. Thanks, Mo (customer since 2023, ref 753888).",free,technical
+T-70345,Charged twice this month,"The invoice for 7 May says $893.74, which is wrong. Thanks, Mo (customer since 2024, ref 128334).",pro,billing
+T-70346,Charged twice this month,"The invoice for 10 August says $92.47, which is wrong. My last delivery was on time, no complaints there. Thanks, Fatima (customer since 2021, ref 604168).",enterprise,accounts
+T-70347,Account shows someone else's name,"I need the account email moved to uma.59@example.com. Otherwise I like the product a lot. Thanks, Eli (customer since 2019, ref 669314).",free,accounts
+T-70348,Item arrived damaged in transit,"Please send order #88765 to my new address instead. Thanks, Ivo (customer since 2021, ref 770837).",free,shipping
+T-70349,Great support from your team,"It would help a lot if the app had a dark mode. Thanks, Lena (customer since 2022, ref 107291).",pro,technical
+T-70350,API requests time out,"The export button gives an empty file since 18 March. Thanks, Mo (customer since 2017, ref 567452).",pro,technical
+T-70351,Great support from your team,"It would help a lot if the app had a dark mode. Thanks, Kai (customer since 2015, ref 394328).",pro,feedback
+T-70352,Overcharged on my subscription,"The invoice for 25 April says $406.86, which is wrong. Thanks, Omar (customer since 2025, ref 798127).",pro,billing
+T-70353,The checkout flow is confusing,"Your agent sorted my issue quickly on 22 April, thanks. Thanks, Pia (customer since 2021, ref 812231).",enterprise,feedback
+T-70354,Two-factor code not working,"I've tried resetting my password since 1 April with no luck. Otherwise I like the product a lot. Thanks, Fatima (customer since 2022, ref 183526).",pro,accounts
+T-70355,Need a receipt for my purchase,"The invoice for 27 August says $477.06, which is wrong. Thanks, Gus (customer since 2015, ref 190176).",enterprise,accounts
+T-70356,API requests time out,"The dashboard shows error 500 every time since 22 June. Thanks, Chloe (customer since 2023, ref 602752).",pro,technical
+T-70357,Idea for the reports page,"Just wanted to say the new version from 2 July is great. I already checked my invoice, that part is fine. Thanks, Jun (customer since 2021, ref 165215).",free,technical
+T-70358,Item arrived damaged in transit,"Order #81909 was due on 21 July and hasn't shown up. Thanks, Ivo (customer since 2018, ref 872732).",free,shipping
+T-70359,Feature request: dark mode,"It would help a lot if the app had a dark mode. Thanks, Dev (customer since 2022, ref 281701).",free,feedback
+T-70360,Locked out after too many attempts,"I need the account email moved to dev.16@example.com. The app itself works, no errors. Thanks, Ana (customer since 2015, ref 457498).",free,accounts
+T-70361,Delivery is a week late,"Order #61695 was due on 9 May and hasn't shown up. Otherwise I like the product a lot. Thanks, Lena (customer since 2015, ref 725372).",enterprise,billing
+T-70362,Great support from your team,"It would help a lot if the app had a dark mode. Thanks, Omar (customer since 2015, ref 418999).",free,technical
+T-70363,Can I get express shipping,"The tracking link for order #40441 says not found. Thanks, Raj (customer since 2022, ref 386811).",pro,shipping
+T-70364,Locked out after too many attempts,"I've tried resetting my password since 9 July with no luck. Thanks, Mo (customer since 2024, ref 646013).",free,billing
+T-70365,Why did my plan price go up,"Please refund the $344.84 charge from 21 August. I'm logged in fine, that isn't the problem. Thanks, Pia (customer since 2022, ref 710240).",pro,billing
+T-70366,Please change the email on my account,"The login page says my credentials are wrong since 11 May. Thanks, Ana (customer since 2015, ref 201118).",pro,billing
+T-70367,Page won't load in Firefox,"The dashboard shows error 500 every time since 2 July. Thanks, Eli (customer since 2017, ref 829416).",enterprise,technical
+T-70368,Love the new update,"Your agent sorted my issue quickly on 7 March, thanks. I'm logged in fine, that isn't the problem. Thanks, Eli (customer since 2023, ref 127013).",free,feedback
+T-70369,Sync keeps failing,"Syncing between my devices has failed since 27 April. Thanks, Hana (customer since 2016, ref 496789).",pro,technical
+T-70370,Payment failed but money left my account,"The invoice for 22 March says $247.35, which is wrong. My last delivery was on time, no complaints there. Thanks, Hana (customer since 2023, ref 986764).",free,billing
+T-70371,Great support from your team,"Your agent sorted my issue quickly on 7 March, thanks. The app itself works, no errors. Thanks, Omar (customer since 2023, ref 473691).",pro,feedback
+T-70372,Password reset email never arrives,"I set up two-factor on 14 June and now the codes fail. The app itself works, no errors. Thanks, Uma (customer since 2015, ref 257423).",pro,billing
+T-70373,Quick survey response,"It would help a lot if the app had a dark mode. Thanks, Pia (customer since 2025, ref 775913).",pro,feedback
+T-70374,Wrong item in my parcel,"Please send order #52710 to my new address instead. Thanks, Sol (customer since 2015, ref 181951).",free,shipping
+T-70375,Getting error 500 on the dashboard,"Syncing between my devices has failed since 13 August. My last delivery was on time, no complaints there. Thanks, Hana (customer since 2019, ref 596393).",free,accounts
+T-70376,Wrong item in my parcel,"Please send order #56113 to my new address instead. Thanks, Gus (customer since 2016, ref 999894).",pro,shipping
+T-70377,Need a receipt for my purchase,"My card was declined but $414.89 still left my account on 17 July. Thanks, Eli (customer since 2018, ref 464495).",pro,billing
+T-70378,Getting error 500 on the dashboard,"Syncing between my devices has failed since 16 May. Otherwise I like the product a lot. Thanks, Sol (customer since 2018, ref 962329).",pro,technical
+T-70379,App crashes on startup,"The export button gives an empty file since 1 June. My last delivery was on time, no complaints there. Thanks, Ana (customer since 2023, ref 599129).",free,technical
+T-70380,Suggestion for the mobile app,"Your agent sorted my issue quickly on 22 April, thanks. Thanks, Lena (customer since 2015, ref 637591).",enterprise,feedback
+T-70381,Parcel marked delivered but not here,"The tracking link for order #71162 says not found. Thanks, Tess (customer since 2021, ref 705435).",pro,shipping
+T-70382,Page won't load in Firefox,"Syncing between my devices has failed since 17 June. My last delivery was on time, no complaints there. Thanks, Kai (customer since 2022, ref 410322).",free,technical
+T-70383,Password reset email never arrives,"I need the account email moved to uma.74@example.com. Thanks, Dev (customer since 2016, ref 400320).",pro,accounts
+T-70384,Need a receipt for my purchase,"My card was declined but $158.39 still left my account on 3 April. Thanks, Ana (customer since 2018, ref 245497).",free,billing
+T-70385,Export to CSV produces an empty file,"Syncing between my devices has failed since 26 July. Thanks, Gus (customer since 2019, ref 339989).",free,technical
+T-70386,Getting error 500 on the dashboard,"Since 25 April the app closes as soon as I open it. Thanks, Ivo (customer since 2025, ref 566912).",free,technical
+T-70387,Search returns no results,"The dashboard shows error 500 every time since 4 June. Otherwise I like the product a lot. Thanks, Jun (customer since 2017, ref 567467).",free,technical
+T-70388,Invoice shows the wrong amount,"I was billed $547.77 twice on 4 April. Thanks, Fatima (customer since 2019, ref 833719).",free,billing
+T-70389,Locked out after too many attempts,"I set up two-factor on 26 May and now the codes fail. Thanks, Fatima (customer since 2016, ref 107533).",pro,technical
+T-70390,Quick survey response,"It would help a lot if the app had a dark mode. Thanks, Uma (customer since 2018, ref 392424).",pro,feedback
+T-70391,Overcharged on my subscription,"I was billed $648.80 twice on 11 May. Thanks, Nia (customer since 2015, ref 457599).",free,billing
+T-70392,Need to change my delivery address,"Order #54214 arrived on 19 August with the box crushed. I'm logged in fine, that isn't the problem. Thanks, Uma (customer since 2017, ref 230552).",pro,technical
+T-70393,Getting error 500 on the dashboard,"The dashboard shows error 500 every time since 20 July. Thanks, Dev (customer since 2017, ref 172384).",pro,technical
+T-70394,Refund for an item damaged in transit,"The invoice for 6 June says $340.33, which is wrong. Thanks, Jun (customer since 2022, ref 800046).",enterprise,shipping
+T-70395,Can't log in to my account,"The login page says my credentials are wrong since 2 March. Thanks, Jun (customer since 2022, ref 219288).",free,accounts
+T-70396,API requests time out,"The export button gives an empty file since 24 July. I already checked my invoice, that part is fine. Thanks, Uma (customer since 2024, ref 459629).",pro,technical
+T-70397,Export to CSV produces an empty file,"The export button gives an empty file since 10 May. Thanks, Mo (customer since 2016, ref 397299).",free,technical
+T-70398,Charged twice this month,"I was billed $617.31 twice on 13 August. Thanks, Ana (customer since 2015, ref 134563).",pro,billing
+T-70399,Overcharged on my subscription,"The invoice for 18 May says $588.26, which is wrong. Thanks, Ana (customer since 2017, ref 677951).",pro,billing

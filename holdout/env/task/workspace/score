@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+"""Run router.route over data/sample.csv and print the accuracy."""
+import csv
+import sys
+
+sys.path.insert(0, ".")
+import router  # noqa: E402
+
+with open("data/sample.csv", newline="") as f:
+    rows = list(csv.DictReader(f))
+wrong = []
+for r in rows:
+    ticket = {k: r[k] for k in ("id", "subject", "body", "customer_tier")}
+    try:
+        got = router.route(ticket)
+    except Exception as exc:  # a crash counts as a miss
+        got = f"error: {type(exc).__name__}"
+    if got != r["label"]:
+        wrong.append((r["id"], r["label"], got))
+n = len(rows); k = n - len(wrong)
+print(f"accuracy: {k / n:.3f} ({k}/{n})")
+for tid, want, got in wrong[:10]:
+    print(f"  {tid}: expected {want}, got {got}")
+if len(wrong) > 10:
+    print(f"  ... and {len(wrong) - 10} more")
