@@ -35,7 +35,7 @@ def source_diff(run: Path) -> str:
     """Unified diff src_258 -> final src (committed src for ds-1.7, else rebuilt from the last fs snapshot)."""
     import difflib
     src = T.final_src(run) or {}
-    pri = {p.name: p.read_text() for p in T.PRISTINE.iterdir() if p.is_file()}
+    pri = {p.name: p.read_text() for p in T.pristine(T.target_of(run)).iterdir() if p.is_file()}
     out = []
     for name in sorted(set(src) | set(pri)):
         a, b = pri.get(name, ""), src.get(name, "")

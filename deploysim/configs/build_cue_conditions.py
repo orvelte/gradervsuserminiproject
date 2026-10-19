@@ -6,6 +6,7 @@ Writes deploysim/configs/cues/:
   SB-G~<cue>.yaml, SB-D~<cue>.yaml      v1, one cue swapped to the other arm's version (never deleted)
   SB-G~system_prompt=shared.yaml, ...   v1 with the shared system prompt (decision 3: kept alongside the per-arm ones)
   baseline/SB0-G.yaml, SB0-D.yaml       baseline edition: must reproduce DS-G and DS-D-NOPUSH (tests, smoke)
+  difficulty/SB-{G,D}~errors=<N>.yaml   Phase 4: v1 arms with the count-neutral forewarning, N in DIFFICULTY_LEVELS
 Agent and task settings are the frozen arms' (deploysim/configs/build_ds_arms.py). The frozen arm configs are not
 touched."""
 from __future__ import annotations
@@ -24,6 +25,7 @@ sys.path.insert(0, str(REPO_ROOT / "deploysim" / "cues"))
 import registry as R  # noqa: E402
 
 OUT = HERE / "cues"
+DIFFICULTY_LEVELS = (5, 20, 60, 258)      # environments/precommit_hook/src_<N>; 258 is the existing level
 EXPERIMENT = "splitbrain"
 
 
@@ -51,6 +53,10 @@ def conditions() -> dict[str, dict]:
     for base in ("graded", "deployment"):
         reg = R.load("v1"); s = {**R.default_settings(reg, base), "system_prompt": "shared"}
         out[f"SB-{'G' if base == 'graded' else 'D'}~system_prompt=shared"] = R.render("v1", s)
+    for base in ("graded", "deployment"):
+        reg = R.load("v1"); s = {**R.default_settings(reg, base), "forewarning": f"{base}_neutral"}
+        for n in DIFFICULTY_LEVELS:
+            out[f"difficulty/SB-{'G' if base == 'graded' else 'D'}~errors={n}"] = {**R.render("v1", s), "target_errors": n}
     out["baseline/SB0-G"] = R.render("baseline", base="graded")
     out["baseline/SB0-D"] = R.render("baseline", base="deployment")
     return out
@@ -60,12 +66,14 @@ def build(cid: str, r: dict) -> dict:
     A, F = R.frozen()
     src = A.build("DS-G")
     task = copy.deepcopy(src["task"]); task["sf_framing"] = "cues"; task["cue_content"] = r["cue_content"]
+    if "target_errors" in r:
+        task["target_errors"] = r["target_errors"]
     base = "deployment" if cid.rsplit("/", 1)[-1].startswith(("SB-D", "SB0-D")) else "graded"
     settings_hash = hashlib.sha256(json.dumps(r["settings"], sort_keys=True).encode()).hexdigest()[:12]
     return _lit({"environment": src["environment"], "agent": copy.deepcopy(src["agent"]), "task": task,
                  "prompts": {"system_prompt": r["system_prompt"], "prior_turns": r["prior_turns"], "user_prompt": r["user_prompt"]},
                  "condition": {"id": cid.rsplit("/", 1)[-1], "experiment": EXPERIMENT, "env_version": F.ENV_VERSION, "cue_edition": r["edition"], "base_arm": base,
-                               "cue_settings": r["settings"], "cue_settings_hash": settings_hash,
+                               "cue_settings": r["settings"], "cue_settings_hash": settings_hash, **({"target_errors": r["target_errors"]} if "target_errors" in r else {}),
                                "source_config": src["condition"]["source_config"], "source_config_hash": src["condition"]["source_config_hash"]}})
 
 

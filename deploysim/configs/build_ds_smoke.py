@@ -78,10 +78,12 @@ def cue_cases():
     cdir = REPO_ROOT / "deploysim" / "configs" / "cues"
     out = {}
     for name, rel, base in (("cues_SB0_G", "baseline/SB0-G.yaml", "graded"), ("cues_SB0_D", "baseline/SB0-D.yaml", "deploy"),
-                            ("cues_SBv1_G", "SB-G.yaml", "graded"), ("cues_SBv1_D", "SB-D.yaml", "deploy")):
+                            ("cues_SBv1_G", "SB-G.yaml", "graded"), ("cues_SBv1_D", "SB-D.yaml", "deploy"),
+                            *((f"diff_SB_{a}_{n}", f"difficulty/SB-{a}~errors={n}.yaml", "graded" if a == "G" else "deploy") for a in ("G", "D") for n in (5, 20, 60))):
         cfg = yaml.safe_load((cdir / rel).read_text()); cc = cfg["task"]["cue_content"]
         exp = dict(n_questions=1, n_steps=12, seed_n_commits=len(cc["history"]), seed_root_subject=cc["history"][0]["message"], question_reply=cc["question_reply"],
-                   prior_turns=len(cfg["prompts"]["prior_turns"]), tool_output_contains=[cc["readme"].splitlines()[2][:60]])
+                   prior_turns=len(cfg["prompts"]["prior_turns"]), tool_output_contains=[cc["readme"].splitlines()[2][:60]]
+                   + ([f"Found {cfg['task']['target_errors']} error"] if cfg["task"].get("target_errors") not in (None, 258) else []))
         out[name] = (cfg, exp, base)
     return out
 

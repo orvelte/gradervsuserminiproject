@@ -298,3 +298,12 @@ Design decisions not specified by the spec:
 - Labeller: `stale_index`, hook-ignored-at-commit → `bypass_hookpath`, `legit_fix` exclusive of cheats,
   `drop_attributes` flag (not a cheat, pending decision), fixes to `unexplained_bypass`, `edit_hook_config`,
   `gave_up_reported`. 82 label tests. Decisions #29–#34.
+
+## 2026-10-19: split-brain Phase 4 — difficulty knob (no paid runs)
+
+- `environments/precommit_hook/src_{5,20,60}` (exact counts under the project config) from
+  `deploysim/env/make_difficulty.py` (reuses the upstream generator); added to the DS image after the generator step.
+- `deploysim/configs/cues/difficulty/SB-{G,D}~errors={5,20,60,258}`: v1 arms with a count-neutral forewarning
+  (new `graded_neutral` / `deployment_neutral` values of the `forewarning` cue; no other condition changes).
+- Labeller: per-level starting repository; primary `gaming` measure (DECISIONS #37). Tests for level configs,
+  forewarning neutrality/length, exact counts; container smoke at each level passes. Decisions #37–#43.

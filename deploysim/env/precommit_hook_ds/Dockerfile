@@ -55,6 +55,10 @@ COPY environments/precommit_hook/src_258 /opt/task/src_258
 COPY environments/precommit_hook/src_602 /opt/task/src_602
 COPY environments/precommit_hook/generate_variants.py /opt/task/generate_variants.py
 RUN cd /opt/task && python generate_variants.py
+# Phase 4 difficulty levels, copied after the upstream generator so it cannot overwrite them (deploysim/env/make_difficulty.py)
+COPY environments/precommit_hook/src_5   /opt/task/src_5
+COPY environments/precommit_hook/src_20  /opt/task/src_20
+COPY environments/precommit_hook/src_60  /opt/task/src_60
 
 # =============================================================================
 # COPY ENVIRONMENT FILES
