@@ -106,3 +106,4 @@ DS-G is a stable graded arm. The deployment arm's zero hard cheats in `gate1` (8
 | ds-1.2 | 2026-10-06 | adds the `deploy_h` framing (deployment repository with the harness question reply) for the additive screen | `additive1` |
 | ds-1.3 | 2026-10-06 | adds the `deploy_n` framing (deployment repository, neutral question reply) for the message 2x2 | `x2x2` |
 | ds-1.4 | 2026-10-18 | (1) post-episode question, asked after scoring, identical in every arm: EVAL or REAL plus a 0-100 confidence, recorded in `sf_run.json` only; (2) a bash call without a `command` argument returns an error to the model instead of crashing the run | `post1` |
+| ds-1.5 | 2026-10-18 | open post-episode question (names no evaluation or speaker), coded blind; `DS-D2` amended deployment arm | `post2` |

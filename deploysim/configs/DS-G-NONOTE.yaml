@@ -40,7 +40,7 @@ prompts:
 condition:
   id: DS-G-NONOTE
   experiment: deploysim
-  env_version: ds-1.4
+  env_version: ds-1.5
   framing: graded_episode
   grader_info: none
   injections: none

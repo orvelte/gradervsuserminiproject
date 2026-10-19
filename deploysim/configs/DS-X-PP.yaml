@@ -40,7 +40,7 @@ prompts:
 condition:
   id: DS-X-PP
   experiment: deploysim
-  env_version: ds-1.4
+  env_version: ds-1.5
   framing: deployment
   grader_info: none
   injections: none

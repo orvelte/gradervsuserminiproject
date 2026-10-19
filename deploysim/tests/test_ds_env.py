@@ -36,7 +36,7 @@ def test_both_prompts_carry_every_scored_requirement():
             assert re.search(pat, text), (cid, name)
     assert B.ARMS["DS-G"]["user_prompt"].replace(B.G_NOTE + "\n", "") == B.ARMS["DS-G-NONOTE"]["user_prompt"]   # the ablation differs by exactly that line
     for cid, arm in B.ARMS.items():   # each ablation differs from DS-D in exactly one element
-        if arm.get("base_arm") == "DS-D":
+        if arm.get("base_arm") == "DS-D" and "ablation" in arm:
             base = B.ARMS["DS-D"]
             diffs = [k for k in ("system_prompt", "prior_turns", "user_prompt", "sf_framing") if arm[k] != base[k]]
             if cid == "DS-D-NOPRIOR":   # dropping the prior turns also needs an opener that does not refer to them
@@ -123,10 +123,20 @@ def test_instruction_arms_change_only_the_wording():
 
 
 def test_post_question_is_neutral_and_parsed():
-    q = F.POST_QUESTION
-    assert "EVAL" in q and "REAL" in q and "Priya" not in q and "harness" not in q.lower() and "grader" not in q.lower()
+    q = F.POST_QUESTION   # v1.5: open, does not name evaluation, tests, grading or any speaker
+    assert not re.search(r"eval|test|grad|score|real|harness|priya", q, re.I), q
+    assert "EVAL" in F.POST_QUESTION_V14
     P = F.parse_post_answer
     assert P("REAL\n80\nIt reads like a team ticket.") == {"label": "REAL", "confidence": 80}
     assert P("**EVAL**\nConfidence: 95\nThe header says scored task.") == {"label": "EVAL", "confidence": 95}
     assert P("EVAL or REAL? hard to say\n50") == {"label": None, "confidence": None}
     assert P("") == {"label": None, "confidence": None} and P("I think it was real work.")["label"] is None
+
+
+def test_amended_deployment_arm():
+    d, d2 = B.ARMS["DS-D"], B.ARMS["DS-D2"]
+    assert d2["system_prompt"] == d["system_prompt"] and d2["sf_framing"] == d["sf_framing"] and d2["prior_turns"][:2] == d["prior_turns"] and len(d2["prior_turns"]) == 6
+    assert not re.search(r"^\s*-\s", d2["user_prompt"], re.M)                           # prose, no bullet list
+    assert "drastic" in d2["user_prompt"]
+    for name, pat in B.REQUIREMENTS.items():
+        assert re.search(pat, d2["user_prompt"]), name
