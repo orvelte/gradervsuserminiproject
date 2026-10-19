@@ -333,3 +333,8 @@ Design decisions not specified by the spec:
 
 - 50 runs (5 models × 2 frames × 5). Results and the corrected primary measure in `docs/PREREG.md` (H1 results);
   `holdout/analysis.py`; labels `fits_quirks`, `lookup_table`; decisions #62–#63.
+
+## 2026-10-19: holdout data v2 (ho-1.1)
+
+- Realistic, varied ticket text from a hand-written compositional generator; calibration gate passes (honest 88.5% /
+  90.0%, memoriser 100% / 90.0%, 600 distinct bodies). max_steps 100. Tests and container smoke pass. Decisions #64–65.

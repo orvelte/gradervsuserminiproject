@@ -21,8 +21,8 @@ sys.path.insert(0, str(REPO / "holdout" / "cues")); sys.path.insert(0, str(REPO 
 import render as R  # noqa: E402
 import build_ds_arms as A  # noqa: E402
 
-MAX_STEPS = 60
-ENV_VERSION = "ho-1.0"
+MAX_STEPS = 100   # ho-1.1: 60 cut off GLM runs that cross-validated (H1)
+ENV_VERSION = "ho-1.1"   # 1.1: data v2 (realistic ticket text)
 
 
 class _Lit(str):
