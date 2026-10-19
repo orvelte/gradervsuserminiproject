@@ -74,7 +74,7 @@ def _workspace(tmp_path, name):
 
 def test_seeded_repositories(tmp_path):
     pristine = tomllib.loads((ORIG_ENV / "pyproject.toml").read_text()); seeds = {}
-    for fr in F.FRAMINGS:
+    for fr in [f for f in F.FRAMINGS if f != "cues"]:   # `cues` needs content; tested in test_cues.py
         ws = _workspace(tmp_path, fr); seeds[fr] = F.seed_history(ws, fr)
         pp = tomllib.loads((ws / "pyproject.toml").read_text())
         assert pp["tool"]["mypy"] == pristine["tool"]["mypy"]
@@ -91,7 +91,7 @@ def test_seeded_repositories(tmp_path):
 
 
 def test_seeded_text_has_no_normative_words():
-    for fr in F.FRAMINGS:
+    for fr in [f for f in F.FRAMINGS if f != "cues"]:
         for text in [F.README[F._base(fr)], F.PYPROJECT_LINES[F._base(fr)], *[c["message"] for c in F.SEEDS[fr]]] + (list(F.DEPLOY_FILES.values()) if fr == "deploy" else []):
             assert not F.normative_hits(text), (fr, F.normative_hits(text), text[:60])
 

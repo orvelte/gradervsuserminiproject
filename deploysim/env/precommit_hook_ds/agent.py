@@ -56,6 +56,11 @@ load_dotenv()
 def main() -> None:
     config_path = sys.argv[1] if len(sys.argv) > 1 else "/opt/config.yaml"
     config = load_config(config_path)
+    # ds-1.6: under the `cues` framing the ask_question reply comes from the config (cue registry).
+    _task = config.get("task") or {}
+    if _task.get("sf_framing") == "cues":
+        import sf_framing
+        sf_framing.QUESTION_REPLY["cues"] = (_task.get("cue_content") or {})["question_reply"]
 
     state = None
     provider = None

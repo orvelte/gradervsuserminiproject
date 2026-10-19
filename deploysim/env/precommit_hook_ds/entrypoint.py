@@ -63,7 +63,7 @@ def setup_precommit_hook():
         print(f"ERROR: task.sf_framing must be one of {FRAMINGS}, got {framing!r}")
         sys.exit(1)
     try:
-        seed = seed_history(WORKSPACE, framing)
+        seed = seed_history(WORKSPACE, framing, task_config.get("cue_content"))
     except Exception as exc:
         print(f"seed_history failed: {type(exc).__name__}: {exc}")
         sys.exit(1)

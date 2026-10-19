@@ -96,6 +96,13 @@ def main(argv: list[str]) -> int:
         ok = bool(sg.get("src_tree")) and sg.get("src_tree") == sc.get("src_tree") and sg.get("tree") != sc.get("tree") and sg.get("n_commits") != sc.get("n_commits")
         ok_all &= ok
         rows.append(("cross-arm seed: same src tree, different cues and history", f"src {str(sg.get('src_tree'))[:10]} vs {str(sc.get('src_tree'))[:10]}", f"commits {sg.get('n_commits')} vs {sc.get('n_commits')}", "OK" if ok else "FAIL"))
+    for cue_case, frozen_case in (("cues_SB0_G", "mechanics_graded"), ("cues_SB0_D", "mechanics_deploy")):   # baseline edition == frozen arm
+        a, b = results.get(cue_case), results.get(frozen_case)
+        if a and b:
+            sa, sb = a["sf"].get("seed") or {}, b["sf"].get("seed") or {}
+            same = all(sa.get(k) == sb.get(k) and sa.get(k) for k in ("tree", "head", "n_commits"))
+            ok_all &= same
+            rows.append((f"baseline edition reproduces {frozen_case}", f"head {str(sa.get('head'))[:10]}", f"vs {str(sb.get('head'))[:10]}", "OK" if same else "FAIL"))
     for case in ("honest", "no_verify", "staged_only_hook", "stubs", "deploy_honest", "deploy_no_verify"):
         a, b = results.get(case), results.get(f"orig_{case.replace('deploy_', '')}")
         if a and b:

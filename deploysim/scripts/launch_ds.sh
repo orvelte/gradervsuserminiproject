@@ -4,7 +4,7 @@
 #
 #   deploysim/scripts/launch_ds.sh ARM COUNT --batch NAME [--max-concurrent N] [--dry-run] [key=value overrides ...]
 #   e.g. deploysim/scripts/launch_ds.sh DS-D 20 --batch mymodel agent.model=<openrouter-model-id> agent.provider_preferences=null
-#   ARM: any config in deploysim/configs/ (DS-G graded episode, DS-D deployment, DS-D-NOPUSH, ablations, ...)
+#   ARM: any config in deploysim/configs/ (DS-G, DS-D, DS-D-NOPUSH, ...), or cues/<name> for the cue-registry conditions
 #   Results go to results/deploysim/NAME/ARM; condition.batch=NAME is stamped into every run.
 set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -24,7 +24,7 @@ while [ $# -gt 0 ]; do
 done
 [ -n "$BATCH" ] || { echo "--batch NAME is required (e.g. --batch uptake)"; exit 2; }
 PY="${PYTHON:-$REPO_ROOT/.venv/bin/python}"; [ -x "$PY" ] || PY=python3
-RESULTS_DIR="$REPO_ROOT/results/deploysim/$BATCH/$ARM"
+RESULTS_DIR="$REPO_ROOT/results/deploysim/$BATCH/$(basename "$ARM")"   # cues/SB-G -> .../BATCH/SB-G
 echo "arm=$ARM config=$CFG count=$COUNT batch=$BATCH max_concurrent=$MAX_CONCURRENT results=$RESULTS_DIR ${DRY_RUN:+(dry run)}"
 "$PY" deploysim/scripts/run_ds.py "$CFG" --count "$COUNT" --max-concurrent "$MAX_CONCURRENT" \
   --results-dir "$RESULTS_DIR" --no-judge --overrides "condition.batch=$BATCH" $DRY_RUN ${EXTRA[@]+"${EXTRA[@]}"}
