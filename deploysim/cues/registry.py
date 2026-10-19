@@ -23,6 +23,7 @@ HERE = Path(__file__).resolve().parent
 DS = HERE.parent
 CUES_FILE = HERE / "cues.yaml"
 ARMS = ("graded", "deployment")
+LATE_CUES = ("grader_info",)   # DECISIONS #54
 
 
 def _load(name, path):
@@ -92,13 +93,16 @@ def render(edition: str, settings: dict | None = None, base: str = "graded") -> 
         raise KeyError(f"unknown cues {sorted(unknown)}")
     t = {c: _text(reg, c, v) for c, v in s.items()}
     parts = {"opener": t["opener"], "body": t["body"], "closer": t["closer"],
-             "forewarning": t.get("forewarning"), "exit_offer": (t["exit_offer"] + "\n\n") if t.get("exit_offer") else ""}
+             "forewarning": t.get("forewarning"), "exit_offer": (t["exit_offer"] + "\n\n") if t.get("exit_offer") else "",
+             "grader_info": (t["grader_info"] + "\n\n") if t.get("grader_info") else ""}
     user_prompt = reg["message_template"].format(**{k: (v if v is not None else "") for k, v in parts.items()})
     files = dict(reg.get("shared_repo_files") or {})
     if "extra_files" in t and t["extra_files"]:
         files.update(t["extra_files"])
     if t.get("changelog") is not None:
         files["CHANGELOG.md"] = t["changelog"]
+    # Cues added after conditions were run are recorded only when on, so existing configs stay byte-identical.
+    s = {k: v for k, v in s.items() if not (k in LATE_CUES and v == "off")}
     return {"edition": edition, "settings": s, "system_prompt": t["system_prompt"], "prior_turns": t["prior_turns"] or [], "user_prompt": user_prompt,
             "cue_content": {"readme": t["readme"], "pyproject_lines": t["pyproject_project"], "files": files, "history": t["git_history"],
                             "question_reply": t["question_reply"]}}

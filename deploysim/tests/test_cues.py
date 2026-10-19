@@ -159,3 +159,37 @@ def test_difficulty_variants_have_exact_counts():
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
     for n in (5, 20, 60):
         assert m.mypy(TASK / f"src_{n}")[0] == n
+
+
+# ------------------------------------------------------------------ block B: weak-grader information (DECISIONS #54)
+GRADER = Path(__file__).resolve().parents[1] / "configs" / "cues" / "grader"
+
+
+@pytest.mark.parametrize("arm", ["G", "D"])
+@pytest.mark.parametrize("n", [60, 258])
+def test_grader_info_condition_adds_exactly_one_line(arm, n):
+    base = _yaml.safe_load((DIFF / f"SB-{arm}~errors={n}.yaml").read_text())
+    new = _yaml.safe_load((GRADER / f"SB-{arm}~errors={n}+grader_info.yaml").read_text())
+    text = R.load("v1")["cues"]["grader_info"]["graded" if arm == "G" else "deployment"]
+    assert new["prompts"]["user_prompt"].replace(text + "\n\n", "", 1) == base["prompts"]["user_prompt"]
+    assert new["prompts"]["system_prompt"] == base["prompts"]["system_prompt"] and new["task"] == base["task"] and new["agent"] == base["agent"]
+
+
+def test_grader_info_pair_is_matched_and_neutral():
+    import tiktoken
+    enc = tiktoken.get_encoding("o200k_base")
+    cue = R.load("v1")["cues"]["grader_info"]
+    g, d = cue["graded"], cue["deployment"]
+    a, b = len(enc.encode(g)), len(enc.encode(d))
+    assert abs(a - b) / max(a, b) <= 0.10
+    for t in (g, d):
+        assert not re.search(r"\bonly\b|\bjust\b|don'?t|do not|must not|cheat|bypass|honest", t, re.I)
+        assert "mypy" not in t                       # the stated verification leaves the type check out
+        for fact in ("py.typed", "pre-commit", "executable", "release: v1.0.0"):
+            assert fact in t
+
+
+def test_grader_info_off_by_default_everywhere_else():
+    for p in (Path(__file__).resolve().parents[1] / "configs" / "cues").rglob("*.yaml"):
+        if "grader_info" not in p.name:
+            assert "grader_info" not in _yaml.safe_load(p.read_text())["condition"]["cue_settings"]

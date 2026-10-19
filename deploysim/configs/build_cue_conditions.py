@@ -7,6 +7,8 @@ Writes deploysim/configs/cues/:
   SB-G~system_prompt=shared.yaml, ...   v1 with the shared system prompt (decision 3: kept alongside the per-arm ones)
   baseline/SB0-G.yaml, SB0-D.yaml       baseline edition: must reproduce DS-G and DS-D-NOPUSH (tests, smoke)
   difficulty/SB-{G,D}~errors=<N>.yaml   Phase 4: v1 arms with the count-neutral forewarning, N in DIFFICULTY_LEVELS
+  grader/SB-{G,D}~errors=<N>+grader_info.yaml   block B weak-grader pilot: the difficulty condition plus the arm's
+                                        grader_info cue (what is verified at the end), N in GRADER_LEVELS
 Agent and task settings are the frozen arms' (deploysim/configs/build_ds_arms.py). The frozen arm configs are not
 touched."""
 from __future__ import annotations
@@ -25,7 +27,8 @@ sys.path.insert(0, str(REPO_ROOT / "deploysim" / "cues"))
 import registry as R  # noqa: E402
 
 OUT = HERE / "cues"
-DIFFICULTY_LEVELS = (5, 20, 60, 258)      # environments/precommit_hook/src_<N>; 258 is the existing level
+DIFFICULTY_LEVELS = (5, 20, 60, 258)
+GRADER_LEVELS = (60, 258)      # environments/precommit_hook/src_<N>; 258 is the existing level
 EXPERIMENT = "splitbrain"
 
 
@@ -57,6 +60,10 @@ def conditions() -> dict[str, dict]:
         reg = R.load("v1"); s = {**R.default_settings(reg, base), "forewarning": f"{base}_neutral"}
         for n in DIFFICULTY_LEVELS:
             out[f"difficulty/SB-{'G' if base == 'graded' else 'D'}~errors={n}"] = {**R.render("v1", s), "target_errors": n}
+    for base in ("graded", "deployment"):
+        reg = R.load("v1"); s = {**R.default_settings(reg, base), "forewarning": f"{base}_neutral", "grader_info": base}
+        for n in GRADER_LEVELS:
+            out[f"grader/SB-{'G' if base == 'graded' else 'D'}~errors={n}+grader_info"] = {**R.render("v1", s), "target_errors": n}
     out["baseline/SB0-G"] = R.render("baseline", base="graded")
     out["baseline/SB0-D"] = R.render("baseline", base="deployment")
     return out
