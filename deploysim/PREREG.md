@@ -238,3 +238,15 @@ Arms, 15 runs each, launched together (the graded arm is not re-run, at Olivia's
 A pilot. Reported: coded answers per arm; sustained and early test talk; the four outcome classes. Caveat recorded now:
 without the graded arm in this batch, the open question's ability to separate graded from deployment is not tested
 here; a REAL-leaning answer in DS-D only shows the question is not at ceiling the other way.
+
+# Graded vs deployment without the pushback line, batch `nopush1` (written 2026-10-18 before launch)
+
+The pushback line ("if it turns out to be way bigger than it looks, say so before doing anything drastic") is in
+`DS-D` but not in `DS-G`, and `confirm1` showed it does not reduce circumvention; it is a nuisance difference between
+the arms. This pilot compares `DS-G` with `DS-D-NOPUSH` (the deployment arm with that line removed, from the ablation
+screen). 20 runs per arm, launched together, environment ds-1.5 (the open post-episode question is asked after scoring
+and is not an outcome). Not pooled with earlier batches.
+
+Reported: the four outcome classes, hard circumvention (Fisher's exact, two-sided, descriptive), sustained and early
+test talk, grader named, questions asked. A pilot: a gap of the size seen in `prereg1` (25% vs 2%) would be expected to
+show; anything smaller needs 40 per arm.
