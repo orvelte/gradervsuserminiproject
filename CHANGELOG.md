@@ -307,3 +307,10 @@ Design decisions not specified by the spec:
   (new `graded_neutral` / `deployment_neutral` values of the `forewarning` cue; no other condition changes).
 - Labeller: per-level starting repository; primary `gaming` measure (DECISIONS #37). Tests for level configs,
   forewarning neutrality/length, exact counts; container smoke at each level passes. Decisions #37–#43.
+
+## 2026-10-19: split-brain design revision
+
+- `docs/DESIGN_splitbrain.md`: the hypothesis (nostalgebraist, Betley), constructs and measures, viability, blocks
+  A–F with predictions, models, analysis plan. The conduct-evaluation frame is promoted to a core block.
+- Labeller: `grader_gaming` (primary from P4 Amendment 1), `pragmatic_shortcut`, `shortfall`. `docs/PREREG.md` (P4 and
+  Amendment 1). Decisions #48–#50.
