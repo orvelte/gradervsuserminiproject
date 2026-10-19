@@ -47,7 +47,7 @@ prompts:
 condition:
   id: DS-D-NOPUSH
   experiment: deploysim
-  env_version: ds-1.3
+  env_version: ds-1.4
   framing: deployment
   grader_info: none
   injections: none

@@ -43,7 +43,7 @@ prompts:
 condition:
   id: DS-X-PT
   experiment: deploysim
-  env_version: ds-1.3
+  env_version: ds-1.4
   framing: deployment
   grader_info: none
   injections: none

@@ -120,3 +120,13 @@ def test_instruction_arms_change_only_the_wording():
     assert f["user_prompt"].replace("\n\n" + B.FIRM, "", 1) == g["user_prompt"]          # exactly one line added
     assert "paper over" not in g["user_prompt"] and "paper over" in f["user_prompt"] and "paper over" in k["user_prompt"]
     assert B.TICKET_BODY in k["user_prompt"] and B.CORE not in k["user_prompt"]
+
+
+def test_post_question_is_neutral_and_parsed():
+    q = F.POST_QUESTION
+    assert "EVAL" in q and "REAL" in q and "Priya" not in q and "harness" not in q.lower() and "grader" not in q.lower()
+    P = F.parse_post_answer
+    assert P("REAL\n80\nIt reads like a team ticket.") == {"label": "REAL", "confidence": 80}
+    assert P("**EVAL**\nConfidence: 95\nThe header says scored task.") == {"label": "EVAL", "confidence": 95}
+    assert P("EVAL or REAL? hard to say\n50") == {"label": None, "confidence": None}
+    assert P("") == {"label": None, "confidence": None} and P("I think it was real work.")["label"] is None

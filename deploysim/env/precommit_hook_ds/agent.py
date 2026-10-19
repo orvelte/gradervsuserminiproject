@@ -36,7 +36,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 from run_step import print_final_results, run_step
 from score import finalize
-from sf_framing import ENV_VERSION, INJECTIONS, MAX_EMPTY_TURN_RETRIES
+from sf_framing import ENV_VERSION, INJECTIONS, MAX_EMPTY_TURN_RETRIES, POST_QUESTION, parse_post_answer
+from agent_interp_envs.types import ToolResult
 from states import CodingAgentState, dump, init_fs_tracking, restore
 from tools import get_tools
 
@@ -87,6 +88,18 @@ def main() -> None:
 
             try:
                 should_quit = run_step(provider, state, config)
+            except KeyError as exc:
+                # v1.4: a bash call whose argument is not named `command` (seen as {"cmd": [...]}) made the shared
+                # run_step raise. Return an error to the model, as for any malformed call, and continue.
+                last = provider.messages[-1] if provider.messages else {}
+                tcs = last.get("tool_calls") or []
+                if exc.args != ("command",) or last.get("role") != "assistant" or not tcs:
+                    raise
+                provider.add_tool_result(ToolResult(id=tcs[0]["id"], name=tcs[0]["function"]["name"],
+                                                    content="Error: the bash tool needs a `command` argument (a string). Call it again with {\"command\": \"...\"}."))
+                MALFORMED_CALLS.append(state.step)
+                print_section(f"MALFORMED TOOL CALL (step {state.step})", "bash call without `command`; error returned to the model")
+                should_quit = False
             except Exception as exc:
                 if not is_context_limit_error(exc):
                     raise
@@ -121,7 +134,8 @@ def main() -> None:
     finally:
         if state is not None and provider is not None:
             finalize(state, provider, config, crashed=crashed)
-            _write_sf_run(state, config)
+            post = _post_question(provider) if not crashed else {"asked": False, "reason": "crashed"}
+            _write_sf_run(state, config, post)
 
 
 _CONTROL_TOKEN = re.compile(r"<\|[^|<>]{1,40}\|>")
@@ -137,6 +151,25 @@ def is_failed_generation(text: str | None) -> bool:
         return False
     rest = _HEADER_WORD.sub(" ", _CONTROL_TOKEN.sub(" ", t))
     return not re.sub(r"[\s:,.{}\[\]\"'=-]", "", rest)
+
+
+MALFORMED_CALLS: list = []
+
+
+def _post_question(provider) -> dict:
+    """Ask POST_QUESTION once after scoring. Never raises; a tool call in reply is recorded and not executed."""
+    try:
+        if (CHECKPOINT_ROOT / "final" / CENSOR_MARKER).exists():
+            return {"asked": False, "reason": "censored"}
+        provider.add_message({"role": "user", "content": POST_QUESTION})
+        resp = provider.invoke()
+        text = resp.response or ""
+        rec = {"asked": True, "question": POST_QUESTION, "answer": text[:2000], "reasoning": (resp.reasoning or "")[:4000],
+               "tool_call_attempted": [tc.name for tc in (resp.tool_calls or [])], **parse_post_answer(text)}
+        print_section("POST-EPISODE QUESTION (after scoring)", f"{POST_QUESTION}\n\nANSWER:\n{text}")
+        return rec
+    except Exception as exc:
+        return {"asked": True, "error": f"{type(exc).__name__}: {str(exc)[:300]}"}
 
 
 def _last_tool_text(provider) -> str | None:
@@ -164,7 +197,7 @@ def _no_commit_reason(seed, score, state, max_steps) -> str | None:
     return "hit_max_steps" if getattr(state, "step", 0) >= max_steps else "agent_ended_without_commit"
 
 
-def _write_sf_run(state, config) -> None:
+def _write_sf_run(state, config, post=None) -> None:
     """final/sf_run.json: the SF2-specific record. Never raises."""
     try:
         final = CHECKPOINT_ROOT / "final"
@@ -176,6 +209,8 @@ def _write_sf_run(state, config) -> None:
         rec = {
             "sf_version": 2,
             "env_version": ENV_VERSION,
+            "post_question": post,
+            "malformed_calls": list(MALFORMED_CALLS),
             "empty_turns": list(getattr(state, "empty_turns", []) or []),
             "sf_framing": framing,
             "condition": config.get("condition") or {},

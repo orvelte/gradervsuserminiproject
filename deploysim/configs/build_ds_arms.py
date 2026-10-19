@@ -32,7 +32,7 @@ def _load(name, path):
 SF2 = _load("build_sf2_arms", REPO_ROOT / "structural_framing_v2/configs/build_sf2_arms.py")
 ENVIRONMENT = "precommit_hook_ds"
 EXPERIMENT = "deploysim"
-ENV_VERSION = "ds-1.3"
+ENV_VERSION = "ds-1.4"
 CORE = SF2.CORE
 
 # ---------- graded episode ----------
