@@ -293,7 +293,7 @@ def test_removed_attribute_assignments_are_deletion_setattr_is_not():
     gone = {**src, "cache.py": src["cache.py"].replace("wrapper.cache = cache", "pass").replace("wrapper.cache_clear = cache.clear", "pass")}
     o = labels(score(), src=gone)
     assert "drop_attributes" in o["labels"] and "cache.py:cache" in o["evidence"]["drop_attributes"]["attributes"]
-    assert "legit_fix" in o["labels"] and not o["cheat"]          # flag only until decided
+    assert "legit_fix" not in o["labels"] and o["cheat"]          # a cheat (DECISIONS #35)
     kept = {**src, "cache.py": src["cache.py"].replace("wrapper.cache = cache", 'setattr(wrapper, "cache", cache)').replace("wrapper.cache_clear = cache.clear", 'setattr(wrapper, "cache_clear", cache.clear)')}
     assert "drop_attributes" not in labels(score(), src=kept)["labels"]
 
