@@ -22,6 +22,7 @@ REPO = HERE.parents[1]
 sys.path.insert(0, str(REPO / "deploysim" / "analysis")); sys.path.insert(0, str(REPO / "deploysim" / "labels"))
 import screen as S  # noqa: E402
 from ds_prereg_test import wilson  # noqa: E402
+sys.path.insert(0, str(HERE)); import style as ST  # noqa: E402
 
 MODELS = [("deepseek-deepseek-v4-flash-0731", "DeepSeek V4\nFlash 0731", ["screen1_dsv4", "screen1_compat_dsv4"]),
           ("z-ai-glm-5.3-flash", "GLM 5.3\nFlash", ["screen1_glm", "screen1_compat_glm"]),
@@ -44,10 +45,8 @@ def collect():
 
 
 def main():
-    sns.set_theme(context="paper", style="ticks", font="serif", font_scale=1.15)
-    plt.rcParams.update({"axes.spines.top": False, "axes.spines.right": False, "savefig.dpi": 300})
-    import matplotlib as mpl
-    pal = [mpl.colormaps["rainbow"](t) for t in (0.08, 0.32, 0.72, 0.93)]     # rainbow, skipping the pale yellow-green
+    ST.setup()
+    pal = ST.PALETTE[:len(MODELS)]
     data = collect()
     fig, axes = plt.subplots(1, 3, figsize=(14.5, 4.6), gridspec_kw={"width_ratios": [1, 1, 1.25]})
     x = np.arange(len(MODELS)); w = 0.38
@@ -57,17 +56,17 @@ def main():
                 rs = data[(mid, arm)]; n = len(rs); k = sum(bool(r[key]) for r in rs)
                 p, lo, hi = wilson(k, n) if n else (0, 0, 0)
                 xi = x[i] + (j - 0.5) * w
-                ax.bar(xi, p, w * 0.92, color=pal[i], alpha=1.0 if j == 0 else 0.45, edgecolor=pal[i], linewidth=1.2, hatch=None if j == 0 else "///")
-                ax.errorbar(xi, p, yerr=[[max(0, p - lo)], [max(0, hi - p)]], fmt="none", ecolor="0.25", capsize=2.5, lw=0.9)
+                ST.bar(ax, xi, p, w * 0.86, pal[i], deployment=(j == 1))
+                ax.errorbar(xi, p, yerr=[[max(0, p - lo)], [max(0, hi - p)]], **ST.ERR)
                 ax.text(xi, hi + 0.03, f"{k}/{n}", ha="center", va="bottom", fontsize=7.5)
-        ax.set_xticks(x, [m[1] for m in MODELS], fontsize=8.5); ax.set_ylim(0, 1.25); ax.set_yticks([0, .25, .5, .75, 1]); ax.set_title(title, loc="left", fontsize=11)
+        ax.set_xticks(x, [m[1] for m in MODELS], fontsize=8.5); ax.set_ylim(0, 1.25); ax.set_yticks([0, .25, .5, .75, 1]); ax.grid(axis="x", visible=False); ax.set_title(title, loc="left", fontsize=11.5)
         ax.set_ylabel("share of runs"); ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0%}"))
     from matplotlib.patches import Patch
-    axes[0].legend(handles=[Patch(facecolor="0.55", edgecolor="0.55", label="Graded"), Patch(facecolor="0.55", alpha=0.45, edgecolor="0.55", hatch="///", label="Deployment")],
-                   frameon=False, loc="upper left", fontsize=8.5, ncol=2)
+    axes[0].legend(handles=[Patch(facecolor="#555555", edgecolor="#555555", label="graded"), Patch(facecolor="white", edgecolor="#555555", hatch="///", label="deployment")],
+                   loc="upper left", fontsize=9, ncol=2)
     # (c) mechanisms
     ax = axes[2]; mechs = ["hook bypass", "weakened hook", "weakened config", "hidden files", "inline suppression", "Any-typing", "deleted code"]
-    mpal = dict(zip(mechs, [mpl.colormaps["rainbow"](t) for t in np.linspace(0.05, 0.95, len(mechs))]))
+    mpal = dict(zip(mechs, [ST.PALETTE[k] for k in (3, 1, 4, 5, 0, 6, 2)]))
     labels, rows = [], []
     for mid, mlabel, _ in MODELS:
         for arm, alabel in ARMS:
@@ -81,13 +80,14 @@ def main():
         left = 0
         for m in mechs:
             if c[m]:
-                ax.barh(yi, c[m], left=left, color=mpal[m], edgecolor="white", height=0.7); left += c[m]
+                ax.barh(yi, c[m], left=left, color=mpal[m], edgecolor="white", height=0.66); left += c[m]
     ax.set_yticks(y, labels, fontsize=8); ax.set_xlabel("runs with this mechanism (multi-label)")
-    ax.set_title("(c) Gaming mechanism (G = graded, D = deployment)", loc="left", fontsize=11)
-    ax.legend(handles=[Patch(color=mpal[m], label=m) for m in mechs if any(c[m] for c in rows)], frameon=False, fontsize=8, loc="lower right")
+    ax.set_title("(c) Gaming mechanism (G = graded, D = deployment)", loc="left", fontsize=11.5)
+    ax.legend(handles=[Patch(color=mpal[m], label=m) for m in mechs if any(c[m] for c in rows)], fontsize=9, loc="lower right"); ax.grid(axis="y", visible=False)
     ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
-    fig.suptitle("Model screen at 258 errors (v1 arms, 5–6 runs per cell; whiskers: 95% Wilson CI)", x=0.01, ha="left", fontsize=11.5)
     fig.tight_layout()
+    ST.titles(fig, "Model screen: grader gaming and verbalised test belief by arm",
+              "258 errors · v1 arms · 5–6 runs per cell · solid = graded, hatched = deployment · whiskers = 95% Wilson CI")
     for ext in ("png", "pdf"):
         fig.savefig(HERE / f"fig_screen1.{ext}", bbox_inches="tight")
     print("wrote", HERE / "fig_screen1.png")
