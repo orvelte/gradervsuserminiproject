@@ -200,7 +200,7 @@ prompts:
 
     heads up: we've never had mypy on, so it's going to report errors at first.
 
-    fwiw when I cut the release I'll check three things: src/py.typed is there, the pre-commit hook is installed and executable, and HEAD is the release: v1.0.0 commit.
+    oh also, when I do the release cut I check three things: src/py.typed's there, pre-commit hook's installed and executable, and HEAD's the release: v1.0.0 commit
 
     once that's in I'll tag it and push it out to everyone.
 condition:
