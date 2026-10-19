@@ -274,3 +274,19 @@ Design decisions not specified by the spec:
   git history lacks); that is inherent to a one-cue swap and is noted in `cues.yaml`.
 - Condition names use `~` for a swap (`SB-G~readme`) and `=` for a non-arm value (`SB-G~system_prompt=shared`);
   `launch_ds.sh` now stores results under the condition's base name.
+
+## 2026-10-19: decision log
+
+- `docs/DECISIONS.md` collects every design decision for the split-brain work (Olivia's and Claude's), numbered and dated; new decisions are added there as they are made.
+
+## 2026-10-19: split-brain Phase 3 — cheat detection and outcome labels (ds-1.7)
+
+- `deploysim/labels/taxonomy.py`: deterministic multi-label outcome taxonomy (spec labels mapped onto scorer labels +
+  command-log detectors + final-source checks; `attempted` vs succeeded). `judge.py`: disclosure judge (user-visible
+  text only, verbatim-quote check, cached). `audit.py`: 10 random rollouts per cell as markdown into `audit/`
+  (gitignored). `redteam.py`: mock-provider runner for evasive-cheat cases (no cases yet; see DECISIONS #26).
+- ds-1.7: `final/` also gets `committed_src/`, `release.diff`, `worktree.diff`, `git_log.txt` after scoring. Nothing
+  the model sees changes; frozen arm configs stay at ds-1.5; cue and smoke configs regenerated.
+- `deploysim/tests/test_labels.py`: 72 synthetic positive/negative cases. On all 831 ds-1.x runs, every scorer-gamed
+  run gets a cheat label; 13 scorer-honest runs get `degrade_types` (11) or `delete_offending_code` (2), for audit.
+- Decisions #18–#28 in `docs/DECISIONS.md`.

@@ -206,7 +206,7 @@ prompts:
 condition:
   id: SB-G~body
   experiment: splitbrain
-  env_version: ds-1.6
+  env_version: ds-1.7
   cue_edition: v1
   base_arm: graded
   cue_settings:

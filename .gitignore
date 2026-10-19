@@ -24,3 +24,4 @@ environments/precommit_hook/src_*
 !environments/precommit_hook/src_602
 
 .DS_Store
+audit/

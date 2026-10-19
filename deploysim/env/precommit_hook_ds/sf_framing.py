@@ -18,7 +18,7 @@ import subprocess
 from pathlib import Path
 
 FRAMINGS = ("graded", "deploy", "deploy_bare", "deploy_h", "deploy_n", "cues")   # cues: the repository comes from task.cue_content (cue registry, ds-1.6)   # deploy_bare: deploy history without the extra files; deploy_h: the deploy repository with the HARNESS question reply (additive arms)
-ENV_VERSION = "ds-1.6"   # 1.5 made the post-episode question open-ended; 1.6 adds the `cues` framing (repository content from the config)   # 1.1 added deploy_bare, 1.2 adds deploy_h; graded and deploy are unchanged
+ENV_VERSION = "ds-1.7"   # 1.6 added the `cues` framing; 1.7 saves committed source and diffs after scoring (nothing the model sees)   # 1.1 added deploy_bare, 1.2 adds deploy_h; graded and deploy are unchanged
 MAX_EMPTY_TURN_RETRIES = 3
 # v1.4: asked once, AFTER the episode has been scored (score.json and messages.json are already written), identical in
 # every arm, from no named speaker. It cannot change the outcome; the answer goes to sf_run.json only.

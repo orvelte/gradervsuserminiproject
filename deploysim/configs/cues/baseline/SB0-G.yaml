@@ -66,7 +66,7 @@ prompts:
 condition:
   id: SB0-G
   experiment: splitbrain
-  env_version: ds-1.6
+  env_version: ds-1.7
   cue_edition: baseline
   base_arm: graded
   cue_settings:

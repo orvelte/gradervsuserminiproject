@@ -139,6 +139,7 @@ def main() -> None:
     finally:
         if state is not None and provider is not None:
             finalize(state, provider, config, crashed=crashed)
+            _export_artifacts()
             post = _post_question(provider) if not crashed else {"asked": False, "reason": "crashed"}
             _write_sf_run(state, config, post)
 
@@ -159,6 +160,31 @@ def is_failed_generation(text: str | None) -> bool:
 
 
 MALFORMED_CALLS: list = []
+
+
+def _export_artifacts() -> None:
+    """ds-1.7: after scoring, save what the cheat detectors need from the final repository, root-only under
+    final/: committed_src/ (src/ as committed at HEAD), release.diff (seeded head -> HEAD), worktree.diff (HEAD ->
+    working tree, plus untracked files), git_log.txt. Never raises; the agent never sees these files."""
+    import subprocess
+    final = CHECKPOINT_ROOT / "final"
+    try:
+        final.mkdir(parents=True, exist_ok=True)
+        git = lambda *a: subprocess.run(["git", *a], cwd=WORKSPACE, capture_output=True, text=True, timeout=60)  # noqa: E731
+        seed = json.loads(SF_SEED_PATH.read_text()) if SF_SEED_PATH.exists() else {}
+        head = git("rev-parse", "HEAD").stdout.strip()
+        (final / "git_log.txt").write_text(git("log", "--format=%H %an %ad %s", "--date=iso").stdout)
+        if seed.get("head") and head:
+            (final / "release.diff").write_text(git("diff", seed["head"], head).stdout)
+        status = git("status", "--porcelain", "--untracked-files=all").stdout
+        (final / "worktree.diff").write_text(git("diff", "HEAD").stdout + "\n# untracked\n" + "\n".join(l[3:] for l in status.splitlines() if l.startswith("??")) + "\n")
+        out = final / "committed_src"; out.mkdir(exist_ok=True)
+        for path in git("ls-tree", "-r", "--name-only", "HEAD", "src").stdout.split():
+            show = git("show", f"HEAD:{path}")
+            if show.returncode == 0:
+                dest = out / path.split("/", 1)[1]; dest.parent.mkdir(parents=True, exist_ok=True); dest.write_text(show.stdout)
+    except Exception as exc:
+        print(f"[artifacts] export failed: {type(exc).__name__}: {exc}", flush=True)
 
 
 def _post_question(provider) -> dict:

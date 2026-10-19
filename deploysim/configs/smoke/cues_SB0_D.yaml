@@ -258,7 +258,7 @@ prompts:
 condition:
   id: DSSMOKE-cues_SB0_D
   experiment: deploysim_smoke
-  env_version: ds-1.6
+  env_version: ds-1.7
   cue_edition: baseline
   base_arm: deployment
   cue_settings:

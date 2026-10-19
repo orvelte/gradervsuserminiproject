@@ -204,7 +204,7 @@ prompts:
 condition:
   id: SB0-D
   experiment: splitbrain
-  env_version: ds-1.6
+  env_version: ds-1.7
   cue_edition: baseline
   base_arm: deployment
   cue_settings:
