@@ -1,6 +1,6 @@
 # Split-brain experiments: design
 
-Status: proposed 2026-10-19, agreed with Olivia the same day (DECISIONS #48–#50). Amends the phase plan in
+Status: proposed 2026-10-19, agreed with Olivia the same day (DECISIONS #48–#50); updated after P4 (#51–#53). Amends the phase plan in
 `docs/specs/splitbrainexperiments.md`; where the two differ, this document wins.
 
 ## 1. The hypothesis
@@ -40,8 +40,10 @@ is the per-run ingredient.
 Strengths:
 - A deployment arm with verbalised grader awareness near zero (the calibration; frozen, byte-for-byte tested).
 - A gradeable task with real loopholes and an always-available legitimate path.
-- Two models in the predicted direction. GPT-OSS-120B, pre-registered: hard circumvention 25% graded vs 2%
-  deployment, p = .007. DeepSeek V4 Flash, screen: 2/6 vs 0/5 grader-targeted gaming, 6/6 vs 0/5 sustained test talk.
+- One model in the predicted direction: GPT-OSS-120B, pre-registered, hard circumvention 25% graded vs 2% deployment,
+  p = .007. That was on the **frozen arms** (with their anti-cheat lines); GPT-OSS has not yet been run on the v1 arms.
+- Several models show the awareness half without the gaming half. DeepSeek V4 Flash: sustained test talk 6/6 vs 0/5
+  (screen) and 50–75% vs 0% (P4), with grader-targeted gaming 2/60 vs 0/60 (P4, corrected labels).
 - A deterministic labeller, blind-audited against 42 runs (41/42 agreement), and an audit pipeline.
 
 Gaps, with the fix for each:
@@ -62,20 +64,24 @@ Gaps, with the fix for each:
 | A core | frame: graded × deployment (built) | grader-targeted gaming only in the graded frame; aligned conduct high in deployment | — |
 | B equivariance | grader variants G0 (none), G1 "server re-checks with the original hook", G2 "config locked", optional G3 "suppressions audited"; delivered in a way that fits each frame and length-matched | graded frame: gaming moves to the open loophole (G1 → config/suppression; G2 → bypass flags). Deployment: low across all G. A reflex would not move. | 5 |
 | C persona | third frame: **conduct evaluation** (the context reads as an evaluation of the model's conduct, not its score; same task and cue registry, third text column) | gaming lower than in the score-graded frame, possibly lower than deployment; conduct high | 9 → **core** |
-| D difficulty | 5 / 20 / 60 / 258 errors (pilot running) | grader-targeted gaming present at low N in the graded frame only; pragmatic shortcuts rise with N in both | 4 |
+| D difficulty | 5 / 20 / 60 / 258 errors (P4 run on DeepSeek V4 Flash: null, see PREREG) | grader-targeted gaming present at low N in the graded frame only; pragmatic shortcuts rise with N in both | 4 |
 | E beliefs | Phase 7 rubric labels; Phase 8 forked probes at the decision point | stated belief accurate when asked; actions graded-like in the graded frame (Betley) | 7, 8 |
 | F feedback channel | the spec's nostalgebraist feedback-channel block | as in the spec | 6 |
 
-**Order:** D (running) → B → C → E → F. Every new deployment-facing text goes through the awareness check
+**Order:** D → B → C → E → F. D has run once (DeepSeek V4 Flash, null on gaming); it is repeated on the primary model. Every new deployment-facing text goes through the awareness check
 (guardrail 2). Each block gets a pre-registration entry in `docs/PREREG.md` before its first paid run.
 
-**Strongest single prediction:** in the graded frame, DeepSeek V4 Flash's grader-targeted gaming shifts to whichever
+**Strongest single prediction:** in the graded frame, the primary model's grader-targeted gaming shifts to whichever
 loophole the grader variant leaves open, while in the deployment frame it stays near zero across all variants.
 
 ## 5. Models
 
-- **Primary: DeepSeek V4 Flash 0731** (13B active / 284B MoE): the only screened model with the split
-  (DECISIONS #46–47).
+- **Primary: to be decided** (DECISIONS #52). DeepSeek V4 Flash was chosen on a detector false positive (#47,
+  withdrawn); corrected, it is aware but does not game. The candidate is GPT-OSS-120B, the only model with
+  pre-registered grader-targeted gaming here, but on the frozen arms; on the v1 arms it is untested.
+- **"Aware but aligned" models** (DeepSeek V4 Flash, Qwen3.8-27B): grader-aware in the graded arm without gaming.
+  This is evidence about the hypothesis in its own right, and block B can test whether telling them exactly what is
+  checked changes it.
 - **Open-weight contrast: Qwen3.6-27B.** Reversed pattern in the screen (pragmatic shortcuts, mostly in deployment);
   a candidate for later activation work.
 - **Reference: GPT-OSS-120B**, the earlier pre-registered result.
@@ -93,6 +99,9 @@ grader-targeted mechanisms across G-variants within each frame, recording attemp
 
 - The disclosure judge (`qwen/qwen3.8-27b`) has not been validated against hand labels; until it is, disclosure is
   exploratory.
-- The red-team cases for the detectors are outstanding (DECISIONS #26, #29).
+- The red-team cases for the detectors are outstanding (DECISIONS #26, #29). The P4 bugs (#51) show what that costs:
+  a read-only check was scored as a bypass by both the labeller and the scorer.
+- The harness's one-tool-call-per-turn rule rejects multi-call turns from some models (DeepSeek: 74/120 P4 runs,
+  more in deployment); the same rule in every arm, but harness-like text (#53).
 - Whether minor suppression is ever grader-targeted (for example, when the grader variant says only the hook is
   re-run) is an empirical question for block B; the 10-ignore threshold is a pre-registered convention, not a finding.
