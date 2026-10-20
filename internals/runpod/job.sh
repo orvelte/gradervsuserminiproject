@@ -21,21 +21,21 @@ case "${1:-}" in
     ;;
   push)
     "${SSH[@]}" "mkdir -p $J/logs $J/out"
-    rsync -az -e "$RSH" "$REPO/internals/persona/pod_generate.py" "$REPO/internals/persona/pod_acts.py" "root@$IP:$J/"
-    rsync -az -e "$RSH" "$REPO/results/persona_min/prompts.jsonl" "$REPO/results/persona_min/v1/seqs.jsonl" "root@$IP:$J/"
-    for f in "$REPO"/results/persona_min/smoke/*.jsonl; do [ -e "$f" ] && rsync -az -e "$RSH" "$f" "root@$IP:$J/"; done
+    rsync -rltz --no-owner --no-group -e "$RSH" "$REPO/internals/persona/pod_generate.py" "$REPO/internals/persona/pod_acts.py" "root@$IP:$J/"
+    rsync -rltz --no-owner --no-group -e "$RSH" "$REPO/results/persona_min/prompts.jsonl" "$REPO/results/persona_min/v1/seqs.jsonl" "root@$IP:$J/"
+    for f in "$REPO"/results/persona_min/smoke/*.jsonl; do [ -e "$f" ] && rsync -rltz --no-owner --no-group -e "$RSH" "$f" "root@$IP:$J/"; done
     echo "pushed"
     ;;
   run)
     name="$2"; shift 2
-    "${SSH[@]}" "cd $J && nohup bash -c '$* ; echo EXIT=\$? > logs/$name.done' > logs/$name.log 2>&1 < /dev/null & echo started $name"
+    "${SSH[@]}" -n "cd $J && rm -f logs/$name.done && (setsid nohup bash -c '$* ; echo EXIT=\$? > logs/$name.done' > logs/$name.log 2>&1 < /dev/null &) ; echo started $name"
     ;;
   status)
     "${SSH[@]}" "tail -n 15 $J/logs/$2.log 2>/dev/null; cat $J/logs/$2.done 2>/dev/null || echo RUNNING"
     ;;
   pull)
     mkdir -p "$REPO/results/persona_min/pod_out"
-    rsync -az -e "$RSH" "root@$IP:$J/out/" "$REPO/results/persona_min/pod_out/"
+    rsync -rltz --no-owner --no-group -e "$RSH" "root@$IP:$J/out/" "$REPO/results/persona_min/pod_out/"
     du -sh "$REPO/results/persona_min/pod_out"
     ;;
   gpu)
