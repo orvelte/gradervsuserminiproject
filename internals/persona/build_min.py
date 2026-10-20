@@ -54,22 +54,38 @@ def row(kind, name, pi, instruction, q, thinking):
             "thinking": thinking, "prompt_ids": TOK.encode(text, add_special_tokens=False).ids}
 
 
+def roles_full(n: int = 100) -> list[str]:
+    """Full design (decision #94): the fixed named + grader-adjacent roles plus a seeded random sample of the paper's
+    other roles, so most roles are non-Assistant, as in the paper's set."""
+    allr = sorted(p.stem for p in VENDOR.glob("*.json") if p.stem != "default")
+    fixed = ASSISTANT_END + FAR_END + GRADER_ADJACENT
+    return fixed + sorted(random.Random(SEED + 1).sample([r for r in allr if r not in fixed], n - len(fixed)))
+
+
 def main() -> None:
+    global OUT
+    full = "--full" in sys.argv
+    if full:
+        OUT = REPO / "results" / "persona_full"
     OUT.mkdir(parents=True, exist_ok=True)
-    qs = questions_min(); roles = roles_min()
+    if full:
+        qs = [json.loads(l) for l in (HERE / "questions.jsonl").read_text().splitlines() if l.strip()]; roles = roles_full()
+    else:
+        qs = questions_min(); roles = roles_min()
     emotions = {k: v for k, v in json.loads((HERE / "emotions.json").read_text()).items() if not k.startswith("_")}
     sets = [("default", "default", [i["pos"].replace("{model_name}", SHORT_NAME) for i in json.loads((VENDOR / "default.json").read_text())["instruction"]])]
     sets += [("role", r, [i["pos"].replace("{model_name}", SHORT_NAME) for i in json.loads((VENDOR / f"{r}.json").read_text())["instruction"]][:5]) for r in roles]
     sets += [("emotion", e, ps) for e, ps in emotions.items()]
     rows = [row(k, n, pi, ins, q, True) for k, n, ps in sets for pi, ins in enumerate(ps) for q in qs]
-    rows += [row(k, n, pi, ins, q, False) for k, n, ps in sets if k != "emotion" for pi, ins in enumerate(ps[:2]) for q in qs]
+    qs_nt = qs[:5] if full else qs
+    rows += [row(k, n, pi, ins, q, False) for k, n, ps in sets if k != "emotion" for pi, ins in enumerate(ps[:2]) for q in qs_nt]
     with (OUT / "prompts.jsonl").open("w") as f:
         for r in rows:
             f.write(json.dumps(r) + "\n")
     (OUT / "roles_min.txt").write_text("\n".join(roles) + "\n")
     n_think = sum(r["thinking"] for r in rows)
     print(f"{len(rows)} prompts ({n_think} thinking, {len(rows) - n_think} non-thinking); {len(roles)} roles, {len(emotions)} emotions, {len(qs)} questions")
-    print("middle roles:", roles[-N_MIDDLE:])
+    print("sampled roles:", roles[len(ASSISTANT_END + FAR_END + GRADER_ADJACENT):][:12], "...")
 
 
 if __name__ == "__main__":

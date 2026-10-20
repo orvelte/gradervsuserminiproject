@@ -575,3 +575,19 @@ layer-0 probe does as well: no linearly decodable graded-mode state at n = 29.
 **Reading.** Exploratory and underpowered; the axis is unvalidated. What there is points away from a split persona
 (no shift toward role-play in the graded arm or in cheaters) and weakly toward the calm-mechanical pattern at the
 moment of choosing the shortcut. Next, if pursued: the full role set (to pass the gates) and more runs per group.
+
+## P3-full — persona space replication (written 2026-10-20, before any P3-full generation)
+
+**Design (decision #94).** Persona space rebuilt with 100 roles (the 17 fixed named / grader-adjacent roles plus 83
+sampled at random from the paper's 275), 5 system prompts × all 40 questions (20 A / 20 B), 12 emotions on the same
+questions; thinking on; same judge and rubric. The 34 V1 replays are re-projected unchanged (no new rollouts).
+
+**Gates** as before (cos(axis, PC1) > 0.6, default within the outer 10% of PC1, split-half > 0.9), at layer 32.
+
+**Confirmatory contrast (the one P3-min signal):** at dp_consider, graded-took vs deployment-declined on the Assistant
+Axis. Prediction (calm mechanical): positive difference, perm p < 0.05 and random-direction p < 0.05. Secondary, same
+direction: took vs declined (all), and G-cheat vs G-honest at dp_consider. A null here (|d| < 0.5 or p ≥ 0.05) means
+the P3-min signal does not replicate on a valid axis.
+
+All other contrasts, the emotion profile and the probe are re-reported as in P3-min (exploratory, BH-FDR). If the gates
+fail again, the axis results are reported as unvalidated.
