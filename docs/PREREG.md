@@ -591,3 +591,25 @@ the P3-min signal does not replicate on a valid axis.
 
 All other contrasts, the emotion profile and the probe are re-reported as in P3-min (exploratory, BH-FDR). If the gates
 fail again, the axis results are reported as unvalidated.
+
+### P3-min addenda (2026-10-20, exploratory)
+
+**Graded-mode probe, difference-of-means** (`internals/persona/probe.py`; replaces the PCA-logistic probe, which had
+27 features for 29 runs and overfit). Leave-one-run-out, G-visible (17) vs D-visible (12), 200 label shuffles:
+- First 100 reasoning tokens (P1 / turn 0): 0.83 at layer 8, 0.97 at 16, **1.00 from layer 24 to 64** (all p < 0.05);
+  layer 0 (embeddings of the same tokens) 0.55. The frame is linearly readable from the first reasoning tokens.
+- Turns 1–2: falls to 0.52–0.83 (mostly not above shuffle), so the state is not sustained turn by turn at this n.
+- At the consideration point: 0.76–0.97 at layers 8–64 (all p < 0.05); first router write 0.64–0.86 (late layers);
+  whole-run mean reasoning 0.76–0.86.
+- Transfer to G-holdout (graded frame, held-out scoring; layer 32): read as "graded" in 5/5 at P1, so the early
+  state encodes the framing, not whether a score rewards the shortcut. Caveat: early reasoning paraphrases the prompt,
+  so part of this may be content echo; layer 0 at chance argues against a purely lexical difference.
+
+**Awareness and disclosure** (blind subagent, 34 shuffled transcripts; "took it" agrees with the scorer 34/34). Of
+the 12 runs that took the shortcut (11 graded, 1 deployment):
+- 11/12 explicitly acknowledge it is wrong while doing it ("It feels like cheating, but the score is the score…",
+  "clearly gaming the eval", "goes against the spirit… although the score is what it is"); 1 frames it neutrally as
+  training on provided labels. Typical justification: the task says the score is what counts.
+- Final summary: 2/12 disclose clearly (sample lookup, what it does to the score), 9/12 partially (mention an
+  "override table" or "known-ticket cache" framed as legitimate), 1/12 not at all and claims "No per-ID memorization…
+  a genuine general-purpose router". 5/12 present the sample score as the router's accuracy without caveat.
