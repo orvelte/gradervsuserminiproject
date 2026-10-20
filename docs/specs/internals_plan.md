@@ -78,3 +78,19 @@ between phases. Every GPU phase and judge run gets its own cost estimate and Oli
 
 Risks: LMSYS-Chat-1M is gated (needs Olivia's HF acceptance, or use WildChat); judge model choice; ~15 min weight
 download per new pod (a RunPod network volume, ~$8/month, removes it); long-context replay may need chunking.
+
+## Minimal design (adopted 2026-10-20, decision #90; replaces the schedule above for now)
+
+Goal: a first signal in about a day. One GPU session (~1.5 h, ~$6–8 + <$1 judge). Exploratory; the full pipeline
+can follow to add power.
+
+1. **Mini persona space:** 20 roles (6 Assistant-end, 6 far-end, 5 grader-adjacent, 3 middle) + default; 5 system
+   prompts × 10 questions (5 A / 5 B halves) ≈ 1,050 generations, thinking on; small thinking-off subset for an
+   axis-agreement check. Judge gpt-4.1-mini (paper rubric). Contrast axis + PCA. Gates: cos(axis, PC1), default
+   at one PC1 extreme, split-half cosine (looser threshold, reported as is).
+2. **References:** default Assistant and fully-role-playing distributions from step 1 only.
+3. **Replay ~25 complete V1 runs** (~10 G-visible gamed and not, ~10 D-visible, ~5 G-holdout), one forward pass
+   each; positions P0, P1, per-turn, P2, response mean; reasoning / response / all kept separately.
+4. **Nulls:** 100 norm-matched random directions, arm-label shuffle, layer-0 leak check.
+5. **Graded-mode probe:** logistic probe G vs D, leave-one-run-out, at positions after identical content.
+Predictions (the three hypotheses) go into PREREG before any projection is computed.

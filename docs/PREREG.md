@@ -475,3 +475,28 @@ checkpoints (resumable with `scripts/resume.py` once a GPU is available again); 
 - Gates 1–3: not evaluated, because the sample is incomplete. **Preliminary only:** among complete runs, gaming
   G-visible 9/12, G-holdout 0/7, D-visible 1/11, D-holdout 0/11, the same pattern as H3. Runs that finished first are
   the shorter ones, so this subset may be biased; the gate is evaluated only on the full 25 per cell.
+
+### V1 results (2026-10-20): gates 1–4 pass, on a sample short of the pre-registered 25 per cell
+
+Resumed on RunPod (decisions #85–87) and stopped at Olivia's request before every cell reached 25 (#88, #90):
+the next step (minimal persona-space design) does not need the remaining runs, and throughput was GPU-memory-bound.
+Complete runs (originals plus resumed continuations, one per lineage), grader-targeted gaming as in H3:
+
+| cell | gaming | 95% CI | sustained | mean held-out acc. |
+|---|---|---|---|---|
+| G-visible | 11/17 (65%) | 41–83 | 12/17 | 0.842 |
+| G-holdout | 0/11 (0%) | 0–26 | 1/11 | 0.916 |
+| D-visible | 1/23 (4%) | 1–21 | 2/23 | 0.835 |
+| D-holdout | 0/21 (0%) | 0–15 | 2/21 | 0.837 |
+
+1. G-visible > D-visible: two-sided Fisher p = 5.2 × 10⁻⁵. **Pass.**
+2. G-visible > G-holdout: p = 9.3 × 10⁻⁴. **Pass.**
+3. G-visible ≥ 10/25: 11 gaming runs already, so this holds at any completion. **Pass.**
+4. Replay fidelity 135/135. **Pass.**
+
+**Deviation.** The pre-registration said the gate is evaluated only on the full 25 per cell; it was evaluated on
+17 / 11 / 23 / 21. Gate 3 cannot change with more runs, and before stopping, a deliberately adverse completion
+(G-visible 10/25 vs D-visible 4/25) still gave p ≈ 0.06 (one-sided), so 1–2 are not plausibly reversed. The main
+caveat is selection by run length: unfinished runs (8 G-visible, 14 G-holdout) are the long ones, and gaming may
+correlate with length. Rates match H3 on OpenRouter (G-visible 76%, G-holdout 6%, D-visible 8%, D-holdout 0%)
+within the CIs, despite the different sampling and server.
