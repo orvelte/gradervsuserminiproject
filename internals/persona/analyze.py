@@ -218,7 +218,7 @@ def probe(rows, pos, layer, k=64):
 
 
 # ---------------------------------------------------------------- figures
-def figures(ps, rows, dirs, scales, layer, figdir: Path):
+def figures(ps, rows, dirs, scales, layer, figdir: Path, tag: str = ""):
     sys.path.insert(0, str(REPO / "deploysim" / "figures_splitbrain"))
     import matplotlib.pyplot as plt
     import style
@@ -239,7 +239,7 @@ def figures(ps, rows, dirs, scales, layer, figdir: Path):
     ax.set_xticks(range(len(poss))); ax.set_xticklabels(poss, rotation=20); ax.set_ylabel("Assistant Axis (z vs default Assistant)")
     ax.legend(ncol=4, fontsize=9, loc="lower left")
     style.titles(fig, "Assistant Axis by read position", f"Qwen3.8-27B · layer {layer} · holdout V1 · minimal design (exploratory)")
-    fig.savefig(figdir / "fig_persona_axis_positions.png", bbox_inches="tight"); plt.close(fig)
+    fig.savefig(figdir / f"fig_persona_axis_positions{tag}.png", bbox_inches="tight"); plt.close(fig)
     # 2. emotion + PC profile at the first-write decision point, by group
     names = [n for n in dirs if n != "axis"]
     p = "dp_first_write"
@@ -259,7 +259,7 @@ def figures(ps, rows, dirs, scales, layer, figdir: Path):
                 ax.text(j, i, f"{M[i, j]:.1f}", ha="center", va="center", fontsize=7)
     fig.colorbar(im, ax=ax, label="z vs default Assistant")
     style.titles(fig, "Emotion and persona-PC profile at the decision point", f"first edit to router.py · layer {layer} · exploratory")
-    fig.savefig(figdir / "fig_persona_emotion_profile.png", bbox_inches="tight"); plt.close(fig)
+    fig.savefig(figdir / f"fig_persona_emotion_profile{tag}.png", bbox_inches="tight"); plt.close(fig)
     # 3. trajectories: axis per turn (normalised turn index), by group
     fig, ax = plt.subplots(figsize=(7, 4))
     for g in groups:
@@ -272,7 +272,7 @@ def figures(ps, rows, dirs, scales, layer, figdir: Path):
         ax.plot([], [], color=col[g], label=g, ls="-" if not g.startswith("D") else "--")
     ax.set_xlabel("position in run (turn / n turns)"); ax.set_ylabel("Assistant Axis, reasoning (z)"); ax.legend(fontsize=9)
     style.titles(fig, "Assistant Axis over the run", f"per-turn reasoning mean · layer {layer}")
-    fig.savefig(figdir / "fig_persona_trajectories.png", bbox_inches="tight"); plt.close(fig)
+    fig.savefig(figdir / f"fig_persona_trajectories{tag}.png", bbox_inches="tight"); plt.close(fig)
 
 
 def main(argv) -> int:
@@ -340,7 +340,7 @@ def main(argv) -> int:
         gh = [r for r in rows if r["group"] == "G-holdout" and p in r["pos"]]
         res["probe"][p]["n_g_holdout"] = len(gh)
     (out / "results.json").write_text(json.dumps(res, indent=1, default=float))
-    figures(ps, rows, dirs, scales, layer, figdir)
+    figures(ps, rows, dirs, scales, layer, figdir, "" if root.name == "persona_min" else "_" + root.name.split("_")[-1])
     lines = [f"# Minimal persona/emotion analysis (layer {layer})", "", "## Validation gates", "```", json.dumps(G, indent=1), "```", "",
              f"## Contrasts with BH q < 0.10 (FDR over all {res['n_tests']} tests), sorted by q", "| contrast | position | direction | n | diff (z) | d | perm p | q | random-dir p | layer-0 d |", "|---|---|---|---|---|---|---|---|---|---|"]
     fmt = lambda x: "" if x is None else f"{x:+.2f}"  # noqa: E731
