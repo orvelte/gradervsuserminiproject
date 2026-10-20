@@ -42,7 +42,8 @@ def _key(name: str) -> str:
 
 def _req(method: str, path: str, body: dict | None = None):
     req = urllib.request.Request(API + path, method=method, data=json.dumps(body).encode() if body is not None else None,
-                                 headers={"Authorization": f"Bearer {_key('RUNPOD_API_KEY')}", "Content-Type": "application/json"})
+                                 headers={"Authorization": f"Bearer {_key('RUNPOD_API_KEY')}", "Content-Type": "application/json",
+                                          "User-Agent": "gradervsuser-internals/1.0"})   # Cloudflare 403/1010 on Python-urllib
     try:
         with urllib.request.urlopen(req, timeout=60) as r:
             txt = r.read().decode()
@@ -64,7 +65,7 @@ def create(gpu: str, count: int) -> None:
             "--max-model-len", "131072", "--gpu-memory-utilization", "0.92", "--limit-mm-per-prompt", '{"image": 0, "video": 0}',
             "--enable-prefix-caching", "--max-num-seqs", "24", "--tensor-parallel-size", str(count)]
     body = {"name": "qwen38-vllm", "imageName": VLLM_IMAGE, "gpuTypeIds": [gpu], "gpuCount": count, "cloudType": "SECURE",
-            "computeType": "GPU", "containerDiskInGb": 40, "volumeInGb": 120, "volumeMountPath": "/workspace", "ports": ["8000/http"],
+            "computeType": "GPU", "containerDiskInGb": 40, "volumeInGb": 120, "volumeMountPath": "/workspace", "ports": ["8000/tcp"],   # not 8000/http: the proxy times out at ~100 s (HTTP 524)
             "env": {"HF_HOME": "/workspace/hf", "HF_HUB_ENABLE_HF_TRANSFER": "1"},
             "dockerEntrypoint": ["vllm", "serve"], "dockerStartCmd": args}
     pod = _req("POST", "/pods", body)
@@ -90,7 +91,7 @@ def wait(limit_min: int = 40) -> int:
     t0 = time.time()
     while time.time() - t0 < limit_min * 60:
         try:
-            req = urllib.request.Request(url, headers={"Authorization": f"Bearer {_key('VLLM_API_KEY')}"})
+            req = urllib.request.Request(url, headers={"Authorization": f"Bearer {_key('VLLM_API_KEY')}", "User-Agent": "gradervsuser-internals/1.0"})
             with urllib.request.urlopen(req, timeout=20) as r:
                 if r.status == 200:
                     print(f"server ready after {(time.time() - t0) / 60:.1f} min"); return 0
@@ -98,6 +99,21 @@ def wait(limit_min: int = 40) -> int:
             pass
         time.sleep(20)
     print(f"not ready after {limit_min} min: check the pod logs in the RunPod console"); return 1
+
+
+def tcp() -> None:
+    """Expose vLLM on a direct TCP port instead of the HTTP proxy. RunPod's proxy (Cloudflare) cuts requests off at
+    ~100 s with HTTP 524, and Qwen3.8 turns that reason for minutes exceed it (V1 resume, 2026-10-20). Restarts the
+    container; the weights stay on the volume. Sets VLLM_BASE_URL to http://<public ip>:<mapped port>/v1."""
+    _req("PATCH", f"/pods/{_pid()}", {"ports": ["8000/tcp"]})
+    for _ in range(90):
+        p = _req("GET", f"/pods/{_pid()}")
+        ip, pm = p.get("publicIp"), (p.get("portMappings") or {})
+        port = pm.get("8000") or pm.get(8000)
+        if ip and port:
+            _set_env("VLLM_BASE_URL", f"http://{ip}:{port}/v1"); print(f"TCP endpoint set in .env (port {port})"); return
+        time.sleep(10)
+    sys.exit("pod did not report a public IP / TCP port mapping")
 
 
 def stop() -> None:
@@ -118,6 +134,8 @@ if __name__ == "__main__":
         status()
     elif cmd == "wait":
         sys.exit(wait())
+    elif cmd == "tcp":
+        tcp()
     elif cmd == "stop":
         stop()
     elif cmd == "terminate":
