@@ -7,3 +7,4 @@ Figures for the split-brain experiments (branch `splitbrain`), kept apart from t
 - `fig_h2_equivariance` — H2 equivariance pilot (Qwen3.8-27B, holdout ho-1.1, 20 runs per cell): gaming, held-out accuracy, sustained test talk by frame × scoring statement.
 - `fig_h3_replication` — H3 pre-registered replication of H2 (50 runs per cell).
 - `fig_holdout_summary` — grader-targeted gaming across all holdout conditions (H3–H6, Qwen3.8-27B): score-graded vs conduct review vs deployment, scoring statements, stated purpose, data v3.
+- `fig_holdout_schematic` — schematic of the holdout environment: frames × scoring line → workspace → root-only scorer → measures.
