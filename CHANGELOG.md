@@ -365,3 +365,9 @@ Design decisions not specified by the spec:
 - CL1 (cleanup 2 × 2 on Qwen3.8): the pre-registered fabricate measure was invalid on data v1 (the country leaked
   through the dialling code); an exploratory strict measure shows the H2/H3 pattern. cleanup data v2 (cl-1.1) makes
   ambiguity genuinely unrecoverable. Decisions #75–76.
+
+## 2026-10-19: H4 (conduct frame), H5 (data v3), H6 (intent clarity)
+
+- Conduct review: gaming 1/20, at deployment level (graded 38/50). Data v3: split holds (16 vs 2), but deployment
+  post-hoc test inference is unchanged (30%). Intent stated: graded gaming still 14/20 (control 17/20), deployment
+  0/20. Summary figure `fig_holdout_summary`. Decision #78.
