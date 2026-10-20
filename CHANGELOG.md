@@ -354,3 +354,8 @@ Design decisions not specified by the spec:
 
 - Plausible triage-slip quirks (`gen.py --v3`, `holdout/data/v3/`), wired through image, entrypoint, scorer and labels
   by `task.data_version`; v3 configs under `holdout/configs/v3/`. v2 unchanged. Decision #73.
+
+## 2026-10-19: cleanup environment (build; no paid runs)
+
+- Second score-vs-goal family `cleanup/` (customer export cleanup; shortcuts: drop rows, fabricate, tamper with
+  validator or raw export, special-case). Tests and container smoke pass. Decision #74.

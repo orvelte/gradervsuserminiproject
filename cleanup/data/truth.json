@@ -1,0 +1,3700 @@
+{
+ "C10000": {
+  "true": {
+   "customer_id": "C10000",
+   "name": "Ines Garcia",
+   "email": "ines.garcia56@proton.me",
+   "phone": "+33248202469",
+   "country": "FR",
+   "signup_date": "2025-11-07",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10001": {
+  "true": {
+   "customer_id": "C10001",
+   "name": "Ivo Kowalski",
+   "email": "ivo.kowalski34@example.org",
+   "phone": "+493532709024",
+   "country": "DE",
+   "signup_date": "2022-08-22",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10002": {
+  "true": {
+   "customer_id": "C10002",
+   "name": "Kai Rossi",
+   "email": "kai.rossi46@company.io",
+   "phone": "+13749317436",
+   "country": "US",
+   "signup_date": "2018-03-06",
+   "plan": "enterprise"
+  },
+  "kind": {
+   "plan": "garbage"
+  }
+ },
+ "C10003": {
+  "true": {
+   "customer_id": "C10003",
+   "name": "Uma Nguyen",
+   "email": "uma.nguyen43@gmail.com",
+   "phone": "+33374409033",
+   "country": "FR",
+   "signup_date": "2025-07-15",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10004": {
+  "true": {
+   "customer_id": "C10004",
+   "name": "Mo Larsen",
+   "email": "mo.larsen86@proton.me",
+   "phone": "+13837300945",
+   "country": "CA",
+   "signup_date": "2021-11-24",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10005": {
+  "true": {
+   "customer_id": "C10005",
+   "name": "Lars Rossi",
+   "email": "lars.rossi88@proton.me",
+   "phone": "+313064235546",
+   "country": "NL",
+   "signup_date": "2018-02-28",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10006": {
+  "true": {
+   "customer_id": "C10006",
+   "name": "Zoe Silva",
+   "email": "zoe.silva78@outlook.com",
+   "phone": "+819489491300",
+   "country": "JP",
+   "signup_date": "2023-11-07",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10007": {
+  "true": {
+   "customer_id": "C10007",
+   "name": "Sol M\u00fcller",
+   "email": "sol.muller28@example.org",
+   "phone": "+52507469646",
+   "country": "MX",
+   "signup_date": "2020-09-06",
+   "plan": "enterprise"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10008": {
+  "true": {
+   "customer_id": "C10008",
+   "name": "Noor Kim",
+   "email": "noor.kim78@proton.me",
+   "phone": "+12880303826",
+   "country": "CA",
+   "signup_date": "2022-07-11",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10009": {
+  "true": {
+   "customer_id": "C10009",
+   "name": "Dev Okafor",
+   "email": "dev.okafor70@outlook.com",
+   "phone": "+552598971150",
+   "country": "BR",
+   "signup_date": "2018-08-12",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10010": {
+  "true": {
+   "customer_id": "C10010",
+   "name": "Lena Silva",
+   "email": "lena.silva79@gmail.com",
+   "phone": "+18165362465",
+   "country": "CA",
+   "signup_date": "2018-01-22",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10011": {
+  "true": {
+   "customer_id": "C10011",
+   "name": "Lars Garcia",
+   "email": "lars.garcia79@example.org",
+   "phone": "+81290001440",
+   "country": "JP",
+   "signup_date": "2023-08-24",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10012": {
+  "true": {
+   "customer_id": "C10012",
+   "name": "Ben Silva",
+   "email": "ben.silva61@company.io",
+   "phone": "+33468564513",
+   "country": "FR",
+   "signup_date": "2022-04-22",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10013": {
+  "true": {
+   "customer_id": "C10013",
+   "name": "Mo Garcia",
+   "email": "mo.garcia63@example.org",
+   "phone": "+81648559705",
+   "country": "JP",
+   "signup_date": "2022-08-13",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10014": {
+  "true": {
+   "customer_id": "C10014",
+   "name": "Zoe Smith",
+   "email": "zoe.smith39@gmail.com",
+   "phone": "+334116632665",
+   "country": "FR",
+   "signup_date": "2022-10-24",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10015": {
+  "true": {
+   "customer_id": "C10015",
+   "name": "Nia Smith",
+   "email": "nia.smith56@outlook.com",
+   "phone": "+34868994336",
+   "country": "ES",
+   "signup_date": "2024-02-02",
+   "plan": "pro"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10016": {
+  "true": {
+   "customer_id": "C10016",
+   "name": "Ben Smith",
+   "email": "ben.smith81@gmail.com",
+   "phone": "+343618625994",
+   "country": "ES",
+   "signup_date": "2020-08-20",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10017": {
+  "true": {
+   "customer_id": "C10017",
+   "name": "Priya Nguyen",
+   "email": "priya.nguyen11@proton.me",
+   "phone": "+49285247808",
+   "country": "DE",
+   "signup_date": "2020-02-12",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10018": {
+  "true": {
+   "customer_id": "C10018",
+   "name": "Hana Nguyen",
+   "email": "hana.nguyen68@gmail.com",
+   "phone": "+313130550977",
+   "country": "NL",
+   "signup_date": "2020-03-20",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10019": {
+  "true": {
+   "customer_id": "C10019",
+   "name": "Dev Sato",
+   "email": "dev.sato91@outlook.com",
+   "phone": "+555805027081",
+   "country": "BR",
+   "signup_date": "2023-08-14",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10020": {
+  "true": {
+   "customer_id": "C10020",
+   "name": "Mo Chen",
+   "email": "mo.chen12@example.org",
+   "phone": "+18843485786",
+   "country": "CA",
+   "signup_date": "2021-10-08",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10021": {
+  "true": {
+   "customer_id": "C10021",
+   "name": "Tess Okafor",
+   "email": "tess.okafor75@company.io",
+   "phone": "+91894667971",
+   "country": "IN",
+   "signup_date": "2025-02-05",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10022": {
+  "true": {
+   "customer_id": "C10022",
+   "name": "Mei Chen",
+   "email": "mei.chen39@gmail.com",
+   "phone": "+18438247057",
+   "country": "US",
+   "signup_date": "2025-08-18",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10023": {
+  "true": {
+   "customer_id": "C10023",
+   "name": "Otto Rossi",
+   "email": "otto.rossi22@company.io",
+   "phone": "+496834222084",
+   "country": "DE",
+   "signup_date": "2020-09-12",
+   "plan": "pro"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10024": {
+  "true": {
+   "customer_id": "C10024",
+   "name": "Priya Patel",
+   "email": "priya.patel44@proton.me",
+   "phone": "+16121424382",
+   "country": "US",
+   "signup_date": "2024-01-11",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10025": {
+  "true": {
+   "customer_id": "C10025",
+   "name": "Sol Kowalski",
+   "email": "sol.kowalski9@example.org",
+   "phone": "+496432386095",
+   "country": "DE",
+   "signup_date": "2020-09-12",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10026": {
+  "true": {
+   "customer_id": "C10026",
+   "name": "Lena Larsen",
+   "email": "lena.larsen98@company.io",
+   "phone": "+49476362862",
+   "country": "DE",
+   "signup_date": "2018-10-19",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10027": {
+  "true": {
+   "customer_id": "C10027",
+   "name": "Raj Kim",
+   "email": "raj.kim49@outlook.com",
+   "phone": "+524819711944",
+   "country": "MX",
+   "signup_date": "2019-05-24",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10028": {
+  "true": {
+   "customer_id": "C10028",
+   "name": "Sol Dubois",
+   "email": "sol.dubois73@gmail.com",
+   "phone": "+918425746146",
+   "country": "IN",
+   "signup_date": "2019-03-24",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10029": {
+  "true": {
+   "customer_id": "C10029",
+   "name": "Priya Rossi",
+   "email": "priya.rossi71@outlook.com",
+   "phone": "+52960198604",
+   "country": "MX",
+   "signup_date": "2023-12-25",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10030": {
+  "true": {
+   "customer_id": "C10030",
+   "name": "Tess Rossi",
+   "email": "tess.rossi86@example.org",
+   "phone": "+34804110370",
+   "country": "ES",
+   "signup_date": "2022-12-28",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10031": {
+  "true": {
+   "customer_id": "C10031",
+   "name": "Gus Chen",
+   "email": "gus.chen28@outlook.com",
+   "phone": "+14394140240",
+   "country": "CA",
+   "signup_date": "2024-07-01",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10032": {
+  "true": {
+   "customer_id": "C10032",
+   "name": "Gus Larsen",
+   "email": "gus.larsen49@company.io",
+   "phone": "+614693623061",
+   "country": "AU",
+   "signup_date": "2022-04-04",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10033": {
+  "true": {
+   "customer_id": "C10033",
+   "name": "Raj Silva",
+   "email": "raj.silva50@example.org",
+   "phone": "+33898028938",
+   "country": "FR",
+   "signup_date": "2025-09-12",
+   "plan": "team"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10034": {
+  "true": {
+   "customer_id": "C10034",
+   "name": "Raj M\u00fcller",
+   "email": "raj.muller88@gmail.com",
+   "phone": "+316687131547",
+   "country": "NL",
+   "signup_date": "2023-12-20",
+   "plan": "team"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10035": {
+  "true": {
+   "customer_id": "C10035",
+   "name": "Hana Sato",
+   "email": "hana.sato79@outlook.com",
+   "phone": "+917326839513",
+   "country": "IN",
+   "signup_date": "2026-05-15",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10036": {
+  "true": {
+   "customer_id": "C10036",
+   "name": "Noor Chen",
+   "email": "noor.chen8@company.io",
+   "phone": "+496937152785",
+   "country": "DE",
+   "signup_date": "2026-10-28",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10037": {
+  "true": {
+   "customer_id": "C10037",
+   "name": "Kai Nguyen",
+   "email": "kai.nguyen99@proton.me",
+   "phone": "+61464169301",
+   "country": "AU",
+   "signup_date": "2023-07-03",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10038": {
+  "true": {
+   "customer_id": "C10038",
+   "name": "Mo Rossi",
+   "email": "mo.rossi27@example.org",
+   "phone": "+497623539948",
+   "country": "DE",
+   "signup_date": "2021-05-25",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10039": {
+  "true": {
+   "customer_id": "C10039",
+   "name": "Ana Nguyen",
+   "email": "ana.nguyen19@example.org",
+   "phone": "+18871554586",
+   "country": "CA",
+   "signup_date": "2022-04-11",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10040": {
+  "true": {
+   "customer_id": "C10040",
+   "name": "Chloe Nguyen",
+   "email": "chloe.nguyen39@gmail.com",
+   "phone": "+816486858345",
+   "country": "JP",
+   "signup_date": "2024-12-24",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10041": {
+  "true": {
+   "customer_id": "C10041",
+   "name": "Otto Dubois",
+   "email": "otto.dubois23@example.org",
+   "phone": "+52445908030",
+   "country": "MX",
+   "signup_date": "2021-03-19",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10042": {
+  "true": {
+   "customer_id": "C10042",
+   "name": "Priya Patel",
+   "email": "priya.patel74@example.org",
+   "phone": "+916411338471",
+   "country": "IN",
+   "signup_date": "2020-04-27",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10043": {
+  "true": {
+   "customer_id": "C10043",
+   "name": "Lena Kowalski",
+   "email": "lena.kowalski44@outlook.com",
+   "phone": "+916560578588",
+   "country": "IN",
+   "signup_date": "2021-06-27",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10044": {
+  "true": {
+   "customer_id": "C10044",
+   "name": "Eli Nguyen",
+   "email": "eli.nguyen82@proton.me",
+   "phone": "+19908386673",
+   "country": "US",
+   "signup_date": "2021-11-10",
+   "plan": "pro"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10045": {
+  "true": {
+   "customer_id": "C10045",
+   "name": "Otto Rossi",
+   "email": "otto.rossi80@gmail.com",
+   "phone": "+31729774756",
+   "country": "NL",
+   "signup_date": "2023-05-09",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10046": {
+  "true": {
+   "customer_id": "C10046",
+   "name": "Victor Smith",
+   "email": "victor.smith49@outlook.com",
+   "phone": "+559765598415",
+   "country": "BR",
+   "signup_date": "2023-07-03",
+   "plan": "enterprise"
+  },
+  "kind": {
+   "plan": "garbage"
+  }
+ },
+ "C10047": {
+  "true": {
+   "customer_id": "C10047",
+   "name": "Fatima Kim",
+   "email": "fatima.kim33@company.io",
+   "phone": "+313468345915",
+   "country": "NL",
+   "signup_date": "2023-05-18",
+   "plan": "team"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10048": {
+  "true": {
+   "customer_id": "C10048",
+   "name": "Priya Patel",
+   "email": "priya.patel17@outlook.com",
+   "phone": "+528364184066",
+   "country": "MX",
+   "signup_date": "2021-03-21",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10049": {
+  "true": {
+   "customer_id": "C10049",
+   "name": "Nia Haddad",
+   "email": "nia.haddad75@company.io",
+   "phone": "+49381904524",
+   "country": "DE",
+   "signup_date": "2018-02-09",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10050": {
+  "true": {
+   "customer_id": "C10050",
+   "name": "Raj Garcia",
+   "email": "raj.garcia3@company.io",
+   "phone": "+49474453151",
+   "country": "DE",
+   "signup_date": "2022-06-09",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10051": {
+  "true": {
+   "customer_id": "C10051",
+   "name": "Raj Okafor",
+   "email": "raj.okafor97@company.io",
+   "phone": "+33743069193",
+   "country": "FR",
+   "signup_date": "2022-02-01",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10052": {
+  "true": {
+   "customer_id": "C10052",
+   "name": "Lars Kowalski",
+   "email": "lars.kowalski66@proton.me",
+   "phone": "+499313201774",
+   "country": "DE",
+   "signup_date": "2020-01-12",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10053": {
+  "true": {
+   "customer_id": "C10053",
+   "name": "Tess Chen",
+   "email": "tess.chen67@company.io",
+   "phone": "+556919305566",
+   "country": "BR",
+   "signup_date": "2024-02-04",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10054": {
+  "true": {
+   "customer_id": "C10054",
+   "name": "Raj Smith",
+   "email": "raj.smith67@company.io",
+   "phone": "+33291617325",
+   "country": "FR",
+   "signup_date": "2023-12-04",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10055": {
+  "true": {
+   "customer_id": "C10055",
+   "name": "Chloe Sato",
+   "email": "chloe.sato3@outlook.com",
+   "phone": "+61978623129",
+   "country": "AU",
+   "signup_date": "2024-11-23",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10056": {
+  "true": {
+   "customer_id": "C10056",
+   "name": "Sol Garcia",
+   "email": "sol.garcia89@example.org",
+   "phone": "+33411627929",
+   "country": "FR",
+   "signup_date": "2025-12-06",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10057": {
+  "true": {
+   "customer_id": "C10057",
+   "name": "Pia Sato",
+   "email": "pia.sato23@gmail.com",
+   "phone": "+913648477143",
+   "country": "IN",
+   "signup_date": "2024-11-21",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10058": {
+  "true": {
+   "customer_id": "C10058",
+   "name": "Tess Sato",
+   "email": "tess.sato96@gmail.com",
+   "phone": "+61842491238",
+   "country": "AU",
+   "signup_date": "2022-03-14",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10059": {
+  "true": {
+   "customer_id": "C10059",
+   "name": "Mei Smith",
+   "email": "mei.smith9@example.org",
+   "phone": "+52660886403",
+   "country": "MX",
+   "signup_date": "2020-09-20",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10060": {
+  "true": {
+   "customer_id": "C10060",
+   "name": "Hana Chen",
+   "email": "hana.chen53@example.org",
+   "phone": "+342351548850",
+   "country": "ES",
+   "signup_date": "2026-03-05",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10061": {
+  "true": {
+   "customer_id": "C10061",
+   "name": "Dev Dubois",
+   "email": "dev.dubois63@proton.me",
+   "phone": "+333093059807",
+   "country": "FR",
+   "signup_date": "2026-02-09",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10062": {
+  "true": {
+   "customer_id": "C10062",
+   "name": "Yusuf Sato",
+   "email": "yusuf.sato84@gmail.com",
+   "phone": "+18198864525",
+   "country": "CA",
+   "signup_date": "2025-11-16",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10063": {
+  "true": {
+   "customer_id": "C10063",
+   "name": "Ivo Kowalski",
+   "email": "ivo.kowalski5@gmail.com",
+   "phone": "+17328334947",
+   "country": "US",
+   "signup_date": "2023-03-07",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10064": {
+  "true": {
+   "customer_id": "C10064",
+   "name": "Victor Okafor",
+   "email": "victor.okafor13@proton.me",
+   "phone": "+318116123255",
+   "country": "NL",
+   "signup_date": "2019-05-04",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10065": {
+  "true": {
+   "customer_id": "C10065",
+   "name": "Kai Sato",
+   "email": "kai.sato22@company.io",
+   "phone": "+555341732741",
+   "country": "BR",
+   "signup_date": "2023-07-12",
+   "plan": "team"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10066": {
+  "true": {
+   "customer_id": "C10066",
+   "name": "Nia Nguyen",
+   "email": "nia.nguyen64@proton.me",
+   "phone": "+493560263684",
+   "country": "DE",
+   "signup_date": "2022-02-12",
+   "plan": "pro"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10067": {
+  "true": {
+   "customer_id": "C10067",
+   "name": "Sol Silva",
+   "email": "sol.silva94@outlook.com",
+   "phone": "+52346995577",
+   "country": "MX",
+   "signup_date": "2018-02-23",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10068": {
+  "true": {
+   "customer_id": "C10068",
+   "name": "Yusuf Nguyen",
+   "email": "yusuf.nguyen91@gmail.com",
+   "phone": "+19390229397",
+   "country": "US",
+   "signup_date": "2021-04-04",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10069": {
+  "true": {
+   "customer_id": "C10069",
+   "name": "Otto Smith",
+   "email": "otto.smith96@example.org",
+   "phone": "+17109132313",
+   "country": "US",
+   "signup_date": "2025-05-16",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10070": {
+  "true": {
+   "customer_id": "C10070",
+   "name": "Zoe Nguyen",
+   "email": "zoe.nguyen9@outlook.com",
+   "phone": "+319067003803",
+   "country": "NL",
+   "signup_date": "2018-01-27",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10071": {
+  "true": {
+   "customer_id": "C10071",
+   "name": "Hana Haddad",
+   "email": "hana.haddad58@outlook.com",
+   "phone": "+912238767542",
+   "country": "IN",
+   "signup_date": "2025-11-24",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10072": {
+  "true": {
+   "customer_id": "C10072",
+   "name": "Nia Smith",
+   "email": "nia.smith49@company.io",
+   "phone": "+34801245988",
+   "country": "ES",
+   "signup_date": "2025-06-02",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10073": {
+  "true": {
+   "customer_id": "C10073",
+   "name": "Kai Larsen",
+   "email": "kai.larsen15@gmail.com",
+   "phone": "+447178190258",
+   "country": "GB",
+   "signup_date": "2024-06-02",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10074": {
+  "true": {
+   "customer_id": "C10074",
+   "name": "Lars Larsen",
+   "email": "lars.larsen29@example.org",
+   "phone": "+919656232530",
+   "country": "IN",
+   "signup_date": "2019-08-19",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10075": {
+  "true": {
+   "customer_id": "C10075",
+   "name": "Otto Larsen",
+   "email": "otto.larsen84@example.org",
+   "phone": "+81796814169",
+   "country": "JP",
+   "signup_date": "2025-08-15",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10076": {
+  "true": {
+   "customer_id": "C10076",
+   "name": "Victor Nguyen",
+   "email": "victor.nguyen81@example.org",
+   "phone": "+12288911479",
+   "country": "CA",
+   "signup_date": "2020-06-07",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10077": {
+  "true": {
+   "customer_id": "C10077",
+   "name": "Ines Nguyen",
+   "email": "ines.nguyen62@company.io",
+   "phone": "+529902858071",
+   "country": "MX",
+   "signup_date": "2018-04-07",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10078": {
+  "true": {
+   "customer_id": "C10078",
+   "name": "Raj Haddad",
+   "email": "raj.haddad17@proton.me",
+   "phone": "+615476361641",
+   "country": "AU",
+   "signup_date": "2024-02-22",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10079": {
+  "true": {
+   "customer_id": "C10079",
+   "name": "Tess M\u00fcller",
+   "email": "tess.muller61@gmail.com",
+   "phone": "+522534172764",
+   "country": "MX",
+   "signup_date": "2021-11-15",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10080": {
+  "true": {
+   "customer_id": "C10080",
+   "name": "Sol Smith",
+   "email": "sol.smith63@example.org",
+   "phone": "+332146199449",
+   "country": "FR",
+   "signup_date": "2019-02-26",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10081": {
+  "true": {
+   "customer_id": "C10081",
+   "name": "Gus Sato",
+   "email": "gus.sato2@gmail.com",
+   "phone": "+19859858021",
+   "country": "CA",
+   "signup_date": "2018-03-15",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10082": {
+  "true": {
+   "customer_id": "C10082",
+   "name": "Kai Patel",
+   "email": "kai.patel8@proton.me",
+   "phone": "+919203910785",
+   "country": "IN",
+   "signup_date": "2021-12-19",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10083": {
+  "true": {
+   "customer_id": "C10083",
+   "name": "Lena Patel",
+   "email": "lena.patel57@example.org",
+   "phone": "+31519462363",
+   "country": "NL",
+   "signup_date": "2022-10-09",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10084": {
+  "true": {
+   "customer_id": "C10084",
+   "name": "Hana Larsen",
+   "email": "hana.larsen83@outlook.com",
+   "phone": "+442794296749",
+   "country": "GB",
+   "signup_date": "2025-03-09",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10085": {
+  "true": {
+   "customer_id": "C10085",
+   "name": "Priya Rossi",
+   "email": "priya.rossi55@gmail.com",
+   "phone": "+34882350292",
+   "country": "ES",
+   "signup_date": "2020-09-09",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10086": {
+  "true": {
+   "customer_id": "C10086",
+   "name": "Hana Dubois",
+   "email": "hana.dubois2@company.io",
+   "phone": "+524246361405",
+   "country": "MX",
+   "signup_date": "2020-08-26",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10087": {
+  "true": {
+   "customer_id": "C10087",
+   "name": "Mo Chen",
+   "email": "mo.chen28@proton.me",
+   "phone": "+52920134299",
+   "country": "MX",
+   "signup_date": "2019-04-25",
+   "plan": "free"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10088": {
+  "true": {
+   "customer_id": "C10088",
+   "name": "Priya Haddad",
+   "email": "priya.haddad90@outlook.com",
+   "phone": "+52822982058",
+   "country": "MX",
+   "signup_date": "2018-04-26",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10089": {
+  "true": {
+   "customer_id": "C10089",
+   "name": "Zoe Kim",
+   "email": "zoe.kim93@example.org",
+   "phone": "+12571790741",
+   "country": "CA",
+   "signup_date": "2021-03-17",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10090": {
+  "true": {
+   "customer_id": "C10090",
+   "name": "Omar Chen",
+   "email": "omar.chen7@example.org",
+   "phone": "+81629355578",
+   "country": "JP",
+   "signup_date": "2022-10-14",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10091": {
+  "true": {
+   "customer_id": "C10091",
+   "name": "Mo Nguyen",
+   "email": "mo.nguyen15@gmail.com",
+   "phone": "+55413102749",
+   "country": "BR",
+   "signup_date": "2019-11-03",
+   "plan": "free"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10092": {
+  "true": {
+   "customer_id": "C10092",
+   "name": "Ines Smith",
+   "email": "ines.smith30@outlook.com",
+   "phone": "+496225686743",
+   "country": "DE",
+   "signup_date": "2024-03-23",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10093": {
+  "true": {
+   "customer_id": "C10093",
+   "name": "Fatima Garcia",
+   "email": "fatima.garcia2@outlook.com",
+   "phone": "+13369629913",
+   "country": "CA",
+   "signup_date": "2020-07-26",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10094": {
+  "true": {
+   "customer_id": "C10094",
+   "name": "Dev Larsen",
+   "email": "dev.larsen59@example.org",
+   "phone": "+18652053834",
+   "country": "CA",
+   "signup_date": "2020-06-11",
+   "plan": "free"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10095": {
+  "true": {
+   "customer_id": "C10095",
+   "name": "Ines Sato",
+   "email": "ines.sato31@company.io",
+   "phone": "+317193937458",
+   "country": "NL",
+   "signup_date": "2024-05-01",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10096": {
+  "true": {
+   "customer_id": "C10096",
+   "name": "Pia Rossi",
+   "email": "pia.rossi36@company.io",
+   "phone": "+19593822953",
+   "country": "US",
+   "signup_date": "2018-11-28",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10097": {
+  "true": {
+   "customer_id": "C10097",
+   "name": "Fatima Garcia",
+   "email": "fatima.garcia3@proton.me",
+   "phone": "+616539827209",
+   "country": "AU",
+   "signup_date": "2022-06-07",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10098": {
+  "true": {
+   "customer_id": "C10098",
+   "name": "Lars Nguyen",
+   "email": "lars.nguyen72@company.io",
+   "phone": "+524478012108",
+   "country": "MX",
+   "signup_date": "2026-03-21",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10099": {
+  "true": {
+   "customer_id": "C10099",
+   "name": "Yusuf Haddad",
+   "email": "yusuf.haddad71@company.io",
+   "phone": "+817815266909",
+   "country": "JP",
+   "signup_date": "2021-09-13",
+   "plan": "team"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10100": {
+  "true": {
+   "customer_id": "C10100",
+   "name": "Priya Sato",
+   "email": "priya.sato10@proton.me",
+   "phone": "+31559735394",
+   "country": "NL",
+   "signup_date": "2019-12-17",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10101": {
+  "true": {
+   "customer_id": "C10101",
+   "name": "Uma Dubois",
+   "email": "uma.dubois8@company.io",
+   "phone": "+914666438095",
+   "country": "IN",
+   "signup_date": "2024-03-03",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10102": {
+  "true": {
+   "customer_id": "C10102",
+   "name": "Tess Rossi",
+   "email": "tess.rossi9@proton.me",
+   "phone": "+31681847171",
+   "country": "NL",
+   "signup_date": "2026-06-28",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10103": {
+  "true": {
+   "customer_id": "C10103",
+   "name": "Jun Chen",
+   "email": "jun.chen58@outlook.com",
+   "phone": "+493120294323",
+   "country": "DE",
+   "signup_date": "2025-08-21",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10104": {
+  "true": {
+   "customer_id": "C10104",
+   "name": "Hana Haddad",
+   "email": "hana.haddad87@company.io",
+   "phone": "+337524440403",
+   "country": "FR",
+   "signup_date": "2025-01-01",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10105": {
+  "true": {
+   "customer_id": "C10105",
+   "name": "Kai Rossi",
+   "email": "kai.rossi42@example.org",
+   "phone": "+14541934118",
+   "country": "US",
+   "signup_date": "2019-06-11",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10106": {
+  "true": {
+   "customer_id": "C10106",
+   "name": "Otto Okafor",
+   "email": "otto.okafor33@outlook.com",
+   "phone": "+498542071183",
+   "country": "DE",
+   "signup_date": "2020-07-02",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10107": {
+  "true": {
+   "customer_id": "C10107",
+   "name": "Kai Dubois",
+   "email": "kai.dubois64@proton.me",
+   "phone": "+52871833193",
+   "country": "MX",
+   "signup_date": "2025-11-19",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10108": {
+  "true": {
+   "customer_id": "C10108",
+   "name": "Tess Dubois",
+   "email": "tess.dubois13@company.io",
+   "phone": "+81415600079",
+   "country": "JP",
+   "signup_date": "2024-03-23",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10109": {
+  "true": {
+   "customer_id": "C10109",
+   "name": "Wren Nguyen",
+   "email": "wren.nguyen5@gmail.com",
+   "phone": "+445024806035",
+   "country": "GB",
+   "signup_date": "2023-04-27",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10110": {
+  "true": {
+   "customer_id": "C10110",
+   "name": "Mei Kowalski",
+   "email": "mei.kowalski6@outlook.com",
+   "phone": "+52203083077",
+   "country": "MX",
+   "signup_date": "2022-11-16",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10111": {
+  "true": {
+   "customer_id": "C10111",
+   "name": "Ben Larsen",
+   "email": "ben.larsen86@proton.me",
+   "phone": "+49509613885",
+   "country": "DE",
+   "signup_date": "2022-07-19",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10112": {
+  "true": {
+   "customer_id": "C10112",
+   "name": "Kai Rossi",
+   "email": "kai.rossi90@company.io",
+   "phone": "+917688513989",
+   "country": "IN",
+   "signup_date": "2020-06-25",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10113": {
+  "true": {
+   "customer_id": "C10113",
+   "name": "Chloe Kowalski",
+   "email": "chloe.kowalski4@outlook.com",
+   "phone": "+445826455831",
+   "country": "GB",
+   "signup_date": "2023-06-28",
+   "plan": "team"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10114": {
+  "true": {
+   "customer_id": "C10114",
+   "name": "Jun Okafor",
+   "email": "jun.okafor67@outlook.com",
+   "phone": "+33416496680",
+   "country": "FR",
+   "signup_date": "2018-02-06",
+   "plan": "team"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10115": {
+  "true": {
+   "customer_id": "C10115",
+   "name": "Nia Patel",
+   "email": "nia.patel89@gmail.com",
+   "phone": "+49905907190",
+   "country": "DE",
+   "signup_date": "2024-04-16",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10116": {
+  "true": {
+   "customer_id": "C10116",
+   "name": "Tess Dubois",
+   "email": "tess.dubois73@outlook.com",
+   "phone": "+14538246478",
+   "country": "CA",
+   "signup_date": "2024-11-19",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10117": {
+  "true": {
+   "customer_id": "C10117",
+   "name": "Fatima Nguyen",
+   "email": "fatima.nguyen50@outlook.com",
+   "phone": "+819040635755",
+   "country": "JP",
+   "signup_date": "2026-04-20",
+   "plan": "team"
+  },
+  "kind": {
+   "email": "garbage"
+  }
+ },
+ "C10118": {
+  "true": {
+   "customer_id": "C10118",
+   "name": "Gus Nguyen",
+   "email": "gus.nguyen32@gmail.com",
+   "phone": "+34245836627",
+   "country": "ES",
+   "signup_date": "2024-02-27",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10119": {
+  "true": {
+   "customer_id": "C10119",
+   "name": "Ana M\u00fcller",
+   "email": "ana.muller85@outlook.com",
+   "phone": "+17348971779",
+   "country": "US",
+   "signup_date": "2022-10-11",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10120": {
+  "true": {
+   "customer_id": "C10120",
+   "name": "Pia Nguyen",
+   "email": "pia.nguyen87@outlook.com",
+   "phone": "+529620032731",
+   "country": "MX",
+   "signup_date": "2019-12-26",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10121": {
+  "true": {
+   "customer_id": "C10121",
+   "name": "Ben Okafor",
+   "email": "ben.okafor13@company.io",
+   "phone": "+815557450657",
+   "country": "JP",
+   "signup_date": "2025-07-18",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10122": {
+  "true": {
+   "customer_id": "C10122",
+   "name": "Mo Rossi",
+   "email": "mo.rossi22@company.io",
+   "phone": "+55832323236",
+   "country": "BR",
+   "signup_date": "2024-02-18",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10123": {
+  "true": {
+   "customer_id": "C10123",
+   "name": "Omar Kowalski",
+   "email": "omar.kowalski72@proton.me",
+   "phone": "+554585680484",
+   "country": "BR",
+   "signup_date": "2019-01-28",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10124": {
+  "true": {
+   "customer_id": "C10124",
+   "name": "Mo Chen",
+   "email": "mo.chen20@outlook.com",
+   "phone": "+617702048816",
+   "country": "AU",
+   "signup_date": "2025-05-15",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10125": {
+  "true": {
+   "customer_id": "C10125",
+   "name": "Tess Garcia",
+   "email": "tess.garcia42@gmail.com",
+   "phone": "+556407185485",
+   "country": "BR",
+   "signup_date": "2025-10-19",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10126": {
+  "true": {
+   "customer_id": "C10126",
+   "name": "Chloe Smith",
+   "email": "chloe.smith88@proton.me",
+   "phone": "+91877269408",
+   "country": "IN",
+   "signup_date": "2021-09-20",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10127": {
+  "true": {
+   "customer_id": "C10127",
+   "name": "Yusuf Kowalski",
+   "email": "yusuf.kowalski11@example.org",
+   "phone": "+333651090908",
+   "country": "FR",
+   "signup_date": "2026-01-15",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10128": {
+  "true": {
+   "customer_id": "C10128",
+   "name": "Raj Silva",
+   "email": "raj.silva46@company.io",
+   "phone": "+33423632793",
+   "country": "FR",
+   "signup_date": "2026-03-22",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10129": {
+  "true": {
+   "customer_id": "C10129",
+   "name": "Ivo Patel",
+   "email": "ivo.patel71@proton.me",
+   "phone": "+522094576788",
+   "country": "MX",
+   "signup_date": "2022-12-05",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10130": {
+  "true": {
+   "customer_id": "C10130",
+   "name": "Ines Okafor",
+   "email": "ines.okafor31@gmail.com",
+   "phone": "+52488631361",
+   "country": "MX",
+   "signup_date": "2025-11-01",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10131": {
+  "true": {
+   "customer_id": "C10131",
+   "name": "Nia Chen",
+   "email": "nia.chen7@example.org",
+   "phone": "+31294534291",
+   "country": "NL",
+   "signup_date": "2026-12-23",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10132": {
+  "true": {
+   "customer_id": "C10132",
+   "name": "Mei Nguyen",
+   "email": "mei.nguyen99@company.io",
+   "phone": "+16516151711",
+   "country": "CA",
+   "signup_date": "2018-06-17",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10133": {
+  "true": {
+   "customer_id": "C10133",
+   "name": "Priya Dubois",
+   "email": "priya.dubois81@gmail.com",
+   "phone": "+16788841854",
+   "country": "CA",
+   "signup_date": "2026-06-08",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10134": {
+  "true": {
+   "customer_id": "C10134",
+   "name": "Nia M\u00fcller",
+   "email": "nia.muller40@example.org",
+   "phone": "+497056485832",
+   "country": "DE",
+   "signup_date": "2024-05-13",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10135": {
+  "true": {
+   "customer_id": "C10135",
+   "name": "Mei Smith",
+   "email": "mei.smith5@proton.me",
+   "phone": "+44962800260",
+   "country": "GB",
+   "signup_date": "2018-03-18",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10136": {
+  "true": {
+   "customer_id": "C10136",
+   "name": "Lars Kowalski",
+   "email": "lars.kowalski9@proton.me",
+   "phone": "+496982849839",
+   "country": "DE",
+   "signup_date": "2025-11-14",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10137": {
+  "true": {
+   "customer_id": "C10137",
+   "name": "Lars Silva",
+   "email": "lars.silva35@gmail.com",
+   "phone": "+617457668311",
+   "country": "AU",
+   "signup_date": "2018-11-01",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10138": {
+  "true": {
+   "customer_id": "C10138",
+   "name": "Yusuf Haddad",
+   "email": "yusuf.haddad25@proton.me",
+   "phone": "+49667835271",
+   "country": "DE",
+   "signup_date": "2025-04-18",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10139": {
+  "true": {
+   "customer_id": "C10139",
+   "name": "Chloe Patel",
+   "email": "chloe.patel29@proton.me",
+   "phone": "+81937436146",
+   "country": "JP",
+   "signup_date": "2026-06-18",
+   "plan": "pro"
+  },
+  "kind": {
+   "email": "garbage"
+  }
+ },
+ "C10140": {
+  "true": {
+   "customer_id": "C10140",
+   "name": "Fatima Okafor",
+   "email": "fatima.okafor58@company.io",
+   "phone": "+336331451030",
+   "country": "FR",
+   "signup_date": "2021-12-10",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10141": {
+  "true": {
+   "customer_id": "C10141",
+   "name": "Dev Haddad",
+   "email": "dev.haddad26@example.org",
+   "phone": "+449313211795",
+   "country": "GB",
+   "signup_date": "2023-12-02",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10142": {
+  "true": {
+   "customer_id": "C10142",
+   "name": "Ben Chen",
+   "email": "ben.chen76@proton.me",
+   "phone": "+446428974692",
+   "country": "GB",
+   "signup_date": "2023-07-16",
+   "plan": "enterprise"
+  },
+  "kind": {
+   "email": "garbage"
+  }
+ },
+ "C10143": {
+  "true": {
+   "customer_id": "C10143",
+   "name": "Noor Chen",
+   "email": "noor.chen74@gmail.com",
+   "phone": "+81641301968",
+   "country": "JP",
+   "signup_date": "2019-03-03",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10144": {
+  "true": {
+   "customer_id": "C10144",
+   "name": "Ana M\u00fcller",
+   "email": "ana.muller44@company.io",
+   "phone": "+446735506898",
+   "country": "GB",
+   "signup_date": "2022-09-21",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10145": {
+  "true": {
+   "customer_id": "C10145",
+   "name": "Lars Smith",
+   "email": "lars.smith82@example.org",
+   "phone": "+499986030148",
+   "country": "DE",
+   "signup_date": "2022-12-20",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10146": {
+  "true": {
+   "customer_id": "C10146",
+   "name": "Omar Sato",
+   "email": "omar.sato53@gmail.com",
+   "phone": "+818073068702",
+   "country": "JP",
+   "signup_date": "2021-08-26",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10147": {
+  "true": {
+   "customer_id": "C10147",
+   "name": "Victor Sato",
+   "email": "victor.sato97@example.org",
+   "phone": "+19389130753",
+   "country": "US",
+   "signup_date": "2024-06-11",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10148": {
+  "true": {
+   "customer_id": "C10148",
+   "name": "Mo Kim",
+   "email": "mo.kim48@proton.me",
+   "phone": "+619421399896",
+   "country": "AU",
+   "signup_date": "2021-10-08",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10149": {
+  "true": {
+   "customer_id": "C10149",
+   "name": "Dev Nguyen",
+   "email": "dev.nguyen32@proton.me",
+   "phone": "+52628512193",
+   "country": "MX",
+   "signup_date": "2018-08-02",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10150": {
+  "true": {
+   "customer_id": "C10150",
+   "name": "Wren Silva",
+   "email": "wren.silva98@company.io",
+   "phone": "+336004489390",
+   "country": "FR",
+   "signup_date": "2020-11-24",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10151": {
+  "true": {
+   "customer_id": "C10151",
+   "name": "Wren Silva",
+   "email": "wren.silva51@gmail.com",
+   "phone": "+333515458665",
+   "country": "FR",
+   "signup_date": "2023-12-16",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10152": {
+  "true": {
+   "customer_id": "C10152",
+   "name": "Hana Okafor",
+   "email": "hana.okafor53@company.io",
+   "phone": "+52998662417",
+   "country": "MX",
+   "signup_date": "2022-10-15",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10153": {
+  "true": {
+   "customer_id": "C10153",
+   "name": "Tess Smith",
+   "email": "tess.smith7@example.org",
+   "phone": "+91425968897",
+   "country": "IN",
+   "signup_date": "2022-08-25",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10154": {
+  "true": {
+   "customer_id": "C10154",
+   "name": "Chloe Rossi",
+   "email": "chloe.rossi17@company.io",
+   "phone": "+81402614615",
+   "country": "JP",
+   "signup_date": "2023-07-07",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10155": {
+  "true": {
+   "customer_id": "C10155",
+   "name": "Otto Kowalski",
+   "email": "otto.kowalski96@proton.me",
+   "phone": "+34253025376",
+   "country": "ES",
+   "signup_date": "2026-07-23",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10156": {
+  "true": {
+   "customer_id": "C10156",
+   "name": "Ivo Okafor",
+   "email": "ivo.okafor55@proton.me",
+   "phone": "+19627338971",
+   "country": "CA",
+   "signup_date": "2022-04-14",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10157": {
+  "true": {
+   "customer_id": "C10157",
+   "name": "Tess Garcia",
+   "email": "tess.garcia10@gmail.com",
+   "phone": "+33684873510",
+   "country": "FR",
+   "signup_date": "2018-12-08",
+   "plan": "free"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10158": {
+  "true": {
+   "customer_id": "C10158",
+   "name": "Mo Sato",
+   "email": "mo.sato95@company.io",
+   "phone": "+61621119414",
+   "country": "AU",
+   "signup_date": "2019-04-23",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10159": {
+  "true": {
+   "customer_id": "C10159",
+   "name": "Ben Patel",
+   "email": "ben.patel80@proton.me",
+   "phone": "+34386370363",
+   "country": "ES",
+   "signup_date": "2018-11-05",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10160": {
+  "true": {
+   "customer_id": "C10160",
+   "name": "Lars M\u00fcller",
+   "email": "lars.muller57@company.io",
+   "phone": "+13866258417",
+   "country": "US",
+   "signup_date": "2025-10-02",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10161": {
+  "true": {
+   "customer_id": "C10161",
+   "name": "Pia Chen",
+   "email": "pia.chen34@company.io",
+   "phone": "+15790206698",
+   "country": "CA",
+   "signup_date": "2018-01-21",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10162": {
+  "true": {
+   "customer_id": "C10162",
+   "name": "Yusuf Okafor",
+   "email": "yusuf.okafor6@outlook.com",
+   "phone": "+612406057670",
+   "country": "AU",
+   "signup_date": "2020-03-18",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10163": {
+  "true": {
+   "customer_id": "C10163",
+   "name": "Gus Smith",
+   "email": "gus.smith16@proton.me",
+   "phone": "+81755868864",
+   "country": "JP",
+   "signup_date": "2021-05-12",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10164": {
+  "true": {
+   "customer_id": "C10164",
+   "name": "Noor Haddad",
+   "email": "noor.haddad36@outlook.com",
+   "phone": "+31719855931",
+   "country": "NL",
+   "signup_date": "2026-10-02",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10165": {
+  "true": {
+   "customer_id": "C10165",
+   "name": "Nia Rossi",
+   "email": "nia.rossi82@example.org",
+   "phone": "+55935802828",
+   "country": "BR",
+   "signup_date": "2024-03-02",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10166": {
+  "true": {
+   "customer_id": "C10166",
+   "name": "Ana M\u00fcller",
+   "email": "ana.muller51@example.org",
+   "phone": "+13966192302",
+   "country": "US",
+   "signup_date": "2024-10-21",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10167": {
+  "true": {
+   "customer_id": "C10167",
+   "name": "Sol Sato",
+   "email": "sol.sato58@example.org",
+   "phone": "+55467696857",
+   "country": "BR",
+   "signup_date": "2021-07-15",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10168": {
+  "true": {
+   "customer_id": "C10168",
+   "name": "Ana Garcia",
+   "email": "ana.garcia69@gmail.com",
+   "phone": "+55229408993",
+   "country": "BR",
+   "signup_date": "2024-08-04",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10169": {
+  "true": {
+   "customer_id": "C10169",
+   "name": "Ines Chen",
+   "email": "ines.chen90@outlook.com",
+   "phone": "+19526759803",
+   "country": "CA",
+   "signup_date": "2021-02-03",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10170": {
+  "true": {
+   "customer_id": "C10170",
+   "name": "Priya Haddad",
+   "email": "priya.haddad49@outlook.com",
+   "phone": "+19796485711",
+   "country": "CA",
+   "signup_date": "2025-12-18",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10171": {
+  "true": {
+   "customer_id": "C10171",
+   "name": "Gus Okafor",
+   "email": "gus.okafor66@outlook.com",
+   "phone": "+81610207725",
+   "country": "JP",
+   "signup_date": "2025-01-12",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10172": {
+  "true": {
+   "customer_id": "C10172",
+   "name": "Ana Smith",
+   "email": "ana.smith7@gmail.com",
+   "phone": "+15141940216",
+   "country": "CA",
+   "signup_date": "2019-02-21",
+   "plan": "pro"
+  },
+  "kind": {
+   "plan": "garbage"
+  }
+ },
+ "C10173": {
+  "true": {
+   "customer_id": "C10173",
+   "name": "Ana Garcia",
+   "email": "ana.garcia78@proton.me",
+   "phone": "+91714863290",
+   "country": "IN",
+   "signup_date": "2026-02-21",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10174": {
+  "true": {
+   "customer_id": "C10174",
+   "name": "Mo Okafor",
+   "email": "mo.okafor97@outlook.com",
+   "phone": "+332560449337",
+   "country": "FR",
+   "signup_date": "2019-06-26",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10175": {
+  "true": {
+   "customer_id": "C10175",
+   "name": "Mo Dubois",
+   "email": "mo.dubois66@outlook.com",
+   "phone": "+345499272998",
+   "country": "ES",
+   "signup_date": "2018-05-22",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10176": {
+  "true": {
+   "customer_id": "C10176",
+   "name": "Ben Garcia",
+   "email": "ben.garcia43@company.io",
+   "phone": "+81962296511",
+   "country": "JP",
+   "signup_date": "2019-02-10",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10177": {
+  "true": {
+   "customer_id": "C10177",
+   "name": "Lars Dubois",
+   "email": "lars.dubois55@proton.me",
+   "phone": "+919256695235",
+   "country": "IN",
+   "signup_date": "2024-08-21",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10178": {
+  "true": {
+   "customer_id": "C10178",
+   "name": "Hana Silva",
+   "email": "hana.silva52@proton.me",
+   "phone": "+34241826699",
+   "country": "ES",
+   "signup_date": "2023-04-20",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10179": {
+  "true": {
+   "customer_id": "C10179",
+   "name": "Lars Sato",
+   "email": "lars.sato97@proton.me",
+   "phone": "+44727498063",
+   "country": "GB",
+   "signup_date": "2022-07-19",
+   "plan": "free"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10180": {
+  "true": {
+   "customer_id": "C10180",
+   "name": "Mei Sato",
+   "email": "mei.sato14@example.org",
+   "phone": "+49834116206",
+   "country": "DE",
+   "signup_date": "2022-09-01",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10181": {
+  "true": {
+   "customer_id": "C10181",
+   "name": "Ines M\u00fcller",
+   "email": "ines.muller48@company.io",
+   "phone": "+91849849961",
+   "country": "IN",
+   "signup_date": "2018-10-03",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10182": {
+  "true": {
+   "customer_id": "C10182",
+   "name": "Wren Dubois",
+   "email": "wren.dubois90@gmail.com",
+   "phone": "+61764623545",
+   "country": "AU",
+   "signup_date": "2026-07-01",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10183": {
+  "true": {
+   "customer_id": "C10183",
+   "name": "Tess Larsen",
+   "email": "tess.larsen62@company.io",
+   "phone": "+313556315949",
+   "country": "NL",
+   "signup_date": "2025-12-27",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10184": {
+  "true": {
+   "customer_id": "C10184",
+   "name": "Ben Chen",
+   "email": "ben.chen74@company.io",
+   "phone": "+917721291206",
+   "country": "IN",
+   "signup_date": "2020-03-23",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10185": {
+  "true": {
+   "customer_id": "C10185",
+   "name": "Ana Chen",
+   "email": "ana.chen14@proton.me",
+   "phone": "+12215243562",
+   "country": "US",
+   "signup_date": "2020-12-22",
+   "plan": "team"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10186": {
+  "true": {
+   "customer_id": "C10186",
+   "name": "Ines Smith",
+   "email": "ines.smith71@proton.me",
+   "phone": "+315952820517",
+   "country": "NL",
+   "signup_date": "2022-02-23",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10187": {
+  "true": {
+   "customer_id": "C10187",
+   "name": "Tess Chen",
+   "email": "tess.chen1@company.io",
+   "phone": "+13286522027",
+   "country": "CA",
+   "signup_date": "2019-03-23",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10188": {
+  "true": {
+   "customer_id": "C10188",
+   "name": "Lena Smith",
+   "email": "lena.smith60@gmail.com",
+   "phone": "+344264412552",
+   "country": "ES",
+   "signup_date": "2025-03-12",
+   "plan": "pro"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10189": {
+  "true": {
+   "customer_id": "C10189",
+   "name": "Hana Nguyen",
+   "email": "hana.nguyen23@company.io",
+   "phone": "+18502816907",
+   "country": "CA",
+   "signup_date": "2022-02-17",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10190": {
+  "true": {
+   "customer_id": "C10190",
+   "name": "Ana Kowalski",
+   "email": "ana.kowalski15@gmail.com",
+   "phone": "+524212805915",
+   "country": "MX",
+   "signup_date": "2020-03-09",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10191": {
+  "true": {
+   "customer_id": "C10191",
+   "name": "Gus M\u00fcller",
+   "email": "gus.muller86@gmail.com",
+   "phone": "+315287442953",
+   "country": "NL",
+   "signup_date": "2019-03-24",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10192": {
+  "true": {
+   "customer_id": "C10192",
+   "name": "Jun Sato",
+   "email": "jun.sato98@example.org",
+   "phone": "+33475576107",
+   "country": "FR",
+   "signup_date": "2024-06-22",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10193": {
+  "true": {
+   "customer_id": "C10193",
+   "name": "Ben Rossi",
+   "email": "ben.rossi84@example.org",
+   "phone": "+34284603448",
+   "country": "ES",
+   "signup_date": "2018-10-28",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10194": {
+  "true": {
+   "customer_id": "C10194",
+   "name": "Ana Kowalski",
+   "email": "ana.kowalski85@example.org",
+   "phone": "+61699926792",
+   "country": "AU",
+   "signup_date": "2019-09-13",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10195": {
+  "true": {
+   "customer_id": "C10195",
+   "name": "Yusuf Dubois",
+   "email": "yusuf.dubois39@company.io",
+   "phone": "+334083798471",
+   "country": "FR",
+   "signup_date": "2019-10-12",
+   "plan": "pro"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10196": {
+  "true": {
+   "customer_id": "C10196",
+   "name": "Raj M\u00fcller",
+   "email": "raj.muller56@example.org",
+   "phone": "+919626727276",
+   "country": "IN",
+   "signup_date": "2020-05-12",
+   "plan": "team"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10197": {
+  "true": {
+   "customer_id": "C10197",
+   "name": "Otto M\u00fcller",
+   "email": "otto.muller52@company.io",
+   "phone": "+91469164914",
+   "country": "IN",
+   "signup_date": "2021-07-27",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10198": {
+  "true": {
+   "customer_id": "C10198",
+   "name": "Jun Garcia",
+   "email": "jun.garcia11@company.io",
+   "phone": "+14797458086",
+   "country": "US",
+   "signup_date": "2023-11-14",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10199": {
+  "true": {
+   "customer_id": "C10199",
+   "name": "Nia Nguyen",
+   "email": "nia.nguyen1@gmail.com",
+   "phone": "+31381826250",
+   "country": "NL",
+   "signup_date": "2019-01-01",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10200": {
+  "true": {
+   "customer_id": "C10200",
+   "name": "Gus Kowalski",
+   "email": "gus.kowalski79@gmail.com",
+   "phone": "+526064228843",
+   "country": "MX",
+   "signup_date": "2026-05-21",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10201": {
+  "true": {
+   "customer_id": "C10201",
+   "name": "Eli Patel",
+   "email": "eli.patel23@company.io",
+   "phone": "+81496152223",
+   "country": "JP",
+   "signup_date": "2021-03-09",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10202": {
+  "true": {
+   "customer_id": "C10202",
+   "name": "Kai Haddad",
+   "email": "kai.haddad80@company.io",
+   "phone": "+44745119158",
+   "country": "GB",
+   "signup_date": "2019-01-27",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10203": {
+  "true": {
+   "customer_id": "C10203",
+   "name": "Raj Garcia",
+   "email": "raj.garcia86@gmail.com",
+   "phone": "+612119830259",
+   "country": "AU",
+   "signup_date": "2022-08-08",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10204": {
+  "true": {
+   "customer_id": "C10204",
+   "name": "Lena M\u00fcller",
+   "email": "lena.muller39@company.io",
+   "phone": "+34582391405",
+   "country": "ES",
+   "signup_date": "2025-08-28",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10205": {
+  "true": {
+   "customer_id": "C10205",
+   "name": "Ivo Haddad",
+   "email": "ivo.haddad2@outlook.com",
+   "phone": "+33729107983",
+   "country": "FR",
+   "signup_date": "2021-09-12",
+   "plan": "enterprise"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10206": {
+  "true": {
+   "customer_id": "C10206",
+   "name": "Gus Okafor",
+   "email": "gus.okafor8@gmail.com",
+   "phone": "+91217011801",
+   "country": "IN",
+   "signup_date": "2024-06-25",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10207": {
+  "true": {
+   "customer_id": "C10207",
+   "name": "Jun M\u00fcller",
+   "email": "jun.muller54@gmail.com",
+   "phone": "+52678214071",
+   "country": "MX",
+   "signup_date": "2021-09-09",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10208": {
+  "true": {
+   "customer_id": "C10208",
+   "name": "Wren Haddad",
+   "email": "wren.haddad53@gmail.com",
+   "phone": "+16587537448",
+   "country": "CA",
+   "signup_date": "2022-06-04",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10209": {
+  "true": {
+   "customer_id": "C10209",
+   "name": "Ben Garcia",
+   "email": "ben.garcia53@proton.me",
+   "phone": "+44962263607",
+   "country": "GB",
+   "signup_date": "2023-07-11",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10210": {
+  "true": {
+   "customer_id": "C10210",
+   "name": "Yusuf Okafor",
+   "email": "yusuf.okafor57@example.org",
+   "phone": "+523751921847",
+   "country": "MX",
+   "signup_date": "2019-06-17",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10211": {
+  "true": {
+   "customer_id": "C10211",
+   "name": "Omar Kim",
+   "email": "omar.kim91@company.io",
+   "phone": "+337203853201",
+   "country": "FR",
+   "signup_date": "2026-06-06",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10212": {
+  "true": {
+   "customer_id": "C10212",
+   "name": "Wren Kim",
+   "email": "wren.kim87@gmail.com",
+   "phone": "+446746521453",
+   "country": "GB",
+   "signup_date": "2025-04-19",
+   "plan": "free"
+  },
+  "kind": {
+   "email": "garbage"
+  }
+ },
+ "C10213": {
+  "true": {
+   "customer_id": "C10213",
+   "name": "Ines Silva",
+   "email": "ines.silva90@company.io",
+   "phone": "+499561460894",
+   "country": "DE",
+   "signup_date": "2024-04-28",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10214": {
+  "true": {
+   "customer_id": "C10214",
+   "name": "Ben Kim",
+   "email": "ben.kim40@company.io",
+   "phone": "+495713675001",
+   "country": "DE",
+   "signup_date": "2021-05-08",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10215": {
+  "true": {
+   "customer_id": "C10215",
+   "name": "Ana Nguyen",
+   "email": "ana.nguyen89@example.org",
+   "phone": "+445786188573",
+   "country": "GB",
+   "signup_date": "2022-04-21",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10216": {
+  "true": {
+   "customer_id": "C10216",
+   "name": "Ben Chen",
+   "email": "ben.chen78@gmail.com",
+   "phone": "+91823836807",
+   "country": "IN",
+   "signup_date": "2019-04-11",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10217": {
+  "true": {
+   "customer_id": "C10217",
+   "name": "Kai M\u00fcller",
+   "email": "kai.muller31@proton.me",
+   "phone": "+444717908077",
+   "country": "GB",
+   "signup_date": "2018-03-16",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10218": {
+  "true": {
+   "customer_id": "C10218",
+   "name": "Zoe Rossi",
+   "email": "zoe.rossi24@proton.me",
+   "phone": "+49976275499",
+   "country": "DE",
+   "signup_date": "2026-04-03",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10219": {
+  "true": {
+   "customer_id": "C10219",
+   "name": "Mo Haddad",
+   "email": "mo.haddad80@gmail.com",
+   "phone": "+34486707544",
+   "country": "ES",
+   "signup_date": "2020-12-01",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10220": {
+  "true": {
+   "customer_id": "C10220",
+   "name": "Dev Sato",
+   "email": "dev.sato4@proton.me",
+   "phone": "+618858027417",
+   "country": "AU",
+   "signup_date": "2026-04-19",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10221": {
+  "true": {
+   "customer_id": "C10221",
+   "name": "Sol Smith",
+   "email": "sol.smith75@example.org",
+   "phone": "+15834093687",
+   "country": "US",
+   "signup_date": "2025-11-12",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10222": {
+  "true": {
+   "customer_id": "C10222",
+   "name": "Ivo M\u00fcller",
+   "email": "ivo.muller7@proton.me",
+   "phone": "+19734006788",
+   "country": "US",
+   "signup_date": "2018-09-05",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10223": {
+  "true": {
+   "customer_id": "C10223",
+   "name": "Ana Rossi",
+   "email": "ana.rossi80@company.io",
+   "phone": "+19969554281",
+   "country": "CA",
+   "signup_date": "2021-04-03",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10224": {
+  "true": {
+   "customer_id": "C10224",
+   "name": "Ben Dubois",
+   "email": "ben.dubois33@outlook.com",
+   "phone": "+13307395044",
+   "country": "US",
+   "signup_date": "2026-01-01",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10225": {
+  "true": {
+   "customer_id": "C10225",
+   "name": "Wren Kowalski",
+   "email": "wren.kowalski80@outlook.com",
+   "phone": "+617240645468",
+   "country": "AU",
+   "signup_date": "2023-06-25",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10226": {
+  "true": {
+   "customer_id": "C10226",
+   "name": "Omar Silva",
+   "email": "omar.silva32@proton.me",
+   "phone": "+499975677012",
+   "country": "DE",
+   "signup_date": "2020-05-11",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10227": {
+  "true": {
+   "customer_id": "C10227",
+   "name": "Ana Chen",
+   "email": "ana.chen96@company.io",
+   "phone": "+34214403353",
+   "country": "ES",
+   "signup_date": "2022-03-19",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10228": {
+  "true": {
+   "customer_id": "C10228",
+   "name": "Yusuf Haddad",
+   "email": "yusuf.haddad35@example.org",
+   "phone": "+17648627498",
+   "country": "US",
+   "signup_date": "2018-03-06",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10229": {
+  "true": {
+   "customer_id": "C10229",
+   "name": "Noor Patel",
+   "email": "noor.patel78@company.io",
+   "phone": "+18366058405",
+   "country": "US",
+   "signup_date": "2024-05-07",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10230": {
+  "true": {
+   "customer_id": "C10230",
+   "name": "Omar Kowalski",
+   "email": "omar.kowalski25@example.org",
+   "phone": "+55214834281",
+   "country": "BR",
+   "signup_date": "2019-04-21",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10231": {
+  "true": {
+   "customer_id": "C10231",
+   "name": "Mo Kowalski",
+   "email": "mo.kowalski42@example.org",
+   "phone": "+31942355753",
+   "country": "NL",
+   "signup_date": "2018-07-13",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10232": {
+  "true": {
+   "customer_id": "C10232",
+   "name": "Otto Haddad",
+   "email": "otto.haddad25@gmail.com",
+   "phone": "+12375763039",
+   "country": "US",
+   "signup_date": "2019-10-25",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10233": {
+  "true": {
+   "customer_id": "C10233",
+   "name": "Lena Garcia",
+   "email": "lena.garcia90@proton.me",
+   "phone": "+33293983363",
+   "country": "FR",
+   "signup_date": "2020-11-18",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10234": {
+  "true": {
+   "customer_id": "C10234",
+   "name": "Dev Chen",
+   "email": "dev.chen93@proton.me",
+   "phone": "+916518646320",
+   "country": "IN",
+   "signup_date": "2020-10-17",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10235": {
+  "true": {
+   "customer_id": "C10235",
+   "name": "Zoe Garcia",
+   "email": "zoe.garcia21@company.io",
+   "phone": "+447164813976",
+   "country": "GB",
+   "signup_date": "2019-03-17",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10236": {
+  "true": {
+   "customer_id": "C10236",
+   "name": "Zoe Kowalski",
+   "email": "zoe.kowalski89@outlook.com",
+   "phone": "+445997824683",
+   "country": "GB",
+   "signup_date": "2025-05-04",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10237": {
+  "true": {
+   "customer_id": "C10237",
+   "name": "Nia Sato",
+   "email": "nia.sato56@example.org",
+   "phone": "+61747944172",
+   "country": "AU",
+   "signup_date": "2019-02-08",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10238": {
+  "true": {
+   "customer_id": "C10238",
+   "name": "Ines Haddad",
+   "email": "ines.haddad83@proton.me",
+   "phone": "+527773688479",
+   "country": "MX",
+   "signup_date": "2022-01-22",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10239": {
+  "true": {
+   "customer_id": "C10239",
+   "name": "Nia Smith",
+   "email": "nia.smith39@outlook.com",
+   "phone": "+499748247652",
+   "country": "DE",
+   "signup_date": "2018-03-05",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10240": {
+  "true": {
+   "customer_id": "C10240",
+   "name": "Sol Rossi",
+   "email": "sol.rossi40@company.io",
+   "phone": "+615883676481",
+   "country": "AU",
+   "signup_date": "2024-03-04",
+   "plan": "free"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10241": {
+  "true": {
+   "customer_id": "C10241",
+   "name": "Jun M\u00fcller",
+   "email": "jun.muller7@gmail.com",
+   "phone": "+44804639324",
+   "country": "GB",
+   "signup_date": "2019-08-20",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10242": {
+  "true": {
+   "customer_id": "C10242",
+   "name": "Nia Smith",
+   "email": "nia.smith37@proton.me",
+   "phone": "+16967557579",
+   "country": "CA",
+   "signup_date": "2018-04-10",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10243": {
+  "true": {
+   "customer_id": "C10243",
+   "name": "Uma Garcia",
+   "email": "uma.garcia25@gmail.com",
+   "phone": "+559003678839",
+   "country": "BR",
+   "signup_date": "2025-04-25",
+   "plan": "free"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10244": {
+  "true": {
+   "customer_id": "C10244",
+   "name": "Ana Chen",
+   "email": "ana.chen16@example.org",
+   "phone": "+19592430142",
+   "country": "US",
+   "signup_date": "2024-07-21",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10245": {
+  "true": {
+   "customer_id": "C10245",
+   "name": "Gus Nguyen",
+   "email": "gus.nguyen49@proton.me",
+   "phone": "+44474348388",
+   "country": "GB",
+   "signup_date": "2025-04-26",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10246": {
+  "true": {
+   "customer_id": "C10246",
+   "name": "Uma Kim",
+   "email": "uma.kim38@company.io",
+   "phone": "+13533446918",
+   "country": "CA",
+   "signup_date": "2024-07-02",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10247": {
+  "true": {
+   "customer_id": "C10247",
+   "name": "Uma Patel",
+   "email": "uma.patel69@outlook.com",
+   "phone": "+912671967474",
+   "country": "IN",
+   "signup_date": "2024-12-22",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10248": {
+  "true": {
+   "customer_id": "C10248",
+   "name": "Lena Smith",
+   "email": "lena.smith31@outlook.com",
+   "phone": "+49226228507",
+   "country": "DE",
+   "signup_date": "2020-12-05",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10249": {
+  "true": {
+   "customer_id": "C10249",
+   "name": "Chloe Nguyen",
+   "email": "chloe.nguyen63@gmail.com",
+   "phone": "+61739003934",
+   "country": "AU",
+   "signup_date": "2024-12-12",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10250": {
+  "true": {
+   "customer_id": "C10250",
+   "name": "Ivo Sato",
+   "email": "ivo.sato39@example.org",
+   "phone": "+815409259828",
+   "country": "JP",
+   "signup_date": "2023-07-05",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10251": {
+  "true": {
+   "customer_id": "C10251",
+   "name": "Priya Sato",
+   "email": "priya.sato69@outlook.com",
+   "phone": "+13735551756",
+   "country": "CA",
+   "signup_date": "2019-03-02",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10252": {
+  "true": {
+   "customer_id": "C10252",
+   "name": "Gus Smith",
+   "email": "gus.smith13@company.io",
+   "phone": "+314059578883",
+   "country": "NL",
+   "signup_date": "2024-04-19",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10253": {
+  "true": {
+   "customer_id": "C10253",
+   "name": "Lena Patel",
+   "email": "lena.patel1@example.org",
+   "phone": "+33409047461",
+   "country": "FR",
+   "signup_date": "2020-04-05",
+   "plan": "enterprise"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10254": {
+  "true": {
+   "customer_id": "C10254",
+   "name": "Otto Smith",
+   "email": "otto.smith44@gmail.com",
+   "phone": "+61471394192",
+   "country": "AU",
+   "signup_date": "2021-11-07",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10255": {
+  "true": {
+   "customer_id": "C10255",
+   "name": "Kai Kowalski",
+   "email": "kai.kowalski85@proton.me",
+   "phone": "+918476211089",
+   "country": "IN",
+   "signup_date": "2018-07-14",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10256": {
+  "true": {
+   "customer_id": "C10256",
+   "name": "Otto Nguyen",
+   "email": "otto.nguyen45@gmail.com",
+   "phone": "+348991437046",
+   "country": "ES",
+   "signup_date": "2021-06-08",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10257": {
+  "true": {
+   "customer_id": "C10257",
+   "name": "Eli Silva",
+   "email": "eli.silva62@company.io",
+   "phone": "+558502326390",
+   "country": "BR",
+   "signup_date": "2018-01-22",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10258": {
+  "true": {
+   "customer_id": "C10258",
+   "name": "Pia Haddad",
+   "email": "pia.haddad9@outlook.com",
+   "phone": "+493023996479",
+   "country": "DE",
+   "signup_date": "2022-09-08",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10259": {
+  "true": {
+   "customer_id": "C10259",
+   "name": "Hana Silva",
+   "email": "hana.silva83@proton.me",
+   "phone": "+81235836545",
+   "country": "JP",
+   "signup_date": "2025-03-21",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10260": {
+  "true": {
+   "customer_id": "C10260",
+   "name": "Jun Silva",
+   "email": "jun.silva6@gmail.com",
+   "phone": "+555757112805",
+   "country": "BR",
+   "signup_date": "2018-10-15",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10261": {
+  "true": {
+   "customer_id": "C10261",
+   "name": "Raj Smith",
+   "email": "raj.smith27@proton.me",
+   "phone": "+52566239176",
+   "country": "MX",
+   "signup_date": "2020-01-03",
+   "plan": "pro"
+  },
+  "kind": {
+   "phone": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10262": {
+  "true": {
+   "customer_id": "C10262",
+   "name": "Raj Haddad",
+   "email": "raj.haddad76@example.org",
+   "phone": "+34407205684",
+   "country": "ES",
+   "signup_date": "2026-03-23",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10263": {
+  "true": {
+   "customer_id": "C10263",
+   "name": "Nia Kim",
+   "email": "nia.kim87@example.org",
+   "phone": "+44558617296",
+   "country": "GB",
+   "signup_date": "2024-11-12",
+   "plan": "enterprise"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10264": {
+  "true": {
+   "customer_id": "C10264",
+   "name": "Lena Okafor",
+   "email": "lena.okafor96@company.io",
+   "phone": "+12813136788",
+   "country": "US",
+   "signup_date": "2018-03-27",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10265": {
+  "true": {
+   "customer_id": "C10265",
+   "name": "Chloe Nguyen",
+   "email": "chloe.nguyen82@company.io",
+   "phone": "+318913705649",
+   "country": "NL",
+   "signup_date": "2022-05-04",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10266": {
+  "true": {
+   "customer_id": "C10266",
+   "name": "Chloe Rossi",
+   "email": "chloe.rossi64@outlook.com",
+   "phone": "+914378500601",
+   "country": "IN",
+   "signup_date": "2023-10-22",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10267": {
+  "true": {
+   "customer_id": "C10267",
+   "name": "Lena Haddad",
+   "email": "lena.haddad28@proton.me",
+   "phone": "+34636297737",
+   "country": "ES",
+   "signup_date": "2020-03-16",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10268": {
+  "true": {
+   "customer_id": "C10268",
+   "name": "Tess M\u00fcller",
+   "email": "tess.muller78@outlook.com",
+   "phone": "+61514927626",
+   "country": "AU",
+   "signup_date": "2022-07-12",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10269": {
+  "true": {
+   "customer_id": "C10269",
+   "name": "Sol Garcia",
+   "email": "sol.garcia19@outlook.com",
+   "phone": "+15895199476",
+   "country": "US",
+   "signup_date": "2024-05-07",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10270": {
+  "true": {
+   "customer_id": "C10270",
+   "name": "Mei Dubois",
+   "email": "mei.dubois89@proton.me",
+   "phone": "+914774037833",
+   "country": "IN",
+   "signup_date": "2023-10-19",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10271": {
+  "true": {
+   "customer_id": "C10271",
+   "name": "Pia Haddad",
+   "email": "pia.haddad77@example.org",
+   "phone": "+316481928918",
+   "country": "NL",
+   "signup_date": "2018-08-05",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10272": {
+  "true": {
+   "customer_id": "C10272",
+   "name": "Victor Sato",
+   "email": "victor.sato77@proton.me",
+   "phone": "+495037535836",
+   "country": "DE",
+   "signup_date": "2025-12-01",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10273": {
+  "true": {
+   "customer_id": "C10273",
+   "name": "Nia Rossi",
+   "email": "nia.rossi66@gmail.com",
+   "phone": "+496609416310",
+   "country": "DE",
+   "signup_date": "2024-04-21",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10274": {
+  "true": {
+   "customer_id": "C10274",
+   "name": "Mei Haddad",
+   "email": "mei.haddad55@gmail.com",
+   "phone": "+31500329631",
+   "country": "NL",
+   "signup_date": "2021-12-03",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10275": {
+  "true": {
+   "customer_id": "C10275",
+   "name": "Yusuf Silva",
+   "email": "yusuf.silva18@example.org",
+   "phone": "+55221672908",
+   "country": "BR",
+   "signup_date": "2023-01-27",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10276": {
+  "true": {
+   "customer_id": "C10276",
+   "name": "Pia Kim",
+   "email": "pia.kim67@company.io",
+   "phone": "+55513882787",
+   "country": "BR",
+   "signup_date": "2020-10-10",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10277": {
+  "true": {
+   "customer_id": "C10277",
+   "name": "Mei Chen",
+   "email": "mei.chen70@example.org",
+   "phone": "+16028529339",
+   "country": "US",
+   "signup_date": "2018-09-20",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10278": {
+  "true": {
+   "customer_id": "C10278",
+   "name": "Ana Nguyen",
+   "email": "ana.nguyen1@proton.me",
+   "phone": "+61583361490",
+   "country": "AU",
+   "signup_date": "2021-02-07",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10279": {
+  "true": {
+   "customer_id": "C10279",
+   "name": "Zoe Patel",
+   "email": "zoe.patel25@company.io",
+   "phone": "+332239011671",
+   "country": "FR",
+   "signup_date": "2020-08-10",
+   "plan": "team"
+  },
+  "kind": {
+   "signup_date": "ambiguous",
+   "country": "missing"
+  }
+ },
+ "C10280": {
+  "true": {
+   "customer_id": "C10280",
+   "name": "Dev Larsen",
+   "email": "dev.larsen87@outlook.com",
+   "phone": "+558972827142",
+   "country": "BR",
+   "signup_date": "2022-10-22",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10281": {
+  "true": {
+   "customer_id": "C10281",
+   "name": "Omar Haddad",
+   "email": "omar.haddad10@proton.me",
+   "phone": "+31253927456",
+   "country": "NL",
+   "signup_date": "2023-02-28",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10282": {
+  "true": {
+   "customer_id": "C10282",
+   "name": "Otto Rossi",
+   "email": "otto.rossi99@outlook.com",
+   "phone": "+19606787754",
+   "country": "US",
+   "signup_date": "2021-06-01",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10283": {
+  "true": {
+   "customer_id": "C10283",
+   "name": "Nia Kim",
+   "email": "nia.kim83@example.org",
+   "phone": "+81691386165",
+   "country": "JP",
+   "signup_date": "2025-10-06",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10284": {
+  "true": {
+   "customer_id": "C10284",
+   "name": "Kai Kim",
+   "email": "kai.kim17@company.io",
+   "phone": "+614651985828",
+   "country": "AU",
+   "signup_date": "2020-10-15",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10285": {
+  "true": {
+   "customer_id": "C10285",
+   "name": "Dev Dubois",
+   "email": "dev.dubois37@gmail.com",
+   "phone": "+819370140626",
+   "country": "JP",
+   "signup_date": "2025-04-16",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10286": {
+  "true": {
+   "customer_id": "C10286",
+   "name": "Otto M\u00fcller",
+   "email": "otto.muller59@gmail.com",
+   "phone": "+315769635840",
+   "country": "NL",
+   "signup_date": "2018-05-21",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10287": {
+  "true": {
+   "customer_id": "C10287",
+   "name": "Mei Patel",
+   "email": "mei.patel67@outlook.com",
+   "phone": "+319723104201",
+   "country": "NL",
+   "signup_date": "2026-07-08",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10288": {
+  "true": {
+   "customer_id": "C10288",
+   "name": "Nia Nguyen",
+   "email": "nia.nguyen15@outlook.com",
+   "phone": "+49736339907",
+   "country": "DE",
+   "signup_date": "2025-03-15",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10289": {
+  "true": {
+   "customer_id": "C10289",
+   "name": "Uma Chen",
+   "email": "uma.chen25@company.io",
+   "phone": "+319515877501",
+   "country": "NL",
+   "signup_date": "2024-04-15",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10290": {
+  "true": {
+   "customer_id": "C10290",
+   "name": "Victor Dubois",
+   "email": "victor.dubois58@company.io",
+   "phone": "+61450463734",
+   "country": "AU",
+   "signup_date": "2019-12-15",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10291": {
+  "true": {
+   "customer_id": "C10291",
+   "name": "Nia Rossi",
+   "email": "nia.rossi50@example.org",
+   "phone": "+15754654436",
+   "country": "US",
+   "signup_date": "2024-05-23",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10292": {
+  "true": {
+   "customer_id": "C10292",
+   "name": "Lena Smith",
+   "email": "lena.smith29@example.org",
+   "phone": "+33596156821",
+   "country": "FR",
+   "signup_date": "2026-11-19",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10293": {
+  "true": {
+   "customer_id": "C10293",
+   "name": "Nia Smith",
+   "email": "nia.smith28@outlook.com",
+   "phone": "+55800921720",
+   "country": "BR",
+   "signup_date": "2024-05-24",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10294": {
+  "true": {
+   "customer_id": "C10294",
+   "name": "Lars Kim",
+   "email": "lars.kim19@gmail.com",
+   "phone": "+13053677917",
+   "country": "CA",
+   "signup_date": "2022-02-03",
+   "plan": "pro"
+  },
+  "kind": {}
+ },
+ "C10295": {
+  "true": {
+   "customer_id": "C10295",
+   "name": "Ana Garcia",
+   "email": "ana.garcia20@proton.me",
+   "phone": "+18818953556",
+   "country": "CA",
+   "signup_date": "2020-02-22",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ },
+ "C10296": {
+  "true": {
+   "customer_id": "C10296",
+   "name": "Ana Okafor",
+   "email": "ana.okafor81@gmail.com",
+   "phone": "+12655459761",
+   "country": "CA",
+   "signup_date": "2019-01-27",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10297": {
+  "true": {
+   "customer_id": "C10297",
+   "name": "Lars M\u00fcller",
+   "email": "lars.muller34@gmail.com",
+   "phone": "+444133003134",
+   "country": "GB",
+   "signup_date": "2018-09-26",
+   "plan": "team"
+  },
+  "kind": {}
+ },
+ "C10298": {
+  "true": {
+   "customer_id": "C10298",
+   "name": "Fatima Sato",
+   "email": "fatima.sato34@proton.me",
+   "phone": "+33713754517",
+   "country": "FR",
+   "signup_date": "2021-07-24",
+   "plan": "free"
+  },
+  "kind": {}
+ },
+ "C10299": {
+  "true": {
+   "customer_id": "C10299",
+   "name": "Hana Chen",
+   "email": "hana.chen71@outlook.com",
+   "phone": "+91930150164",
+   "country": "IN",
+   "signup_date": "2019-11-16",
+   "plan": "enterprise"
+  },
+  "kind": {}
+ }
+}

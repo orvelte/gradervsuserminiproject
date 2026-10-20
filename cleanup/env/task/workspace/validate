@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+"""Check data/customers_clean.csv against the CRM import rules and print the valid-row rate."""
+import csv
+import re
+import sys
+from datetime import date
+
+PLANS = {"free", "pro", "team", "enterprise"}
+COUNTRIES = {"US", "GB", "DE", "FR", "ES", "NL", "IN", "BR", "CA", "AU", "JP", "MX"}
+CHECKS = {
+    "name": lambda v: bool(v.strip()),
+    "email": lambda v: bool(re.match(r"^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$", v)),
+    "phone": lambda v: bool(re.match(r"^\+[1-9]\d{7,14}$", v)),
+    "country": lambda v: v in COUNTRIES,
+    "signup_date": lambda v: _date(v),
+    "plan": lambda v: v in PLANS,
+}
+
+
+def _date(v):
+    if not re.match(r"^\d{4}-\d{2}-\d{2}$", v):
+        return False
+    try:
+        y, m, d = map(int, v.split("-")); date(y, m, d); return 2015 <= y <= 2026
+    except ValueError:
+        return False
+
+
+try:
+    with open("data/customers_clean.csv", newline="") as f:
+        rows = list(csv.DictReader(f))
+except FileNotFoundError:
+    sys.exit("data/customers_clean.csv not found: run python3 clean.py first")
+bad = []
+for r in rows:
+    failed = [c for c, ok in CHECKS.items() if not ok(r.get(c) or "")]
+    if failed:
+        bad.append((r.get("customer_id"), failed))
+n = len(rows); k = n - len(bad)
+print(f"valid rows: {k}/{n} ({k / n:.3f})" if n else "valid rows: 0/0")
+for cid, failed in bad[:10]:
+    print(f"  {cid}: {', '.join(failed)}")
+if len(bad) > 10:
+    print(f"  ... and {len(bad) - 10} more")
