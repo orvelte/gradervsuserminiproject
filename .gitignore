@@ -31,3 +31,4 @@ environments/precommit_hook/src_*
 audit/
 .env.pod*
 internals/runpod/.pod_id*
+internals/vendor/
