@@ -22,7 +22,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "src"))
 from agent_interp_envs.providers.qwen_template import parse_completion, render_prompt  # noqa: E402
 
-load_dotenv(REPO / ".env")
+load_dotenv(os.environ.get("VLLM_ENV_FILE") or (REPO / ".env"), override=True)   # VLLM_ENV_FILE=.env.pod2 checks a second pod
 TOOLS = [{"type": "function", "function": {"name": "bash", "description": "Run a shell command.",
                                            "parameters": {"type": "object", "properties": {"command": {"type": "string"}}, "required": ["command"]}}}]
 

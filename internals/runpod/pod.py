@@ -26,8 +26,11 @@ from pathlib import Path
 from dotenv import dotenv_values
 
 REPO = Path(__file__).resolve().parents[2]
+import os
+SLOT = os.environ.get("POD_SLOT", "")            # "" = first pod (.env), "2" = a second pod (.env.pod2, a copy of .env)
 ENV = REPO / ".env"
-POD_FILE = Path(__file__).resolve().parent / ".pod_id"
+TARGET_ENV = REPO / f".env.pod{SLOT}" if SLOT else ENV   # the env file whose VLLM_BASE_URL points at this pod
+POD_FILE = Path(__file__).resolve().parent / f".pod_id{SLOT}"
 API = "https://rest.runpod.io/v1"
 MODEL = "Qwen/Qwen3.8-27B"
 VLLM_IMAGE = "vllm/vllm-openai:v0.32.0"     # same vLLM version as the Modal server
@@ -53,14 +56,16 @@ def _req(method: str, path: str, body: dict | None = None):
 
 
 def _set_env(name: str, value: str) -> None:
-    lines = ENV.read_text().splitlines()
+    if not TARGET_ENV.exists():
+        TARGET_ENV.write_text(ENV.read_text())
+    lines = TARGET_ENV.read_text().splitlines()
     lines = [l for l in lines if not l.startswith(f"{name}=")] + [f"{name}={value}"]
-    ENV.write_text("\n".join(lines) + "\n")
+    TARGET_ENV.write_text("\n".join(lines) + "\n")
 
 
 def create(gpu: str, count: int) -> None:
     if POD_FILE.exists():
-        sys.exit(f"a pod is already recorded ({POD_FILE.read_text().strip()}); stop/terminate it first")
+        sys.exit(f"a pod is already recorded in this slot ({POD_FILE.read_text().strip()}); stop/terminate it first")
     args = [MODEL, "--served-model-name", "qwen3.8-27b", "--host", "0.0.0.0", "--port", "8000", "--api-key", _key("VLLM_API_KEY"),
             "--max-model-len", "131072", "--gpu-memory-utilization", "0.92", "--limit-mm-per-prompt", '{"image": 0, "video": 0}',
             "--enable-prefix-caching", "--max-num-seqs", "24", "--tensor-parallel-size", str(count)]
@@ -68,11 +73,18 @@ def create(gpu: str, count: int) -> None:
             "computeType": "GPU", "containerDiskInGb": 40, "volumeInGb": 120, "volumeMountPath": "/workspace", "ports": ["8000/tcp"],   # not 8000/http: the proxy times out at ~100 s (HTTP 524)
             "env": {"HF_HOME": "/workspace/hf", "HF_HUB_ENABLE_HF_TRANSFER": "1"},
             "dockerEntrypoint": ["vllm", "serve"], "dockerStartCmd": args}
+    body["name"] = f"qwen38-vllm{SLOT}"
     pod = _req("POST", "/pods", body)
     pid = pod.get("id") or sys.exit(f"no pod id in response: {str(pod)[:300]}")
     POD_FILE.write_text(pid)
-    _set_env("VLLM_BASE_URL", f"https://{pid}-8000.proxy.runpod.net/v1")
-    print(f"created pod {pid} on {count} × {gpu}; VLLM_BASE_URL set in .env; cost/hr: {pod.get('costPerHr')}")
+    print(f"created pod {pid} on {count} × {gpu}; cost/hr: {pod.get('costPerHr')}")
+    for _ in range(90):                               # wait for the public IP / TCP mapping
+        p = _req("GET", f"/pods/{pid}"); ip, pm = p.get("publicIp"), (p.get("portMappings") or {})
+        port = pm.get("8000") or pm.get(8000)
+        if ip and port:
+            _set_env("VLLM_BASE_URL", f"http://{ip}:{port}/v1"); print(f"VLLM_BASE_URL set in {TARGET_ENV.name} (TCP port {port})"); return
+        time.sleep(10)
+    print("no TCP mapping yet: run `pod.py tcp` once the pod is up")
 
 
 def _pid() -> str:
@@ -87,7 +99,7 @@ def status() -> dict:
 
 
 def wait(limit_min: int = 40) -> int:
-    url = dotenv_values(ENV).get("VLLM_BASE_URL", "").rstrip("/") + "/models"
+    url = dotenv_values(TARGET_ENV).get("VLLM_BASE_URL", "").rstrip("/") + "/models"
     t0 = time.time()
     while time.time() - t0 < limit_min * 60:
         try:
