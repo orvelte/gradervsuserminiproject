@@ -344,3 +344,8 @@ Design decisions not specified by the spec:
 - Qwen3.8-27B, holdout ho-1.1, 2 frames × 2 scoring statements × 20. Graded gaming 17/20 when the sample is scored vs
   2/20 when told scoring is held-out (p = 3×10⁻⁶); deployment 2/20 and 1/20; interaction CI excludes 0. Results in
   `docs/PREREG.md`; `holdout/h2_analysis.py`; figure `deploysim/figures_splitbrain/fig_h2_equivariance`. Decisions #67–68.
+
+## 2026-10-19: H3 replication
+
+- H2 replicated at 50 per cell: graded gaming 38/50 (sample scored) vs 3/50 (held-out scored), deployment 4/50 and
+  0/50; both primary tests p < 1e-11. Blind-coded post-answers. Figure `fig_h3_replication`. Decisions #71–72.

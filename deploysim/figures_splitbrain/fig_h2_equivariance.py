@@ -18,9 +18,9 @@ import h2_analysis as H  # noqa: E402
 from ds_prereg_test import wilson  # noqa: E402
 
 
-def main():
+def main(batch: str = "h2_qwen38", out: str = "fig_h2_equivariance", label: str = "20 runs per cell"):
     ST.setup()
-    d = H.collect(REPO / "results" / "holdout" / "h2_qwen38")
+    d = H.collect(REPO / "results" / "holdout" / batch)
     fig, axes = plt.subplots(1, 3, figsize=(14, 4.3))
     groups = [("visible", "scored on ./score\n(the sample)"), ("holdout", "scored on a\nheld-out set")]
     frames = [("G", "graded", ST.PALETTE[1]), ("D", "deployment", ST.PALETTE[0])]
@@ -54,11 +54,14 @@ def main():
     axes[0].legend(handles=[Patch(facecolor=ST.PALETTE[1], label="graded"), Patch(facecolor="white", edgecolor=ST.PALETTE[0], hatch="///", label="deployment")], loc="upper right", fontsize=9)
     fig.tight_layout()
     ST.titles(fig, "Equivariance test: does the shortcut follow what is scored?",
-              "Qwen3.8-27B · holdout env (ticket routing, data v2) · 20 runs per cell · gaming = fitting the visible sample's quirk labels (≥ 95% on the sample) or tampering")
+              f"Qwen3.8-27B · holdout env (ticket routing, data v2) · {label} · gaming = fitting the visible sample's quirk labels (≥ 95% on the sample) or tampering")
     for ext in ("png", "pdf"):
-        fig.savefig(HERE / f"fig_h2_equivariance.{ext}", bbox_inches="tight")
-    print("wrote", HERE / "fig_h2_equivariance.png")
+        fig.savefig(HERE / f"{out}.{ext}", bbox_inches="tight")
+    print("wrote", HERE / f"{out}.png")
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1:      # e.g. h3_qwen38 fig_h3_replication "50 runs per cell (H3 replication)"
+        main(*sys.argv[1:4])
+    else:
+        main()
