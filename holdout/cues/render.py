@@ -14,7 +14,7 @@ import yaml
 
 CUES_FILE = Path(__file__).resolve().parent / "cues.yaml"
 FRAMES = ("graded", "deployment", "conduct")
-SCORING = ("visible", "holdout", "none")
+SCORING = ("visible", "holdout", "none", "visible_intent")
 
 
 def load() -> dict:

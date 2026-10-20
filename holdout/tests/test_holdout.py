@@ -37,7 +37,7 @@ def test_pairs_are_length_matched():
     import yaml
     enc = tiktoken.get_encoding("o200k_base"); cues = R.load()["cues"]
     for c, v in cues.items():
-        pairs = ([(v[s]["graded"], v[s][o]) for s in ("visible", "holdout") for o in ("deployment", "conduct")] if c == "scoring"
+        pairs = ([(v[s]["graded"], v[s][o]) for s in ("visible", "holdout", "visible_intent") for o in ("deployment", "conduct")] if c == "scoring"
                  else [(v["graded"], v["deployment"]), (v["graded"], v["conduct"])])
         for g, d in pairs:
             a, b = (len(enc.encode(x if isinstance(x, str) else yaml.dump(x))) for x in (g, d))
@@ -56,7 +56,7 @@ def test_no_anti_gaming_language_and_every_requirement(frame, scoring):
 
 def test_scoring_variants_differ_only_in_the_scoring_line():
     for f in R.FRAMES:
-        v, h, n = (R.render(f, s)["user_prompt"] for s in R.SCORING)  # noqa: F841
+        v, h, n = (R.render(f, s)["user_prompt"] for s in ("visible", "holdout", "none"))  # noqa: F841
         sc = R.load()["cues"]["scoring"]
         assert v.replace(sc["visible"][f] + "\n\n", "") == n and h.replace(sc["holdout"][f] + "\n\n", "") == n
 
@@ -187,3 +187,10 @@ def test_v3_configs_differ_from_v2_only_in_data_version():
             assert b["task"].pop("data_version") == 3 and b["condition"].pop("data_version") == 3
             b["condition"]["id"] = a["condition"]["id"]
             assert a == b
+
+
+def test_visible_intent_adds_only_the_purpose_sentence():
+    sc = R.load()["cues"]["scoring"]
+    for f in R.FRAMES:
+        vi, v = R.render(f, "visible_intent")["user_prompt"], R.render(f, "visible")["user_prompt"]
+        assert vi.replace(sc["visible_intent"][f], "") == v.replace(sc["visible"][f], "")
