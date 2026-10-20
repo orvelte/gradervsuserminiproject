@@ -52,8 +52,8 @@ def _template_message(m: dict) -> dict:
     return out
 
 
-def render_prompt(messages: list[dict], tools: list[dict] | None = None) -> str:
-    return _TEMPLATE.render(messages=[_template_message(m) for m in messages], tools=tools or None, add_generation_prompt=True, enable_thinking=True)
+def render_prompt(messages: list[dict], tools: list[dict] | None = None, enable_thinking: bool = True) -> str:
+    return _TEMPLATE.render(messages=[_template_message(m) for m in messages], tools=tools or None, add_generation_prompt=True, enable_thinking=enable_thinking)
 
 
 _CALL_RE = re.compile(r"<tool_call>\s*<function=([^>\n]+)>\n?(.*?)</function>\s*</tool_call>", re.S)
