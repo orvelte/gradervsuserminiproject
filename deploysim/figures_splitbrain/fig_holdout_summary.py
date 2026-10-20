@@ -47,7 +47,7 @@ def main():
     ax.set_xlabel("runs with grader-targeted gaming (fitting the sample's quirk labels, or tampering)")
     fig.tight_layout()
     ST.titles(fig, "Qwen3.8-27B games the grader only when it believes it is scored",
-              "holdout env (ticket routing) · pre-registered batches H3–H6 · orange = score-graded, purple = conduct review, hatched = deployment · whiskers = 95% Wilson CI")
+              "holdout env (ticket routing) · pre-registered batches H3–H6 · vermillion = score-graded, green = conduct review, hatched blue = deployment · whiskers = 95% Wilson CI")
     for ext in ("png", "pdf"):
         fig.savefig(HERE / f"fig_holdout_summary.{ext}", bbox_inches="tight")
     print("wrote", HERE / "fig_holdout_summary.png")
