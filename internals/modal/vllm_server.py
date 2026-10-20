@@ -20,9 +20,12 @@ MODEL = "Qwen/Qwen3.8-27B"
 SERVED_NAME = "qwen3.8-27b"
 VLLM_VERSION = "0.32.0"
 
-image = (modal.Image.debian_slim(python_version="3.12")
+# CUDA devel base: FlashInfer JIT-compiles kernels at engine start and needs nvcc (a debian_slim image failed with
+# "Could not find nvcc", 2026-10-20).
+image = (modal.Image.from_registry("nvidia/cuda:12.8.1-devel-ubuntu24.04", add_python="3.12")
+         .entrypoint([])
          .pip_install(f"vllm=={VLLM_VERSION}", "huggingface_hub[hf_transfer]")
-         .env({"HF_HUB_ENABLE_HF_TRANSFER": "1", "VLLM_USE_V1": "1"}))
+         .env({"HF_HUB_ENABLE_HF_TRANSFER": "1", "VLLM_USE_V1": "1", "CUDA_HOME": "/usr/local/cuda"}))
 hf_cache = modal.Volume.from_name("hf-cache", create_if_missing=True)
 vllm_cache = modal.Volume.from_name("vllm-cache", create_if_missing=True)
 app = modal.App("qwen38-vllm")
