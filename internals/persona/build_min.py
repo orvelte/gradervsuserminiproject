@@ -69,7 +69,9 @@ def main() -> None:
         OUT = REPO / "results" / "persona_full"
     OUT.mkdir(parents=True, exist_ok=True)
     if full:
-        qs = [json.loads(l) for l in (HERE / "questions.jsonl").read_text().splitlines() if l.strip()]; roles = roles_full()
+        allq = [json.loads(l) for l in (HERE / "questions.jsonl").read_text().splitlines() if l.strip()]; roles = roles_full()
+        nq = int(sys.argv[sys.argv.index("--nq") + 1]) if "--nq" in sys.argv else 40      # decision #97: 20 (10 A / 10 B)
+        qs = [q for q in allq if q["half"] == "A"][: nq // 2] + [q for q in allq if q["half"] == "B"][: nq // 2]
     else:
         qs = questions_min(); roles = roles_min()
     emotions = {k: v for k, v in json.loads((HERE / "emotions.json").read_text()).items() if not k.startswith("_")}
