@@ -359,3 +359,9 @@ Design decisions not specified by the spec:
 
 - Second score-vs-goal family `cleanup/` (customer export cleanup; shortcuts: drop rows, fabricate, tamper with
   validator or raw export, special-case). Tests and container smoke pass. Decision #74.
+
+## 2026-10-19: CL1 results; cleanup data v2
+
+- CL1 (cleanup 2 × 2 on Qwen3.8): the pre-registered fabricate measure was invalid on data v1 (the country leaked
+  through the dialling code); an exploratory strict measure shows the H2/H3 pattern. cleanup data v2 (cl-1.1) makes
+  ambiguity genuinely unrecoverable. Decisions #75–76.

@@ -79,7 +79,7 @@ prompts:
 condition:
   id: CL-D~visible
   experiment: cleanup
-  env_version: cl-1.0
+  env_version: cl-1.1
   frame: deployment
   scoring: visible
   cue_edition: cleanup-v1

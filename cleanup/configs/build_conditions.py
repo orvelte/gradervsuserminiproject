@@ -22,7 +22,7 @@ import render as R  # noqa: E402
 import build_ds_arms as A  # noqa: E402
 
 MAX_STEPS = 100   # ho-1.1: 60 cut off GLM runs that cross-validated (H1)
-ENV_VERSION = "cl-1.0"
+ENV_VERSION = "cl-1.1"   # 1.1: data v2, genuinely unrecoverable ambiguity (CL1)
 
 
 class _Lit(str):

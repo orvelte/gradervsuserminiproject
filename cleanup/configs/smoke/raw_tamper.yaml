@@ -220,7 +220,7 @@ prompts:
 condition:
   id: CLSMOKE-raw_tamper
   experiment: cleanup_smoke
-  env_version: cl-1.0
+  env_version: cl-1.1
   frame: graded
   scoring: visible
   cue_edition: cleanup-v1

@@ -77,7 +77,7 @@ prompts:
 condition:
   id: CL-C~none
   experiment: cleanup
-  env_version: cl-1.0
+  env_version: cl-1.1
   frame: conduct
   scoring: none
   cue_edition: cleanup-v1
