@@ -6,7 +6,7 @@ WORKDIR /agent
 
 RUN apt-get update && apt-get install -y --no-install-recommends git util-linux && rm -rf /var/lib/apt/lists/*
 RUN git config --global user.email "container@modal" && git config --global user.name "Container" && git config --global --add safe.directory '*'
-RUN pip install "pytest>=7.0" pyyaml python-dotenv "pydantic>=2.0"
+RUN pip install "pytest>=7.0" pyyaml python-dotenv "pydantic>=2.0" jinja2   # jinja2: vllm_completions renders the chat template
 
 COPY pyproject.toml /opt/pyproject.toml
 COPY src /opt/src

@@ -9,6 +9,7 @@ from agent_interp_envs.providers.fireworks_completions_provider import (
 )
 from agent_interp_envs.providers.fireworks_provider import FireworksProvider
 from agent_interp_envs.providers.mock_provider import MockProvider
+from agent_interp_envs.providers.vllm_completions_provider import VLLMCompletionsProvider
 from agent_interp_envs.providers.openrouter_provider import OpenRouterProvider
 
 
@@ -23,6 +24,7 @@ PROVIDERS = {
     "fireworks": FireworksProvider,
     "fireworks_completions": FireworksCompletionsProvider,
     "mock": MockProvider,
+    "vllm_completions": VLLMCompletionsProvider,
     "openrouter": OpenRouterProvider,
 }
 
@@ -209,6 +211,9 @@ def _create_provider(
             top_p=top_p,
             reasoning_effort=reasoning_effort,
         ))
+    if provider == "vllm_completions":
+        return _finish(provider_class(model=model, messages=messages, tools=tools, temperature=temperature,
+                                      top_p=top_p, reasoning_effort=reasoning_effort))
     if provider == "mock":
         return provider_class(model=model, messages=messages, tools=tools,
                               mock_script=list(mock_script) if mock_script else None)
