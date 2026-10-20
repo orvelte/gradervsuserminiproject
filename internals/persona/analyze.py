@@ -170,7 +170,7 @@ def contrast(rows, pos, ga, gb, layer, direction, mu, sd):
 
 
 def random_null(rows, pos, ga, gb, layer, d_obs, n=100):
-    H = rows[0]["pos"][pos].shape[-1]; ds = []
+    H = next(r["pos"][pos] for r in rows if pos in r["pos"]).shape[-1]; ds = []
     for _ in range(n):
         v = unit(RNG.standard_normal(H).astype(np.float32))
         va = [r["pos"][pos][layer] @ v for r in rows if any(_in(r, g) for g in ga) and pos in r["pos"]]
@@ -306,7 +306,21 @@ def main(argv) -> int:
         for r in rows:
             if r["group"] == "D-visible" and r["run"] in considered:
                 r["group2"] = "D-considered" if considered[r["run"]] == "considered" else "D-never"
-    poss = ["P0", "shared", "P1", "dp_temptation", "dp_consider", "dp_first_write", "dp_cheat", "mean_reason", "mean_resp"]
+    # P0 and `shared` are prompt positions: every run in a cell has the identical prompt there, so their activations are
+    # identical within a cell (one value per cell, not a sample). They are reported as single differences, never tested.
+    poss = ["P1", "dp_temptation", "dp_consider", "dp_first_write", "dp_cheat", "mean_reason", "mean_resp"]
+    res["prompt_positions"] = {}
+    for p in ("P0", "shared"):
+        for n, v in dirs.items():
+            mu, sd = scales[n]; per = {}
+            for cell in ("HO-G~visible", "HO-D~visible", "HO-G~holdout"):
+                vals = [(r["pos"][p][layer] @ v - mu) / sd for r in rows if r["cell"] == cell and p in r["pos"]]
+                if vals:
+                    per[cell] = {"z": float(np.mean(vals)), "within_cell_sd": float(np.std(vals))}
+            v0 = unit(ps["axis"][0]) if n == "axis" else None
+            l0 = {cell: float(np.mean([r["pos"][p][0] @ v0 for r in rows if r["cell"] == cell and p in r["pos"]])) for cell in per} if v0 is not None else None
+            res["prompt_positions"][f"{p} | {n}"] = {"cells": per, "G_minus_D_z": per.get("HO-G~visible", {}).get("z", np.nan) - per.get("HO-D~visible", {}).get("z", np.nan),
+                                                     "layer0_axis_raw": l0}
     for cname, (ga, gb) in comps.items():
         for p in poss:
             for n, v in dirs.items():
@@ -321,7 +335,7 @@ def main(argv) -> int:
     for k, q in zip(keys, bh([res["contrasts"][k]["perm_p"] for k in keys])):
         res["contrasts"][k]["q_bh"] = float(q)
     res["n_tests"] = len(keys)
-    for p in ("shared", "P1", "dp_first_write", "mean_reason"):
+    for p in ("P1", "dp_consider", "dp_first_write", "mean_reason"):
         res["probe"][p] = {"layer": probe(rows, p, layer), "layer0": probe(rows, p, 0)}
         gh = [r for r in rows if r["group"] == "G-holdout" and p in r["pos"]]
         res["probe"][p]["n_g_holdout"] = len(gh)
@@ -340,6 +354,12 @@ def main(argv) -> int:
             c = res["contrasts"].get(f"{cn} | {p} | axis")
             if c and c.get("d") is not None:
                 lines.append(f"| {cn} | {p} | {c['n']} | {c['diff_z']:+.2f} | {c['d']:+.2f} | {c['perm_p']:.4f} | {c.get('random_dir_p', '')} | {fmt(c.get('layer0_d'))} |")
+    lines += ["", "## Prompt positions (one value per cell; not tested)", "| position | direction | G-visible z | D-visible z | G-holdout z | G − D | max within-cell sd |", "|---|---|---|---|---|---|---|"]
+    for k, c in res["prompt_positions"].items():
+        p, n = k.split(" | "); cs = c["cells"]
+        if n in ("axis", "PC1", "PC2") or not n.endswith("⊥axis") and n not in ("PC3", "PC4", "PC5"):
+            g = lambda cell: f"{cs[cell]['z']:+.2f}" if cell in cs else ""  # noqa: E731
+            lines.append(f"| {p} | {n} | {g('HO-G~visible')} | {g('HO-D~visible')} | {g('HO-G~holdout')} | {c['G_minus_D_z']:+.2f} | {max(x['within_cell_sd'] for x in cs.values()):.3f} |")
     lines += ["", "## Graded-mode probe (G-visible vs D-visible, leave-one-run-out)", "```", json.dumps(res["probe"], indent=1), "```"]
     (out / "report.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines[:12]))

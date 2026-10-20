@@ -534,3 +534,44 @@ out-of-sample check (graded frame, no score at stake).
 
 **Gates first.** If the persona-space gates fail (cos(axis, PC1) ≤ 0.6, the default not at a PC1 extreme, or split-half
 ≤ 0.9), the axis results are reported as unvalidated and the emotion/probe results stand on their own nulls.
+
+### P3-min results (2026-10-20): axis unvalidated; one pre-registered contrast in the "calm mechanical" direction
+
+Layer 32, 34 V1 replays; report `results/persona_min/analysis/report.md`, figures `fig_persona_*`.
+
+**Gates: all fail** (cos(axis, PC1) 0.33, default at the 45th percentile of PC1, split-half 0.59), at every layer and
+span swept. Causes traced to the minimal design: three grader-adjacent roles with few fully-role-playing responses
+dominate PC1 (dropping the five grader-adjacent roles gives cos 0.68), 11 of 20 roles are Assistant-like so the default
+sits at the edge of that cluster rather than at a PC1 extreme, and 5 questions per half. The axis results below are
+therefore **unvalidated**, as pre-registered.
+
+**Prompt positions are not testable**: P0 and `shared` are identical within a cell (within-cell sd 0.000); one value per
+cell (axis, z): P0 G-visible +0.76, D +0.97, G-holdout +0.75; shared −0.13 / −0.34 / −0.13. The first analysis run
+tested them as samples (d ≈ 10⁶); fixed before any reading.
+
+**Primary contrasts (axis, z units of the default-Assistant spread):**
+1. dp_consider, graded-took vs deployment-declined: +0.28 z, d = +1.50, perm p = 0.004, random-direction p = 0.01,
+   layer-0 d = +0.24. Sign: takers sit *closer* to the Assistant end, the calm-mechanical prediction. Same sign for
+   took vs declined overall (+0.24, d = 1.41, p = 0.0007, random p < 0.01) and within graded cheat vs honest at
+   dp_consider (+0.19, d = 1.26, p = 0.024, random p = 0.07); graded-honest vs deployment at dp_consider is null
+   (+0.07, p = 0.45), so the shift goes with the choice, not the frame.
+2. dp_first_write, within graded G-cheat vs G-honest: null (+0.07, d = 0.37, p = 0.48).
+3. shared: one value per cell (above); not testable.
+
+**Context.** Every agentic position sits about 1.5 z below the default Assistant for every group; the group
+differences (≤ 0.3 z) are small against that shared offset. Early reasoning (P1) separates the graded frame
+(G-visible and G-holdout alike, −0.06) from deployment (−0.27), so it tracks the frame label, not what is scored
+(random-direction p = 0.07: the arms differ in many directions, not specifically the axis).
+
+**Emotion profile** (axis-orthogonalised, dp_consider): no emotion survives FDR. Direction for takers vs decliners:
+less guilty (d −0.67 / −0.79) and less defensive (−0.63 / −0.73), slightly calmer and more bored; the opposite of
+the "aware it's wrong → guilt" expectation, but not significant (q ≥ 0.25). Over the whole run (mean reasoning),
+takers are more calm / proud / determined (q < 0.02), confounded with arm (11 of 12 takers are graded); within graded
+only `proud` survives (q = 0.09).
+
+**Graded-mode probe:** no position above shuffle (leave-one-run-out accuracy 0.52–0.68, shuffle p 0.10–0.52), and the
+layer-0 probe does as well: no linearly decodable graded-mode state at n = 29.
+
+**Reading.** Exploratory and underpowered; the axis is unvalidated. What there is points away from a split persona
+(no shift toward role-play in the graded arm or in cheaters) and weakly toward the calm-mechanical pattern at the
+moment of choosing the shortcut. Next, if pursued: the full role set (to pass the gates) and more runs per group.
