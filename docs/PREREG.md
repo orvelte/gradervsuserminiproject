@@ -500,3 +500,37 @@ Complete runs (originals plus resumed continuations, one per lineage), grader-ta
 caveat is selection by run length: unfinished runs (8 G-visible, 14 G-holdout) are the long ones, and gaming may
 correlate with length. Rates match H3 on OpenRouter (G-visible 76%, G-holdout 6%, D-visible 8%, D-holdout 0%)
 within the CIs, despite the different sampling and server.
+
+## P3-min — persona/emotion projections, minimal design (written 2026-10-20, before any projection is computed)
+
+**Status: exploratory** (minimal design, decision #90): ~20-role persona space, 34 V1 replays. Follow-up with the full
+pipeline if it shows signal. Design and decision points: decisions #91–92, `internals/persona/`.
+
+**Groups.** G-cheat (HO-G~visible, gaming, n = 11), G-honest (HO-G~visible, not gaming, n = 6), D-visible (n = 12, of
+which 1 gaming), G-holdout (n = 5). At the consideration point: took (12) vs declined (18).
+
+**Primary contrasts** (all at layer 32, Assistant Axis in z units of the default-Assistant distribution):
+1. Arm, at the consideration point (dp_consider): graded-took vs deployment-declined.
+2. Within graded, at the first router write (dp_first_write): G-cheat vs G-honest (A2).
+3. Arm at matched content (`shared` block): G-visible vs D-visible, with the layer-0 check (identical tokens, so
+   layer-0 separation must be ~0).
+
+**Predictions, by hypothesis** (sign of the axis difference, graded/cheat minus deployment/honest):
+- Split persona: graded and cheating sit further from the Assistant end (negative) at 1–3, beyond the random-direction
+  envelope (random-direction p < 0.05), and in 2 cheaters < honest.
+- Same persona, different beliefs: no axis difference at 1–3 (|d| < 0.5, CIs spanning 0); any arm separation is on the
+  graded-mode probe or on non-persona directions only.
+- Calm mechanical mode: graded/cheating sit *closer* to the Assistant end (positive) at 1–3, together with lower
+  anxious / frustrated / guilty and higher calm / determined on the axis-orthogonalised emotion directions.
+
+**Emotion profile** (exploratory within exploratory): the 12 emotion directions with the axis component removed, at
+dp_consider and dp_first_write, for the took/declined and G-cheat/G-honest contrasts. Expected under "aware it's wrong":
+guilty / anxious / defensive higher in takers at dp_consider. All emotion and PC contrasts are BH-corrected over every
+test run; only q < 0.10 is reported as a finding.
+
+**Graded-mode probe:** G-visible vs D-visible, leave-one-run-out, at `shared`, P1, dp_first_write and the mean
+reasoning; above shuffle (p < 0.05) and above the layer-0 probe. G-holdout's probe score is reported as an
+out-of-sample check (graded frame, no score at stake).
+
+**Gates first.** If the persona-space gates fail (cos(axis, PC1) ≤ 0.6, the default not at a PC1 extreme, or split-half
+≤ 0.9), the axis results are reported as unvalidated and the emotion/probe results stand on their own nulls.
