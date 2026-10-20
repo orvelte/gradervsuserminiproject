@@ -59,3 +59,22 @@ come with it?
    extraction (about 70 roles × 200 generations), plus activation replay of all three, on one 80 GB GPU for some hours.
 3. Environment: the spec names the pre-commit environment, but Qwen3.8 does not game there; the holdout
    environment is where the effect is. Proposed: holdout.
+
+## Schedule (adopted 2026-10-20, decision #89)
+
+Estimates, not measurements; each ⛔ is a review stop, so dates move with review turnaround. Pods are terminated
+between phases. Every GPU phase and judge run gets its own cost estimate and Olivia's approval.
+
+| step | work | GPU | est. cost | earliest |
+|---|---|---|---|---|
+| V1 wrap-up | graded arms to 25 (deployment stopped at 20/21, #88); gates; PREREG / DECISIONS; artifact; terminate pods | 1.5–2.5 h × 2 pods | $12–20 | Oct 20 |
+| Phase 1 persona space | ~70 roles × 200 prompts ≈ 14k generations; judge filter; replay; axis, PCs, 4 validation gates | ~3–4 h × 2 pods | $25–35 + $5–15 judge | Oct 21 |
+| ⛔ review | gates; optional emotion directions | | | |
+| Phase 2 references | default Assistant, ~500 chat turns, ~200 coding-help, role-play ends | ~1–2 h | $5–10 | Oct 22 |
+| ⛔ review + pre-register Phase 3 | three hypotheses → PREREG before any V1 projection | | | |
+| Phase 3 projections | replay ~100 V1 transcripts; P0/P1/per-turn/P2/response; A1–A6; layer-0 leak, random-direction and label-shuffle nulls; graded-mode probe tested on conduct | ~2–3 h | $10–15 | Oct 23–24 |
+| ⛔ review | A2 or A3 positive? | | | |
+| Phase 4 causal (conditional) | capping and steering dose sweep with random envelopes; new agentic rollouts with hooks | ~1–2 days | ~$100–200 | week 2 |
+
+Risks: LMSYS-Chat-1M is gated (needs Olivia's HF acceptance, or use WildChat); judge model choice; ~15 min weight
+download per new pod (a RunPod network volume, ~$8/month, removes it); long-context replay may need chunking.
