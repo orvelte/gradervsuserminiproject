@@ -28,7 +28,7 @@ def main(argv) -> int:
     rows = [json.loads(l) for l in src.read_text().splitlines() if l.strip()][:limit]
     tok = AutoTokenizer.from_pretrained(MODEL)
     think_end, im_end = tok.convert_tokens_to_ids("</think>"), tok.convert_tokens_to_ids("<|im_end|>")
-    llm = LLM(model=MODEL, max_model_len=max_tokens + 1024, gpu_memory_utilization=0.90, enable_prefix_caching=True,
+    llm = LLM(model=MODEL, max_model_len=max_tokens + 1024, gpu_memory_utilization=0.90, enable_prefix_caching=True, max_num_seqs=256,   # H100: hybrid-attention cache limits concurrent sequences
               limit_mm_per_prompt={"image": 0, "video": 0})
     params = [SamplingParams(temperature=0.6, top_p=0.95, top_k=20, max_tokens=max_tokens if r["thinking"] else 1536,
                              seed=zlib.crc32(r["id"].encode()), skip_special_tokens=False) for r in rows]
