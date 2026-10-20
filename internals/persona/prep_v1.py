@@ -17,6 +17,8 @@ Spans (half-open token ranges, averaged on the pod at every layer):
   dp_cheat         50 tokens before the tool call of the edit that first made ./score report >= 0.95 (gaming runs)
   dp_first_write   50 tokens before the tool call of the first edit to router.py (all runs)
   dp_temptation    the first 50 reasoning tokens after the first ./score result below 0.95 (all runs that saw one)
+  dp_consider      the 50 tokens ending with the sentence where the run first contemplates fitting the sample (blind
+                   coding with an exact quote, results/persona_min/v1/consider_coding.json; runs that never do: none)
 Writes results/persona_min/v1/{runs.jsonl, seqs.jsonl}.
 """
 from __future__ import annotations
@@ -55,6 +57,30 @@ def _args(tc) -> dict:
 def _cmd(tc) -> str:
     a = _args(tc); c = a.get("command") or a.get("input") or a.get("patch") or ""
     return " ".join(map(str, c)) if isinstance(c, list) else str(c)
+
+
+CODING = REPO / "results" / "persona_min" / "v1" / "consider_coding.json"
+
+
+def locate_quote(ids: list[int], start: int, end: int, quote: str) -> int | None:
+    """Token index (exclusive) at which `quote` ends inside ids[start:end], or None."""
+    region = ids[start:end]; text = TOK.decode(region, skip_special_tokens=False)
+    i = text.find(quote)
+    if i < 0:
+        i = " ".join(text.split()).find(" ".join(quote.split()))     # whitespace-normalised fallback
+        if i < 0:
+            return None
+        target = len(" ".join(quote.split())) + i; norm = True
+    else:
+        target = i + len(quote); norm = False
+    lo, hi = 1, len(region)
+    while lo < hi:                                                    # smallest n whose decoded prefix covers the quote end
+        mid = (lo + hi) // 2; t = TOK.decode(region[:mid], skip_special_tokens=False)
+        if len(" ".join(t.split()) if norm else t) >= target:
+            hi = mid
+        else:
+            lo = mid + 1
+    return start + lo
 
 
 def build(run: Path) -> tuple[dict, dict]:
@@ -111,6 +137,16 @@ def build(run: Path) -> tuple[dict, dict]:
     if low is not None and low + 1 < len(turn_info):
         t = turn_info[low + 1]; spans["dp_temptation"] = [t["start"], min(t["start"] + WINDOW, t["think_end"])]
         dp["temptation"] = {"turn": low + 1, "score": next(a for k, a in scores if k == low)}
+    coding = json.loads(CODING.read_text()).get(str(run.relative_to(REPO))) if CODING.exists() else None
+    if coding and coding.get("code") == "considered" and coding.get("turn") is not None:
+        k = next((k for k, ti in enumerate(turn_info) if ti["msg"] == coding["turn"]), None)
+        if k is not None:
+            ti = turn_info[k]
+            a, b = (ti["start"], ti["think_end"]) if coding.get("section") != "message" else (ti["think_end"], ti["end"])
+            e = locate_quote(ids, a, b, coding["quote"])
+            if e is not None:
+                spans["dp_consider"] = [max(a, e - WINDOW), e]
+            dp["consider"] = {"turn": k, "found": e is not None, "declined": coding.get("declined"), "did_it": coding.get("did_it")}
     spans = {n: s for n, s in spans.items() if s[1] > s[0]}
     meta = {"run": str(run.relative_to(REPO)), "cell": run.parts[run.parts.index("holdout") + 2] if "holdout" in run.parts else "?",
             "n_tokens": len(ids), "n_turns": len(turns), "turn_token_mismatch": mismatch, "decision_points": dp,

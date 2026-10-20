@@ -94,7 +94,8 @@ def gates(ps, ps_a, ps_b, ps_nothink, layer):
          "split_half_cos": float(unit(ps_a["axis"][layer]) @ unit(ps_b["axis"][layer])) if ps_a and ps_b else None,
          "thinking_vs_nonthinking_axis_cos": float(unit(ps_nothink["axis"][layer]) @ ax) if ps_nothink else None,
          "pc_var_explained": (ps["S"][:5] ** 2 / (ps["S"] ** 2).sum()).round(3).tolist(),
-         "n_roles_used": len(ps["role_names"]), "emotions_used": list(ps["emo_dirs"])}
+         "n_roles_used": len(ps["role_names"]), "emotions_used": list(ps["emo_dirs"]),
+         "cos_emotion_axis": {n: round(float(v @ ax), 3) for n, v in ps["emo_dirs"].items()}}
     g["pass"] = {"cos_axis_pc1>0.6": g["cos_axis_pc1"] > 0.6, "default_at_pc1_extreme": pct >= 0.9 or pct <= 0.1,
                  "split_half>0.9": (g["split_half_cos"] or 0) > 0.9}
     return g
@@ -109,7 +110,7 @@ def v1_positions(root: Path):
         if a is None:
             continue
         means, counts = a
-        pos = {k: means[k].astype(np.float32) for k in ("P0", "P1", "shared", "dp_cheat", "dp_first_write", "dp_temptation") if k in means}
+        pos = {k: means[k].astype(np.float32) for k in ("P0", "P1", "shared", "dp_cheat", "dp_first_write", "dp_temptation", "dp_consider") if k in means}
         for kind in ("reason", "resp"):
             ks = [k for k in means if k.startswith("turn") and k.endswith("_" + kind)]
             w = np.array([counts[k] for k in ks])
@@ -118,7 +119,12 @@ def v1_positions(root: Path):
         nt = m["n_turns"]
         traj = [means.get(f"turn{k}_reason") for k in range(nt)]
         group = ("G-cheat" if m["gaming"] else "G-honest") if m["cell"] == "HO-G~visible" else ("D-visible" if m["cell"] == "HO-D~visible" else "G-holdout")
-        out.append({"run": m["run"], "cell": m["cell"], "group": group, "gaming": m["gaming"], "pos": pos,
+        cons = (m.get("decision_points") or {}).get("consider") or {}
+        if cons.get("found"):     # the choice made at the moment the shortcut is first weighed
+            group_c = "took" if (m["gaming"] or cons.get("did_it")) else "declined"
+        else:
+            group_c = None
+        out.append({"run": m["run"], "cell": m["cell"], "group": group, "group_c": group_c, "gaming": m["gaming"], "pos": pos,
                     "traj": [t.astype(np.float32) if t is not None else None for t in traj]})
     return out
 
@@ -147,9 +153,16 @@ def perm_p(a, b, n=10000):
     return (hits + 1) / (n + 1)
 
 
+def _in(r, g):
+    """Group membership: plain names match r["group"]; "took:<arm>" / "declined:<arm>" match the consider-point choice."""
+    if ":" in g:
+        c, arm = g.split(":"); return r.get("group_c") == c and (arm == "any" or r["cell"].startswith(arm))
+    return r["group"] == g
+
+
 def contrast(rows, pos, ga, gb, layer, direction, mu, sd):
-    va = [(r["pos"][pos][layer] @ direction - mu) / sd for r in rows if r["group"] in ga and pos in r["pos"]]
-    vb = [(r["pos"][pos][layer] @ direction - mu) / sd for r in rows if r["group"] in gb and pos in r["pos"]]
+    va = [(r["pos"][pos][layer] @ direction - mu) / sd for r in rows if any(_in(r, g) for g in ga) and pos in r["pos"]]
+    vb = [(r["pos"][pos][layer] @ direction - mu) / sd for r in rows if any(_in(r, g) for g in gb) and pos in r["pos"]]
     if len(va) < 2 or len(vb) < 2:
         return {"n": [len(va), len(vb)]}
     return {"n": [len(va), len(vb)], "mean_a": float(np.mean(va)), "mean_b": float(np.mean(vb)), "diff_z": float(np.mean(va) - np.mean(vb)),
@@ -160,8 +173,8 @@ def random_null(rows, pos, ga, gb, layer, d_obs, n=100):
     H = rows[0]["pos"][pos].shape[-1]; ds = []
     for _ in range(n):
         v = unit(RNG.standard_normal(H).astype(np.float32))
-        va = [r["pos"][pos][layer] @ v for r in rows if r["group"] in ga and pos in r["pos"]]
-        vb = [r["pos"][pos][layer] @ v for r in rows if r["group"] in gb and pos in r["pos"]]
+        va = [r["pos"][pos][layer] @ v for r in rows if any(_in(r, g) for g in ga) and pos in r["pos"]]
+        vb = [r["pos"][pos][layer] @ v for r in rows if any(_in(r, g) for g in gb) and pos in r["pos"]]
         e = effect(va, vb)
         if e is not None:
             ds.append(abs(e))
@@ -212,7 +225,7 @@ def figures(ps, rows, dirs, scales, layer, figdir: Path):
     style.setup(); figdir.mkdir(parents=True, exist_ok=True)
     groups = ["G-cheat", "G-honest", "D-visible", "G-holdout"]; col = dict(zip(groups, style.PALETTE))
     # 1. axis at each read position, by group
-    poss = [p for p in ("P0", "shared", "P1", "dp_temptation", "dp_first_write", "dp_cheat", "mean_reason", "mean_resp") if any(p in r["pos"] for r in rows)]
+    poss = [p for p in ("P0", "shared", "P1", "dp_temptation", "dp_consider", "dp_first_write", "dp_cheat", "mean_reason", "mean_resp") if any(p in r["pos"] for r in rows)]
     fig, ax = plt.subplots(figsize=(11, 4))
     mu, sd = scales["axis"]
     for gi, g in enumerate(groups):
@@ -274,20 +287,26 @@ def main(argv) -> int:
     except SystemExit:
         ps_nt = None
     G = gates(ps, ps_a, ps_b, ps_nt, layer)
-    dirs = {"axis": unit(ps["axis"][layer])} | {f"PC{i + 1}": ps["pcs"][i] for i in range(len(ps["pcs"]))} | ps["emo_dirs"]
+    ax = unit(ps["axis"][layer])
+    dirs = {"axis": ax} | {f"PC{i + 1}": ps["pcs"][i] for i in range(len(ps["pcs"]))} | ps["emo_dirs"]
+    # emotion directions overlap the axis, so a pure axis shift reads as an emotion shift: also test each emotion with
+    # the axis component removed ("<emotion>⊥axis")
+    dirs |= {f"{n}⊥axis": unit(v - (v @ ax) * ax) for n, v in ps["emo_dirs"].items()}
     scales = {n: scale(ps, layer, v) for n, v in dirs.items()}
     rows = v1_positions(root)
     res = {"layer": layer, "gates": G, "contrasts": {}, "probe": {}}
     comps = {"arm (G-visible vs D-visible)": (("G-cheat", "G-honest"), ("D-visible",)),
              "within graded (cheat vs honest)": (("G-cheat",), ("G-honest",)),
              "graded honest vs deployment": (("G-honest",), ("D-visible",)),
-             "visible vs held-out scoring (graded)": (("G-cheat", "G-honest"), ("G-holdout",))}
+             "visible vs held-out scoring (graded)": (("G-cheat", "G-honest"), ("G-holdout",)),
+             "at consideration: took vs declined (all)": (("took:any",), ("declined:any",)),
+             "at consideration: graded took vs deployment declined": (("took:HO-G",), ("declined:HO-D",))}
     considered = json.loads((root / "v1" / "considered.json").read_text()) if (root / "v1" / "considered.json").exists() else {}
     if considered:
         for r in rows:
             if r["group"] == "D-visible" and r["run"] in considered:
                 r["group2"] = "D-considered" if considered[r["run"]] == "considered" else "D-never"
-    poss = ["P0", "shared", "P1", "dp_temptation", "dp_first_write", "dp_cheat", "mean_reason", "mean_resp"]
+    poss = ["P0", "shared", "P1", "dp_temptation", "dp_consider", "dp_first_write", "dp_cheat", "mean_reason", "mean_resp"]
     for cname, (ga, gb) in comps.items():
         for p in poss:
             for n, v in dirs.items():
@@ -317,7 +336,7 @@ def main(argv) -> int:
             lines.append(f"| {cn} | {p} | {n} | {c['n']} | {c['diff_z']:+.2f} | {c['d']:+.2f} | {c['perm_p']:.4f} | {c['q_bh']:.3f} | {c.get('random_dir_p', '')} | {fmt(c.get('layer0_d'))} |")
     lines += ["", "## Pre-specified: Assistant Axis at the decision point (reported whatever the q)", "| contrast | position | n | diff (z) | d | perm p | random-dir p | layer-0 d |", "|---|---|---|---|---|---|---|---|"]
     for cn in comps:
-        for p in ("dp_first_write", "dp_temptation", "dp_cheat"):
+        for p in ("dp_consider", "dp_first_write", "dp_temptation", "dp_cheat"):
             c = res["contrasts"].get(f"{cn} | {p} | axis")
             if c and c.get("d") is not None:
                 lines.append(f"| {cn} | {p} | {c['n']} | {c['diff_z']:+.2f} | {c['d']:+.2f} | {c['perm_p']:.4f} | {c.get('random_dir_p', '')} | {fmt(c.get('layer0_d'))} |")

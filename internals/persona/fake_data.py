@@ -57,13 +57,14 @@ def main(root: Path) -> None:
         for i in range(n):
             rid = f"results/holdout/fake/{cell}/run-{i}"; gaming = i < ng
             base = 3 * AX + (0.6 * AX if cell.startswith("HO-G") else 0)
-            sp = {k: vec(base) for k in ("P0", "P1", "shared", "dp_first_write", "dp_temptation")}
+            sp = {k: vec(base) for k in ("P0", "P1", "shared", "dp_first_write", "dp_temptation", "dp_consider")}
             if gaming:
-                sp["dp_first_write"] = vec(base + 2.5 * ANX); sp["dp_cheat"] = vec(base + 2.5 * ANX)
+                sp["dp_first_write"] = vec(base + 2.5 * ANX); sp["dp_cheat"] = vec(base + 2.5 * ANX); sp["dp_consider"] = vec(base + 2.5 * ANX)
             for t in range(6):
                 sp[f"turn{t}_reason"] = vec(base); sp[f"turn{t}_resp"] = vec(base)
             save(root / "v1" / "acts", rid, sp)
-            runs.append({"run": rid, "cell": cell, "gaming": gaming, "n_turns": 6})
+            runs.append({"run": rid, "cell": cell, "gaming": gaming, "n_turns": 6,
+                         "decision_points": {"consider": {"found": True, "did_it": gaming, "declined": not gaming}}})
     (root / "v1" / "runs.jsonl").write_text("".join(json.dumps(r) + "\n" for r in runs))
     print(f"fake data in {root}")
 
