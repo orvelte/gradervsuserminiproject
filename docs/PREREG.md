@@ -463,3 +463,15 @@ override. 25 runs per cell (100). Batch `v1_qwen38`.
    lengths exactly (render-fidelity check).
 If the rates differ from H3 but 1–3 hold, the activation work uses V1 and the difference is reported (sampling and
 template differ from the OpenRouter runs).
+
+### V1 status (2026-10-20): stopped early (Modal usage limit)
+
+The Modal app was stopped partway because the account was close to its usage limit; the launchers were stopped too.
+Saved: 41 complete runs (G-visible 12, G-holdout 7, D-visible 11, D-holdout 11) and 54 partial runs with per-step
+checkpoints (resumable with `scripts/resume.py` once a GPU is available again); 5 never started.
+
+- Gate 4 (replay fidelity): **passes.** 135/135 calls across 6 complete runs re-render to the server's exact prompt
+  tokens (`internals/replay_check.py`).
+- Gates 1–3: not evaluated, because the sample is incomplete. **Preliminary only:** among complete runs, gaming
+  G-visible 9/12, G-holdout 0/7, D-visible 1/11, D-holdout 0/11, the same pattern as H3. Runs that finished first are
+  the shorter ones, so this subset may be biased; the gate is evaluated only on the full 25 per cell.

@@ -31,13 +31,13 @@ vllm_cache = modal.Volume.from_name("vllm-cache", create_if_missing=True)
 app = modal.App("qwen38-vllm")
 
 
-@app.function(image=image, gpu="H100", timeout=24 * 3600, scaledown_window=15 * 60,
+@app.function(image=image, gpu="H100", timeout=24 * 3600, scaledown_window=15 * 60, max_containers=6,
               volumes={"/root/.cache/huggingface": hf_cache, "/root/.cache/vllm": vllm_cache},
               secrets=[modal.Secret.from_name("qwen38-vllm-key")])
-@modal.concurrent(max_inputs=48)
+@modal.concurrent(max_inputs=8)   # 48 concurrent rollouts -> 6 H100s (1 GPU: ~134 s/step; 3 GPUs: ~63-108 s/step)
 @modal.web_server(port=8000, startup_timeout=30 * 60)
 def serve():
     cmd = ["vllm", "serve", MODEL, "--served-model-name", SERVED_NAME, "--host", "0.0.0.0", "--port", "8000",
            "--api-key", os.environ["VLLM_API_KEY"], "--max-model-len", "131072", "--gpu-memory-utilization", "0.92",
-           "--limit-mm-per-prompt", '{"image": 0, "video": 0}', "--enable-prefix-caching", "--max-num-seqs", "48"]
+           "--limit-mm-per-prompt", '{"image": 0, "video": 0}', "--enable-prefix-caching", "--max-num-seqs", "24"]
     subprocess.Popen(cmd)
