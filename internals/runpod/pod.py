@@ -6,6 +6,8 @@
     python internals/runpod/pod.py wait                 # until /v1/models answers (cold start: download + load)
     python internals/runpod/pod.py stop                 # stops billing for the GPU (the volume is kept, small cost)
     python internals/runpod/pod.py terminate            # deletes the pod and its volume
+    python internals/runpod/pod.py create-job           # PAID: batch pod with sshd (internals/persona); use job.sh
+    python internals/runpod/pod.py terminate-job        # deletes the job pod and its SSH key
 
 Needs RUNPOD_API_KEY in .env (never printed). The vLLM API key is VLLM_API_KEY from .env, passed to the pod. On
 `create`, VLLM_BASE_URL in .env is set to the pod's proxy URL (https://<pod-id>-8000.proxy.runpod.net/v1), so the
@@ -87,6 +89,47 @@ def create(gpu: str, count: int) -> None:
     print("no TCP mapping yet: run `pod.py tcp` once the pod is up")
 
 
+SSH_KEY = Path(__file__).resolve().parent / "ssh_key"     # gitignored; only for job pods; deleted by `terminate-job`
+SSH_FILE = Path(__file__).resolve().parent / f".ssh{SLOT}"
+JOB_START = ("apt-get update -qq && apt-get install -y -qq openssh-server rsync >/dev/null && mkdir -p /root/.ssh /run/sshd "
+             "&& echo \"$PUBLIC_KEY\" > /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys "
+             "&& exec /usr/sbin/sshd -D")
+
+
+def create_job(gpu: str) -> None:
+    """A batch pod (same vLLM image, which also has torch + transformers) that runs sshd instead of a vLLM server, for
+    offline generation and activation replay (internals/persona). Reached only through internals/runpod/job.sh."""
+    if POD_FILE.exists():
+        sys.exit(f"a pod is already recorded in this slot ({POD_FILE.read_text().strip()}); terminate it first")
+    if not SSH_KEY.exists():
+        import subprocess
+        subprocess.run(["ssh-keygen", "-q", "-t", "ed25519", "-N", "", "-C", "gradervsuser-runpod-job", "-f", str(SSH_KEY)], check=True)
+    body = {"name": f"qwen38-job{SLOT}", "imageName": VLLM_IMAGE, "gpuTypeIds": [gpu], "gpuCount": 1, "cloudType": "SECURE",
+            "computeType": "GPU", "containerDiskInGb": 80, "volumeInGb": 150, "volumeMountPath": "/workspace", "ports": ["22/tcp"],
+            "env": {"HF_HOME": "/workspace/hf", "HF_HUB_ENABLE_HF_TRANSFER": "1", "PUBLIC_KEY": SSH_KEY.with_suffix(".pub").read_text().strip()},
+            "dockerEntrypoint": ["bash", "-c"], "dockerStartCmd": [JOB_START]}
+    pod = _req("POST", "/pods", body)
+    pid = pod.get("id") or sys.exit(f"no pod id in response: {str(pod)[:300]}")
+    POD_FILE.write_text(pid)
+    print(f"created job pod {pid} on {gpu}; cost/hr: {pod.get('costPerHr')}")
+    for _ in range(90):
+        p = _req("GET", f"/pods/{pid}"); ip, pm = p.get("publicIp"), (p.get("portMappings") or {})
+        port = pm.get("22") or pm.get(22)
+        if ip and port:
+            SSH_FILE.write_text(f"{ip} {port}\n"); print(f"SSH endpoint saved to {SSH_FILE.name}"); return
+        time.sleep(10)
+    print("no SSH mapping yet: run `pod.py create-job` status later")
+
+
+def terminate_job() -> None:
+    """Delete the job pod, its SSH endpoint file and the job key."""
+    terminate()
+    SSH_FILE.unlink(missing_ok=True)
+    for f in (SSH_KEY, SSH_KEY.with_suffix(".pub")):
+        f.unlink(missing_ok=True)
+    print("job SSH key removed")
+
+
 def _pid() -> str:
     return POD_FILE.read_text().strip() if POD_FILE.exists() else sys.exit("no pod recorded")
 
@@ -152,5 +195,9 @@ if __name__ == "__main__":
         stop()
     elif cmd == "terminate":
         terminate()
+    elif cmd == "create-job":
+        create_job(a[a.index("--gpu") + 1] if "--gpu" in a else "NVIDIA H100 80GB HBM3")
+    elif cmd == "terminate-job":
+        terminate_job()
     else:
         sys.exit(__doc__)

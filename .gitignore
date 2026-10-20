@@ -32,3 +32,6 @@ audit/
 .env.pod*
 internals/runpod/.pod_id*
 internals/vendor/
+internals/runpod/ssh_key*
+internals/runpod/.ssh*
+internals/runpod/known_hosts
