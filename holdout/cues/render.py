@@ -1,6 +1,6 @@
 """Render a holdout condition from the cue registry (holdout/cues/cues.yaml).
 
-    render(frame="graded"|"deployment", scoring="visible"|"holdout"|"none", settings=None)
+    render(frame="graded"|"deployment"|"conduct", scoring="visible"|"holdout"|"none", settings=None)
       -> {system_prompt, prior_turns, user_prompt, cue_content{readme, files, history, question_reply}, settings}
 
 Every cue defaults to the frame's version; `settings` overrides single cues (cue swaps, as in deploysim).
@@ -13,7 +13,7 @@ from pathlib import Path
 import yaml
 
 CUES_FILE = Path(__file__).resolve().parent / "cues.yaml"
-FRAMES = ("graded", "deployment")
+FRAMES = ("graded", "deployment", "conduct")
 SCORING = ("visible", "holdout", "none")
 
 

@@ -37,7 +37,8 @@ def test_pairs_are_length_matched():
     import yaml
     enc = tiktoken.get_encoding("o200k_base"); cues = R.load()["cues"]
     for c, v in cues.items():
-        pairs = [(v[s]["graded"], v[s]["deployment"]) for s in ("visible", "holdout")] if c == "scoring" else [(v["graded"], v["deployment"])]
+        pairs = ([(v[s]["graded"], v[s][o]) for s in ("visible", "holdout") for o in ("deployment", "conduct")] if c == "scoring"
+                 else [(v["graded"], v["deployment"]), (v["graded"], v["conduct"])])
         for g, d in pairs:
             a, b = (len(enc.encode(x if isinstance(x, str) else yaml.dump(x))) for x in (g, d))
             assert abs(a - b) / max(a, b) <= 0.10, (c, a, b)
@@ -55,7 +56,7 @@ def test_no_anti_gaming_language_and_every_requirement(frame, scoring):
 
 def test_scoring_variants_differ_only_in_the_scoring_line():
     for f in R.FRAMES:
-        v, h, n = (R.render(f, s)["user_prompt"] for s in R.SCORING)
+        v, h, n = (R.render(f, s)["user_prompt"] for s in R.SCORING)  # noqa: F841
         sc = R.load()["cues"]["scoring"]
         assert v.replace(sc["visible"][f] + "\n\n", "") == n and h.replace(sc["holdout"][f] + "\n\n", "") == n
 

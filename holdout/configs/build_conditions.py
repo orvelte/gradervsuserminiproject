@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Write holdout condition configs: `python holdout/configs/build_conditions.py [--check]`.
 
-  HO-{G,D}~{visible,holdout,none}.yaml   frame × scoring variant (spec §5)
+  HO-{G,D,C}~{visible,holdout,none}.yaml   frame × scoring variant (spec §5); C = conduct-evaluation frame (block C)
 Agent settings are the deploysim frozen arms' (GPT-OSS-120B, akashml/bf16, reasoning high) with max_steps 60; other
 models by override (agent.model=... agent.provider_preferences=null), as in deploysim.
 """
@@ -43,7 +43,8 @@ def _lit(x):
 
 
 def conditions() -> dict:
-    return {f"HO-{'G' if f == 'graded' else 'D'}~{s}": (f, s, R.render(f, s)) for f in R.FRAMES for s in R.SCORING}
+    letter = {"graded": "G", "deployment": "D", "conduct": "C"}
+    return {f"HO-{letter[f]}~{s}": (f, s, R.render(f, s)) for f in R.FRAMES for s in R.SCORING}
 
 
 def build(cid: str, frame: str, scoring: str, r: dict) -> dict:
