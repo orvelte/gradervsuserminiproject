@@ -44,16 +44,21 @@ def _lit(x):
 
 def conditions() -> dict:
     letter = {"graded": "G", "deployment": "D", "conduct": "C"}
-    return {f"HO-{letter[f]}~{s}": (f, s, R.render(f, s)) for f in R.FRAMES for s in R.SCORING}
+    out = {f"HO-{letter[f]}~{s}": (f, s, R.render(f, s)) for f in R.FRAMES for s in R.SCORING}
+    # data v3 (DECISIONS #73): same texts, plausible triage-slip quirks; HO3-* = HO-* with task.data_version 3
+    out.update({f"v3/HO3-{letter[f]}~{s}": (f, s, R.render(f, s)) for f in R.FRAMES for s in ("visible", "holdout")})
+    return out
 
 
 def build(cid: str, frame: str, scoring: str, r: dict) -> dict:
+    v3 = cid.startswith("v3/")
     agent = copy.deepcopy(A.build("DS-G")["agent"]); agent["max_steps"] = MAX_STEPS
     h = hashlib.sha256(json.dumps(r["settings"], sort_keys=True).encode()).hexdigest()[:12]
     return _lit({"environment": "holdout", "agent": agent,
-                 "task": {"tools": ["bash", "apply_patch", "ask_question"], "sf_framing": "cues", "scoring_variant": scoring, "cue_content": r["cue_content"]},
+                 "task": {"tools": ["bash", "apply_patch", "ask_question"], "sf_framing": "cues", "scoring_variant": scoring,
+                          **({"data_version": 3} if v3 else {}), "cue_content": r["cue_content"]},
                  "prompts": {"system_prompt": r["system_prompt"], "prior_turns": r["prior_turns"], "user_prompt": r["user_prompt"]},
-                 "condition": {"id": cid, "experiment": "holdout", "env_version": ENV_VERSION, "frame": frame, "scoring": scoring, "cue_edition": r["edition"],
+                 "condition": {"id": cid.rsplit("/", 1)[-1], "experiment": "holdout", **({"data_version": 3} if v3 else {}), "env_version": ENV_VERSION, "frame": frame, "scoring": scoring, "cue_edition": r["edition"],
                                "cue_settings": r["settings"], "cue_settings_hash": h}})
 
 
@@ -65,7 +70,7 @@ def text(cid, frame, scoring, r) -> str:
 def main(argv) -> int:
     stale = []
     for cid, (f, s, r) in conditions().items():
-        p = HERE / f"{cid}.yaml"; t = text(cid, f, s, r)
+        p = HERE / f"{cid}.yaml"; p.parent.mkdir(exist_ok=True); t = text(cid, f, s, r)
         if "--check" in argv:
             if not p.exists() or p.read_text() != t:
                 stale.append(cid)

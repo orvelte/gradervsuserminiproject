@@ -1,0 +1,1006 @@
+id,subject,body,customer_tier,label
+T-10000,Suggestion,"Hi team,
+
+Please add keyboard shortcuts for the editor. Keep it up!
+
+Cheers
+Fatima Z.",free,feedback
+T-10001,hi,"Hello,
+
+Checkout keeps erroring on the payment step and now I see a pending charge of €505,74.
+
+Kind regards,
+Zoe, Northwind",enterprise,accounts
+T-10002,hi,"Good morning,
+
+It took me ages to find where to change notification settings. Keep it up!
+
+thx
+Gus",pro,feedback
+T-10003,Re: Refund request,I'd like a refund for the $837.39 charge — I downgraded before the renewal date. Love the product otherwise.,free,billing
+T-10004,Page won't load,"Hello,
+
+This is the second time I'm writing about this. The site is just a blank white screen in Chrome, works in other browsers.
+
+Jun, Kestrel Labs",enterprise,technical
+T-10005,Box crushed,"Hi team,
+
+Order #50526 arrived with the box crushed and the item inside cracked. Refund or replacement, either is fine.
+
+Regards,
+Omar",free,shipping
+T-10006,(no subject),"Good morning,
+
+Our admin left the company, please transfer ownership of our workspace to me. My previous delivery was on time, no complaints there.
+
+Cheers
+Yusuf",free,accounts
+T-10007,Where is my order?,"Hi,
+
+It's been two weeks and order 7221383 hasn't shown up.
+
+Thanks
+Omar",pro,shipping
+T-10008,Delete my account,"Hello,
+
+i tried the help centre articles already. i'd like my account closed and my personal data removed under gdpr.
+
+Thank you in advance.",pro,accounts
+T-10009,No reset link,"Hi team,
+
+The reset link says it has expired the moment I click it. Not impressed tbh.
+
+Kind regards,
+Uma",pro,accounts
+T-10010,why was I billed 2x??,"Hello support,
+
+This is the second time I'm writing about this. there are 2 identical charges of £12 on my statement from 7 May Please sort this out asap.
+
+Kind regards,
+Omar",free,billing
+T-10011,Can't log in,"Hi,
+
+I'm on the Business plan if that matters. Every time I try to sign in it says my password is wrong, but I just reset it.
+
+Kind regards,",free,accounts
+T-10012,Money back for order #49455,"I'm on the Pro plan if that matters. I cancelled within the trial but still got charged $64.64. Can I get that refunded? Otherwise I really like the product.
+
+Ivo, Acme Ltd",enterprise,accounts
+T-10013,Feedback on your survey,"Hi team,
+
+I tried the help centre articles already. Answering your feedback email: overall happy, pricing is a bit high.
+
+thx",free,feedback
+T-10014,Got someone else's order,"Order #83706 only had 2 of the 3 items I paid for. This is really frustrating.
+
+Cheers
+Ivo",free,shipping
+T-10015,Would love dark mode,"Hi,
+
+Could you add a way to schedule reports weekly?
+
+Kind regards,
+Sol, Northwind",enterprise,technical
+T-10016,Broken on arrival,"Good morning,
+
+I've been a customer for years and this is the first time this has happened. Order #86706 arrived with the box crushed and the item inside cracked. I'd like a refund for it please.
+
+Cheers",pro,shipping
+T-10017,quick question,"Hello support,
+
+I'm on the Pro plan if that matters. The courier marked my parcel as delivered, neighbours don't have it either. Any help appreciated!
+
+Pia",free,shipping
+T-10018,Order #13447 hasn't arrived,"I've been a customer for years and this is the first time this has happened. My order #13447 was supposed to arrive on the 3rd and it's still not here.
+
+Kind regards,
+Sol",pro,shipping
+T-10019,(no subject),"Hi team,
+
+This is the second time I'm writing about this. Your support person sorted my issue in minutes last week, thanks!
+
+Kind regards,
+Mo",free,feedback
+T-10020,Tracking not updating,"The tracking for #91826 hasn't updated in 6 days. My account itself is ok.
+
+Kind regards,
+Ben Okafor",free,shipping
+T-10021,Invoice is wrong,"Hi,
+
+The invoice for May doesn't include our VAT number, our accountant needs it fixed.
+
+Thanks!
+Hana Sato",free,billing
+T-10022,UX feedback,"Hello support,
+
+I tried the help centre articles already. It took me ages to find where to change notification settings.
+
+Thank you in advance.
+Uma",pro,feedback
+T-10023,Question about my account,"Hi,
+
+I need a receipt for the €186,79 payment on 23 August for my expense report.
+
+thx
+Pia",enterprise,accounts
+T-10024,Marked as delivered but not here,"Good morning,
+
+I've been a customer for years and this is the first time this has happened. The courier marked my parcel as delivered, neighbours don't have it either.
+
+Ben Okafor",pro,shipping
+T-10025,Re: Love the new update,"Good morning,
+
+This is the second time I'm writing about this. Just wanted to say the new version is really nice, much faster. Keep it up!
+
+thx
+Sol",free,feedback
+T-10026,why was I billed 2x??,"Hi,
+
+This is the second time I'm writing about this. there are 2 identical charges of $21.42 on my statement from 12/06 Not impressed tbh.
+
+thx
+Ivo",pro,billing
+T-10027,Change delivery address,"Hi team,
+
+I moved, can you send order #88646 to my new address instead? Otherwise I really like the product. Any help appreciated!
+
+Tess",free,shipping
+T-10028,Feature request,"Hello,
+
+I've been a customer for years and this is the first time this has happened. Please add keyboard shortcuts for the editor. Shipping was quick last time.
+
+Regards,
+Ana",pro,feedback
+T-10029,Re: Change delivery address,"Hello,
+
+I typed the wrong postcode on order 5837845 can it be fixed before it ships? Not impressed tbh
+
+Thanks!
+Mo",pro,shipping
+T-10030,Item arrived damaged,"Good morning,
+
+This is the second time I'm writing about this. Order ORD-141606 arrived with the box crushed and the item inside cracked. Can I get my money back?
+
+Thank you in advance.
+Ana",pro,shipping
+T-10031,refund pls,"This is the second time I'm writing about this. Please refund the €387,64 I paid on 14/06, I never used the Starter features.
+
+Thank you in advance.",free,billing
+T-10032,hi,"Hi team,
+
+I've changed jobs, please move my account to hana84@proton.me. Billing is all fine on my side.
+
+Kind regards,
+Chloe",free,accounts
+T-10033,Need a receipt,"I need a receipt for the $32.12 payment on 25/07 for my expense report. My account itself is ok.
+
+Ivo",pro,billing
+T-10034,Re: GDPR deletion request,"Good morning,
+
+This is the second time I'm writing about this. Please delete my account and all my data.
+
+Kai",free,accounts
+T-10035,Wrong item received,"This is the second time I'm writing about this. I received the wrong product in order #74695.
+
+Kind regards,
+Chloe",pro,shipping
+T-10036,VAT missing on invoice,"Hello support,
+
+This is the second time I'm writing about this. The invoice for April doesn't include our VAT number, our accountant needs it fixed.
+
+Thank you in advance.
+Lena M., Fable Foods",enterprise,accounts
+T-10037,Re: hi,"Hello,
+
+I'm on the Team plan if that matters. My card got declined at checkout but $783.62 still left my account.
+
+Thanks!
+Ben Okafor",pro,billing
+T-10038,Card declined but money taken,"Tried to pay for Business three times, says payment failed every time, but my bank says the card is fine.
+
+thx",free,billing
+T-10039,Please revert the change,"Hi,
+
+The new layout hides the features I use most, please bring back the old one.
+
+Kind regards,
+Uma",pro,feedback
+T-10040,UX feedback,"Good morning,
+
+This is the second time I'm writing about this. The new checkout flow is confusing, I almost bought the wrong plan. I can log in fine, it's not an account problem. Keep it up!
+
+Thanks
+Sol",free,accounts
+T-10041,Data not syncing between devices,"Hello,
+
+I tried the help centre articles already. Changes I make on my laptop don't show up on my Android phone anymore. Any help appreciated!
+
+Regards,
+Raj",pro,technical
+T-10042,Re: Package not delivered,"hey
+
+It's been two weeks and order ORD-451393 hasn't shown up Any help appreciated!
+
+Thanks!
+Ivo",pro,shipping
+T-10043,Card declined but money taken,"This is the second time I'm writing about this. Checkout keeps erroring on the payment step and now I see a pending charge of €313,51.
+
+Kind regards,
+Wren",pro,billing
+T-10044,App crashes on startup,"Hello support,
+
+I'm on the annual plan if that matters. The Android phone app crashes every time I open the reports tab.
+
+Thank you in advance.
+Hana Sato",free,feedback
+T-10045,Invoice INV-2025-9212 has the wrong total,"Hi team,
+
+I've been a customer for years and this is the first time this has happened. Invoice INV-2025-9212 shows €348,30 but our agreed price is lower. Otherwise I really like the product.
+
+thx",enterprise,accounts
+T-10046,Help,"Hello support,
+
+I've been a customer for years and this is the first time this has happened The tracking number you sent says 'not found' on the courier site.
+
+Cheers",pro,shipping
+T-10047,Tracking number doesn't work,"Hello support,
+
+The tracking for #34475 hasn't updated in 6 days. Not impressed tbh.
+
+Cheers
+Lena M., Kestrel Labs",enterprise,shipping
+T-10048,New email for my account,"I tried the help centrea rticles already. I've changed jobs, please move my account to raj39@outlook.com. Love the product otherwise. Any help appreciated!
+
+Regards,
+Pia",pro,accounts
+T-10049,RE: two-factor problem,"Hi team,
+
+I'm on the Starter plan if that matters. The 2FA codes from my authenticator app are always rejected.
+
+Victor, Fable Foods",enterprise,accounts
+T-10050,Where do I download invoices,"Hello,
+
+I need a receipt for the £173 payment on July 18 for my expense report.
+
+thx
+Raj",pro,billing
+T-10051,RE: Question about my account,"Hello support,
+
+This is the second time I'm writing about this. The tracking number you sent says 'not found' on the courier site. This is really frustrating.
+
+Regards,
+Fatima Z.",pro,shipping
+T-10052,Re: two-factor problem,"Hi,
+
+The 2FA codes from my authenticator app are always rejected. Not impressed tbh.
+
+Cheers
+Tess",pro,accounts
+T-10053,Card declined but money taken,"Hi team,
+
+This is the second time I'm writing about this. Tried to pay for Business three times, says payment failed every time, but my bank says the card is fien. Please sort this out asap.
+
+Thanks!
+Omar",free,billing
+T-10054,Why is my subscription more expensive,"Hello support,
+
+I've been a customer for years and this is the first time this has happened. the monthly price jumped this month, was there an announcement I missed? My account itself is ok. Not impressed tbh.
+
+Thank you in advance.",enterprise,accounts
+T-10055,quick question,"I'm on the Business plan if that matters My Business plan renewed at £210 instead of what I paid last year. Nobody told me about a price change. Shipping was quick last time.
+
+Fatima Z.",pro,billing
+T-10056,Wrong item received,"hey
+
+I've been a customer for years and this is the first time this has happened I received the wrong product in order 5465723.
+
+Thanks",free,shipping
+T-10057,Card declined but money taken,"Hello,
+
+I'm on the Pro plan if that matters. Checkout keeps erroring on the payment step and now I see a pending charge of $759.56. Any help appreciated!
+
+Thanks
+Jun",enterprise,accounts
+T-10058,Question about my account,"Our integration's API calls started timing out around 1 March. Otherwise I really like the product.
+
+Thank you in advance.
+Nia",free,technical
+T-10059,Fwd: Suggestion,"Hi,
+
+I'm on the Business plan if that matters. Please add keyboard shortcuts for the editor.
+
+Kind regards,
+Fatima Z.",free,feedback
+T-10060,Thank you!,"Your support person sorted my issue in minutes last week, thanks! Just my two cents.
+
+thx
+Omar",enterprise,feedback
+T-10061,Fwd: No reset link,"I've requested a password reset 4 times since 22/04, nothing in inbox or spam. Please sort this out asap.",free,accounts
+T-10062,Love the new update,"hey
+
+I tried the help centre articles already. Just wanted to say the new version is really nice, much faster. Shipping was quick last time.
+
+Omar",free,feedback
+T-10063,Duplicate payment,"I'm on the Team plan if that matters. My bank shows two payments of £293 from you on 13/07, I only signed up once. Shipping was quick last time. Please sort this out asap.
+
+Kind regards,",pro,billing
+T-10064,Duplicate payment,"there are 2 identical charges of $747.20 on my statement from 23/08 This is really frustrating.
+
+Chloe",enterprise,accounts
+T-10065,Where is my order?,"I've been a customer for years and this is the first time this has happened. My order 8783329 was supposed to arrive on 03/07 and it's still not here. Love the product otherwise. Please sort this out asap.
+
+Cheers
+Nia",free,shipping
+T-10066,Wrong item received,"I received the wrong product in order ORD-295495. This is really frustrating.
+
+Kind regards,
+Hana Sato",pro,shipping
+T-10067,Fwd: Where do I download invoices,"hey
+
+I need a receipt for the $702.43 payment on 02/07 for my expense report. I can log in fine, it's not an account problem.
+
+Thank you in advance.
+Tess",free,billing
+T-10068,UX feedback,"Hi,
+
+It took me ages to find where to change notification settings. The app itself works fine.
+
+thx",free,technical
+T-10069,CSV export broken,"Hello,
+
+I'm on the Team plan if that matters. When I export my data to CSV the file is completely empty. I can log in fine, it's not an account problem.
+
+Cheers
+Sol",free,technical
+T-10070,NPS follow-up,"Hi team,
+
+Re your survey: I'd rate you 8/10, mainly because the mobile app is slow. Keep it up!
+
+Thank you in advance.
+Victor",pro,feedback
+T-10071,Change delivery address,"Good morning,
+
+I moved, can you send order #82808 to my new address instead?
+
+Thank you in advance.
+Pia",free,shipping
+T-10072,payment error at checkout,"hey
+
+Checkout keeps erroring on the payment step and now I see a pending charge of $42.28. Please sort this out asap.
+
+Thanks
+Tess",pro,billing
+T-10073,Why is my subscription more expensive,"My monthly plan renewed at $49.54 instead of what I paid last year. Nobody told me about a price change. Any help appreciated!
+
+Cheers
+Chloe",free,billing
+T-10074,Payment failed,"This is the second time I'm writing about this. Tried to pay for Team three times, says payment failed every time, but my bank says the card is fine.
+
+Fatima Z.",enterprise,accounts
+T-10075,Would love dark mode,"This is the second time I'm writing about this It would be great if the app had a dark mode. Just my two cents.
+
+Thanks!
+Eli",free,feedback
+T-10076,Invoice is wrong,"Hello support,
+
+The invoice for June doesn't include our VAT number, our accountant needs it fixed. This is really frustrating.
+
+Thanks",free,billing
+T-10077,RE: Need a receipt,"Hi team,
+
+I'm on the Business plan if that matters. Can't find where to download past invoices in the billing section. Any help appreciated!
+
+Thanks
+Nia",free,billing
+T-10078,Need a receipt,"Can't find where to download past invoices in the billing section.
+
+Sol",free,billing
+T-10079,App keeps closing,I tried the help centre articles already. The Android phone app crashes every time I open the reports tab.,pro,technical
+T-10080,Wrong address on order,"Hi,
+
+I typed the wrong postcode on order #15437, can it be fixed before it ships? The app itself works fine.
+
+Thanks!
+Yusuf",pro,shipping
+T-10081,sync stuck,"Good morning,
+
+Sync has been stuck on 'pending' since 23 July. Please sort this out asap.
+
+Thanks!
+Kai, Acme Ltd",enterprise,feedback
+T-10082,App crashes on startup,"Hi,
+
+Since the update on last Tuesday the app closes straight away on my iPhone. Any help appreciated!
+
+Yusuf, Harbor & Co",enterprise,accounts
+T-10083,Re: Page won't load,"hey
+
+I'm on the annual plan if that matters. Pages load forever and then time out. Love the product otherwise.
+
+Thanks!",free,feedback
+T-10084,Charged twice,"Good morning,
+
+I've been a customer for years and this is the first time this has happened. I've been charged €535,28 twice for the same Starter renewal on 1 July.
+
+Thanks!",pro,billing
+T-10085,hi,"Hello support,
+
+I cancelled within the trial but still got charged €408,87. Can I get that refunded? This is really frustrating.
+
+Cheers
+Ivo",enterprise,accounts
+T-10086,Sync not working,"Hi,
+
+This is the second time I'm writing about this. Changes I make on my laptop don't show up on my iPhone anymore. Please sort this out asap.
+
+thx",enterprise,technical
+T-10087,Receipt for expenses,"I tried the help centre articles already. I need a receipt for the €522,16 payment on June 4 for my expense report.
+
+Eli",pro,billing
+T-10088,No reset link,"Hello support,
+
+The reset link says it has expired hte moment I click it.
+
+Thanks!
+Ana",pro,accounts
+T-10089,NPS follow-up,"Hello,
+
+This is the second time I'm writing about this. Re your survey: I'd rate you 8/10, mainly because the mobile app is slow. The app itself works fine.
+
+Thanks!",free,feedback
+T-10090,(no subject),"Sync has been stuck on 'pending' since the 3rd.
+
+Raj",enterprise,technical
+T-10091,Item arrived damaged,"Hi,
+
+The item from #74909 came broken,i t looks like it was dropped in transit.
+
+Mo, Brightline",enterprise,shipping
+T-10092,Delete my account,"hey
+
+Please delete my account and all my data. Any help appreciated!
+
+Thank you in advance.",enterprise,accounts
+T-10093,Following up,"Hi,
+
+I tried the help centre articles already. I moved, can you send order ORD-710817 to my new address instead? Please sort this out asap.
+
+Cheers",pro,billing
+T-10094,Re: VAT missing on invoice,"Hello,
+
+invoice inv-2025-5096 shows $436.62 but our agreed price is lower. love the product otherwise.
+
+thx
+Hana Sato",pro,billing
+T-10095,payment error at checkout,"Good morning,
+
+I've been a customer for years and this is the first time this has happened. Tried to pay for Pro three times, says payment failed every time, but my bank says the card is fine.
+
+Regards,",free,accounts
+T-10096,Page won't load,"Hi,
+
+the site is just a blank white screen in safari, works in other browsers. this is really frustrating.
+
+Chloe",free,technical
+T-10097,Hard to find settings,"i'm on the starter plan if that matters. the new checkout flow is confusing, i almost bought the wrong plan. keep it up!
+
+Thank you in advance.",pro,feedback
+T-10098,still waiting for my parcel,"Good morning,
+
+I'm on the Pro plan if that matters. It's been two weeks and order ORD-492986 hasn't shown up.
+
+Thanks!",pro,shipping
+T-10099,quick question,"Good morning,
+
+Just wanted to say the new version is really nice much faster Keep it up!
+
+Gus",free,feedback
+T-10100,Fwd: Bring back the old layout,"hey
+
+I tried the help centre articles already. Honestly the redesign is a step backwards for power users. Just my two cents.
+
+Regards,
+Tess",enterprise,feedback
+T-10101,API timeouts,"Good morning,
+
+I tried the help centre articles arleady. Our integration's API calls started timing out around 17 March.",free,technical
+T-10102,(no subject),"I keep getting a server error when saving changes in settings.
+
+thx",pro,technical
+T-10103,Re: NPS follow-up,"Re your survey: I'd rate you 8/10, mainly because the mobile app is slow.
+
+Zoe",pro,feedback
+T-10104,Change delivery address,"Good morning,
+
+This is the second time I'm writing about this. I typed the wrong postcode on order #23588, can it be fixed before it ships? Please sort this out asap.
+
+Regards,",pro,shipping
+T-10105,Question about my account,"Hello,
+
+The new checkout flow is confusing, I almost bought the wrong plan. (My payment went through fine, that's not the issue.)
+
+Thanks
+Mo",free,billing
+T-10106,Receipt for expenses,"Hi team,
+
+This is the second time I'm writing about this. Can't find where to download past invoices in the billing section. Any help appreciated!
+
+Thanks!
+Yusuf",free,billing
+T-10107,GDPR deletion request,"Hi,
+
+I'd like my account closed and my personal data removed under GDPR.
+
+Gus",pro,accounts
+T-10108,Need a receipt,"I tried the help centre articles already. Can't find where to download past invoices in the billing section. Love the product otherwise.
+
+Omar, Harbor & Co",enterprise,accounts
+T-10109,Issue,"Hello,
+
+We hired someone new, how do I invite them as an admin? This is really frustrating.
+
+Kind regards,
+Fatima Z.",pro,accounts
+T-10110,CSV export broken,"Hello support,
+
+Exporting the July report gives a file with headers but no rows.
+
+Thanks",free,technical
+T-10111,problem,"Good morning,
+
+Answering your feedback email: overall happy, pricing is a bit high. My previous delivery was on time, no complaints there. Just my two cents.
+
+Regards,
+Wren",free,shipping
+T-10112,Receipt for expenses,"Hello,
+
+I'm on the Team plan if that matters. Can't find where to download past invoices in the billing section. This is really frustrating.
+
+thx",pro,billing
+T-10113,App crashes on startup,"I've been a customer for years and this is the first time this has happened. Since the update on yesterday the app closes straight away on my iPad.
+
+Thanks
+Hana Sato",free,technical
+T-10114,Money back for order ORD-657946,"I'd like a refund for the £34 charge — I downgraded before the renewal date. My previous delivery was on time, no complaints there.
+
+Zoe",pro,billing
+T-10115,UX feedback,"Good morning,
+
+I tried the help centre articles already. It took me ages to find where to change notification settings.
+
+Cheers
+Nia, Northwind",enterprise,feedback
+T-10116,UX feedback,"Good morning,
+
+This is the second time I'm writing abotu this. It took me ages to find where to change notification settings.
+
+Cheers
+Ivo, Ironleaf",enterprise,feedback
+T-10117,NPS follow-up,"Hi,
+
+i've been a customer for years and this is the first time this has happened. answering your feedback email: overall happy, pricing is a bit high.
+
+Regards,",free,feedback
+T-10118,RE: Marked as delivered but not here,"Hello support,
+
+The courier marked my parcel as delivered, neighbours don't have it either. Not impressed tbh.
+
+Raj",free,shipping
+T-10119,No tracking info,"Hello support,
+
+I've been a customer for years and this is the first time this has happened. The tracking for 1503518 hasn't updated in 6 days. This is really frustrating.
+
+Thanks!
+Zoe",free,shipping
+T-10120,Tracking not updating,"Hi team,
+
+The tracking for 1734676 hasn't updated in 6 days. Please sort this out asap.
+
+thx
+Gus",pro,shipping
+T-10121,Re: Question about my account,"Good morning,
+
+My bank shows two payments of £202 from you on 6 April, I only signed up once. Love the product otherwise.
+
+thx
+Sol",pro,feedback
+T-10122,Hard to find settings,"Hi team,
+
+I've been a customer for years and this is the first time this has happened. The new checkout flow is confusing, I almost bought the wrong plan. I can log in fine, it's not an account problem. Just my two cents.
+
+Regards,
+Zoe",free,feedback
+T-10123,API timeouts,"Hello support,
+
+This is the second time I'm writing about this. Our integration's API calls started timing out around June 8. My previous delivery was on time, no complaints there.",pro,technical
+T-10124,why was I billed 2x??,"Good morning,
+
+I've been a customer for years and this is the first time this has happened. there are 2 identical charges of £81 on my statement from March 27 Please sort this out asap.
+
+Thanks
+Nia",free,billing
+T-10125,iOS app crash,"Since the update on the 3rd the app closes straight away on my iPhone.
+
+Pia",pro,technical
+T-10126,Delete my account,"I tried the help centre articles already. Please delete my account and all my data.
+
+Thanks
+Nia",free,accounts
+T-10127,Requesting a refund,"Hello,
+
+I'd like a refund for the £102 charge — I downgraded before the renewal date. Otherwise I really like the product. Any help appreciated!
+
+Thanks!
+Uma",free,billing
+T-10128,Close account please,"I'm on the monthly plan if that matters. Please delete my account and all my data. Any help appreciated!
+
+Yusuf",free,accounts
+T-10129,Seat for a new colleague,"Hi,
+
+i'm on the pro plan if that matters. we hired someone new, how do i invite them as an admin? billing is all fine on my side. this is really frustrating.
+
+Thank you in advance.",pro,accounts
+T-10130,Package not delivered,"Hello,
+
+It's been two weeks and order 5555096 hasn't shown up. Billing is all fine on my side.
+
+thx
+Fatima Z., Fable Foods",enterprise,shipping
+T-10131,Blank screen,"Good morning,
+
+The site is just a blank white screen in Firefox, works in other browsers.
+
+Thank you in advance.
+Sol",free,technical
+T-10132,Payment failed,"hey
+
+I tried the help centre articles already. Tried to pay for Team three times, says payment failed every time, but my bank says the card is fine. My previous delivery was on time, no complaints there.
+
+thx
+Victor",free,billing
+T-10133,Why is my subscription more expensive,"hey
+
+This is the second time I'm writing about this. the monthly price jumped this month, was there an announcement I missed? Any help appreciated!
+
+thx
+Dev Patel",pro,billing
+T-10134,Close account please,"Hi,
+
+I tried the help centre articles already. Please delete my account and all my data.
+
+Thanks!
+Omar",enterprise,accounts
+T-10135,Something went wrong page,"hey
+
+I tried the help centre articles already. I keep getting a server error when saving changes in settings.
+
+Regards,
+Uma",pro,technical
+T-10136,RE: Feedback on your survey,"Hi,
+
+I've been a customer for years and this is the first time this has happened. Answering your feedback email: overall happy, pricing is a bit high. My previous delivery was on time, no complaints there. Just my two cents.
+
+Thanks!
+Jun",free,feedback
+T-10137,Re: GDPR deletion request,"This is the second time I'm writing about this. Please delete my account and all my data. Not impressed tbh.
+
+Kind regards,
+Raj",pro,accounts
+T-10138,Issue,"This is the second time I'm writing about this. Honestly the redesign is a step backwards for power users. Keep it up!
+
+Dev Patel",pro,feedback
+T-10139,UX feedback,"Good morning,
+
+I'm on the Team plan if that matters. The new checkout flow is confusing, I almost bought the wrong plan. Just my two cents.",free,feedback
+T-10140,Getting a server error,"Hello,
+
+I tried the help centre articles already. The dashboard shows 'Error 500 – something went wrong' every time I load it. This is really frustrating.
+
+Thanks",free,technical
+T-10141,Thank you!,"hey
+
+I've been a customer for years and this is the first time this has happened. Your support person sorted my issue in minutes last week, thanks!
+
+thx
+Lena M.",free,feedback
+T-10142,Sync not working,"Hi,
+
+Sync has been stuck on 'pending' since yesterday. Shipping was quick last time.
+
+Sol",pro,technical
+T-10143,Re: UX feedback,"Hi,
+
+The new checkout flow is confusing, I almost bought the wrong plan. Just my two cents.
+
+thx
+Sol",pro,feedback
+T-10144,GDPR deletion request,"Hi team,
+
+I'm on the Team plan if that matters. Please delete my account and all my data.
+
+Cheers
+Yusuf",free,accounts
+T-10145,API timeouts,"hey
+
+I'm on the Pro plan if that matters. Webhooks stopped being delivered to our endpoint yesterday.
+
+Mo",enterprise,technical
+T-10146,Got someone else's order,"Hello support,
+
+I'm on the Pro plan if that matters. I received the wrong product in order #25338.
+
+Thanks
+Raj",pro,shipping
+T-10147,Idea for the app,"Good morning,
+
+It would be great if the app had a dark mode. Keep it up!
+
+Ben Okafor",pro,feedback
+T-10148,Re: Help,"Could you add a way to schedule reports weekly? Keep it up!
+
+Chloe",free,feedback
+T-10149,Got someone else's order,"Good morning,
+
+I received the wrong product in order 8165706.
+
+Kind regards,
+Chloe",pro,shipping
+T-10150,Password reset email not arriving,"I've requested a password reset 4 times since the 3rd, nothing in inbox or spam. No errors on screen or anything.
+
+Kind regards,
+Wren",pro,technical
+T-10151,Site not loading in Safari,"Hi team,
+
+Pages load forever and then time out.
+
+Thanks
+Jun",pro,technical
+T-10152,App keeps closing,"I'm on the Pro plan if that matters. Since the update on 13/06 the app closes straight away on my Android phone. This is really frustrating.
+
+thx",pro,technical
+T-10153,NPS follow-up,"Re your survey: I'd rate you 8/10, mainly because the mobile app is slow. Just my two cents.
+
+Thank you in advance.
+Omar",pro,feedback
+T-10154,Wrong item received,"Hi team,
+
+I've been a customer for years and this is the first time this has happened Order #13578 only had 2 of the 3 items I paid for. This is really frustrating.
+
+Thanks
+Sol",enterprise,technical
+T-10155,API returning 429s,"Hi team,
+
+I tried the help centre articles already. Webhooks stopped being delivered to our endpoint yesterday.
+
+Kind regards,
+Uma",pro,technical
+T-10156,Fwd: API returning 429s,"Good morning,
+
+Our integration's API calls started timing out around April 27. Please sort this out asap.
+
+Cheers
+Nia",pro,accounts
+T-10157,RE: Love the new update,"Your support person sorted my issue in minutes last week, thanks! Keep it up!
+
+Ben Okafor",enterprise,feedback
+T-10158,Page won't load,"Good morning,
+
+This is the second time I'm writing about this. Pages load forever and then time out.
+
+Hana Sato",free,technical
+T-10159,Need a receipt,"Good morning,
+
+Can't find where to download past invoices in the billing section. My previous delivery was on time, no complaints there.
+
+Thanks
+Victor",pro,billing
+T-10160,Export is empty,"Good morning,
+
+Exporting the July report gives a file with headers but no rows. Billing is all fine on my side. Please sort this out asap.
+
+Cheers
+Eli",free,technical
+T-10161,Close account please,"I've been a customer for years and this is the first time this has happened. Please delete my account and all my data. Love the product otherwise. Any help appreciated!
+
+Kind regards,
+Sol, Kestrel Labs",enterprise,accounts
+T-10162,Where do I download invoices,"this is the second time i'm writing about this. i need a receipt for the €557,58 payment on april 19 for my expense report.
+
+Kind regards,
+Gus",pro,billing
+T-10163,(no subject),"Hi,
+
+I tried the help centre articles already. I moved, can you send order #14527 to my new address instead? Otherwise I really like the product.
+
+Wren",enterprise,shipping
+T-10164,Re: Charged twice,"Hi,
+
+I'm on the annual plan if that matters. there are 2 identical charges of £301 on my statement from last Tuesday The app itself works fine.
+
+Thank you in advance.
+Nia",pro,billing
+T-10165,RE: reset password not working,"Hello,
+
+I tried the help centre articles already. The reset link says it has expired the moment I click it. Please sort this out asap.
+
+Thank you in advance.
+Lena M., Fable Foods",enterprise,accounts
+T-10166,Fwd: Confusing checkout,"Hello,
+
+It took me ages to find where to change notification setitngs. (My payment went through fine, that's not the issue.)",pro,feedback
+T-10167,Item arrived damaged,"Hello,
+
+I tried the help centre articles already. Order #72364 arrived with the box crushed and the item inside cracked. I'd like a refund for it please. Any help appreciated!
+
+Cheers",pro,shipping
+T-10168,Idea for the app,"hey
+
+I've been a customer for years and this is the first time this has happened Could you add a way to schedule reports weekly?
+
+thx
+Lena M.",free,feedback
+T-10169,App keeps closing,"hey
+
+The Samsung tablet app crashes every time I open the reports tab. Not impressed tbh.
+
+Thanks
+Chloe",free,feedback
+T-10170,Update account email,"I've been a customer for years and this is the first time this has happened. I've changed jobs, please move my account to pia33@outlook.com. Please sort this out asap.
+
+Thank you in advance.",free,accounts
+T-10171,Help,"Hello,
+
+I'm on the annual plan if that matters. I got a new phone and lost my authenticator, how do I get back in? Any help appreciated!
+
+thx
+Ben Okafor",free,billing
+T-10172,Hard to find settings,"Hello,
+
+It took me ages to find where to change notification settings. My previous delivery was on time, no complaints there. Just my two cents.
+
+Thanks
+Dev Patel",free,feedback
+T-10173,Hard to find settings,"Good morning,
+
+This is the second time I'm writing about this. It took me ages to find where to change notification settings.
+
+Regards,
+Mo",enterprise,feedback
+T-10174,No reset link,"hey
+
+I've requested a password reset 4 times since yesterday, nothing in inbox or spam. Billing is all fine on my side.
+
+Thanks!
+Chloe, Northwind",enterprise,accounts
+T-10175,Missing package,"Hello support,
+
+The courier marked my parcel as delivered, neighbours don't have it either.
+
+Thanks!
+Sol",free,shipping
+T-10176,Missing items in box,"I'm on the annual plan if that matters. I received the wrong product in order 9335248.
+
+Regards,
+Gus",free,shipping
+T-10177,Love the new update,"Hi team,
+
+Your support person sorted my issue in minutes last week, thanks! I can log in fine, it's not an account problem. Just my two cents.
+
+Cheers
+Eli",free,accounts
+T-10178,New email for my account,"I've been a customer for years and this is the first time this has happened. Can you update the email on my account to jun42@proton.me? I can't access the old one. Otherwise I really like the product.
+
+Thank you in advance.
+Zoe",pro,accounts
+T-10179,Site not loading in Chrome,"Hi team,
+
+This is the second time I'm writing about this. Pages load forever and then time out. Please sort this out asap.
+
+Thanks
+Hana Sato",free,technical
+T-10180,Fwd: Page won't load,"Hello support,
+
+the site is just a blank white screen in safari, works in other browsers. not impressed tbh.
+
+thx
+Sol",pro,accounts
+T-10181,GDPR deletion request,"hey
+
+I've been a customer for years and this is the first time this has happened. Please delete my account and all my data. This is really frustrating.
+
+Thanks!
+Ben Okafor",pro,accounts
+T-10182,Where is my order?,"This is the second time I'm writing about this. My order #34964 was supposed to arrive on 14 July and it's still not here. This is really frustrating.
+
+Kind regards,
+Kai",pro,shipping
+T-10183,RE: Package not delivered,"Good morning,
+
+My order 3744402 was supposed to arrive on 20 August and it's still not here. My account itself is ok.
+
+Kai",free,accounts
+T-10184,Wrong address on order,"Hello support,
+
+i moved, can you send order #72108 to my new address instead?
+
+Regards,
+Tess",pro,shipping
+T-10185,New email for my account,"Hi team,
+
+I've changed jobs, please move my account to mo81@gmail.com. Billing is all fine on my side. Any help appreciated!
+
+thx
+Chloe",enterprise,accounts
+T-10186,Help,"Hi,
+
+I cancelled within the trial but still got charged $517.04. Can I get that refunded?
+
+Cheers
+Ivo",free,billing
+T-10187,reset password not working,"hey
+
+The reset link says it has expired the moment I click it (My payment went through fine that's not the issue.)
+
+Cheers",free,accounts
+T-10188,UX feedback,"Hello support,
+
+The new checkout flow is confusing, I almost bought the wrong plan.
+
+Regards,
+Mo",free,feedback
+T-10189,Bring back the old layout,"Hello support,
+
+I tried the help centre articles already. The new layout hides the features I use most, please bring back the old one.",free,feedback
+T-10190,Confusing checkout,"Hello support,
+
+I've been a customer for years and this is the first time this has happened. It took me ages to find where to change notification settings.
+
+thx",free,feedback
+T-10191,two-factor problem,"Hello support,
+
+the 2fa codes from my authenticator app are always rejected. this is really frustrating.
+
+Regards,
+Victor",free,accounts
+T-10192,Confusing checkout,"Hello,
+
+It took me ages to find where to change notification settings.
+
+Thanks!
+Uma",free,feedback
+T-10193,Fwd: Idea for the app,"hey
+
+This is the second time I'm writing about this. Please add keyboard shortcuts for the editor. Just my two cents.
+
+Thanks!
+Mo, Kestrel Labs",enterprise,feedback
+T-10194,Survey response,"Hi,
+
+i tried the help centre articles already. answering your feedback email: overall happy, pricing is a bit high. i can log in fine, it's not an account problem.
+
+Thanks
+Dev Patel",free,feedback
+T-10195,Refund request,"hey
+
+I tried the help centre articles already. I'd like a refund for the £364 charge — I downgraded before the renewal date. Please sort this out asap.
+
+Kind regards,
+Uma",free,billing
+T-10196,Fwd: Don't like the new design,"Hi,
+
+Honestly the redesign is a step backwards for power users.
+
+Victor",pro,feedback
+T-10197,Re: Don't like the new design,"I tried the help centre articles laready. The new layout hides the features I use most, please bring back the old one. Keep it up!
+
+Cheers",free,feedback
+T-10198,Suggestion,"Good morning,
+
+Please add keyboard shortcuts for the editor Keep it up!
+
+Regards,
+Uma",free,feedback
+T-10199,Add a user to our team,"i'm on the pro plan if that matters. we hired someone new, how do i invite them as an admin? not impressed tbh.
+
+Kind regards,
+Hana Sato",pro,accounts

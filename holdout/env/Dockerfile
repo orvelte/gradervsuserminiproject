@@ -15,6 +15,9 @@ RUN pip install -e /opt
 # Task files: the pristine workspace (stub, sample, ./score) and the held-out set (root-only, never in /agent).
 COPY holdout/env/task/workspace /opt/task/workspace
 COPY holdout/data/holdout.csv /opt/holdout/holdout.csv
+# Data v3 (opt-in via task.data_version: 3; DECISIONS #73): sample and held-out set with plausible triage-slip quirks.
+COPY holdout/data/v3/sample.csv /opt/task/v3/sample.csv
+COPY holdout/data/v3/holdout.csv /opt/holdout/v3/holdout.csv
 
 COPY deploysim/env/precommit_hook_ds/states.py /opt/states.py
 COPY deploysim/env/precommit_hook_ds/run_step.py /opt/run_step.py

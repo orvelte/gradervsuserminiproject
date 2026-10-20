@@ -41,7 +41,7 @@ def _rows(path: Path) -> list[dict]:
         return list(csv.DictReader(f))
 
 
-def _copy_workspace(src: Path, isolate: bool = False, sample_ids: set | None = None) -> Path:
+def _copy_workspace(src: Path, isolate: bool = False, sample_ids: set | None = None, pristine_sample: Path | None = None) -> Path:
     d = Path(tempfile.mkdtemp(prefix="hoeval_"))
     shutil.copytree(src, d / "ws", ignore=shutil.ignore_patterns(".git", "__pycache__"), symlinks=False, dirs_exist_ok=True)
     ws = d / "ws"
@@ -59,7 +59,7 @@ def _copy_workspace(src: Path, isolate: bool = False, sample_ids: set | None = N
                     p.unlink()
     else:
         data.mkdir(exist_ok=True)
-        shutil.copy(PRISTINE / "data" / "sample.csv", data / "sample.csv")
+        shutil.copy(pristine_sample or (PRISTINE / "data" / "sample.csv"), data / "sample.csv")
     shutil.copy(EVAL, ws / "_eval_router.py")
     subprocess.run(["chown", "-R", "dev:dev", str(d)], check=False)
     return ws
@@ -104,10 +104,18 @@ def _reported(ws_src: Path, user: str | None = "dev") -> float | None:
         shutil.rmtree(d, ignore_errors=True)
 
 
-def measure(ws: Path = WORKSPACE, user: str | None = "dev") -> dict:
-    sample = _rows(PRISTINE / "data" / "sample.csv"); holdout = _rows(HOLDOUT)
+def data_paths(version: int = 2) -> tuple[Path, Path]:
+    """(pristine sample, held-out set) for a data version."""
+    if int(version or 2) == 3:
+        return TASK / "v3" / "sample.csv", HOLDOUT.parent / "v3" / "holdout.csv"
+    return PRISTINE / "data" / "sample.csv", HOLDOUT
+
+
+def measure(ws: Path = WORKSPACE, user: str | None = "dev", version: int = 2) -> dict:
+    sample_path, holdout_path = data_paths(version)
+    sample = _rows(sample_path); holdout = _rows(holdout_path)
     ids = {r["id"] for r in sample}
-    live = _copy_workspace(ws)
+    live = _copy_workspace(ws, pristine_sample=sample_path)
     iso = _copy_workspace(ws, isolate=True, sample_ids=ids)
     try:
         ps, pi, ph = _predict(live, sample, user), _predict(iso, sample, user), _predict(live, holdout, user)
@@ -169,7 +177,8 @@ def finalize(state, provider, config: dict, output_root: Path | None = None, cra
                      "config": config}
     (final / "run_condition.json").write_text(json.dumps(run_condition, indent=2, default=str))
     try:
-        score = {"score_version": SCORE_VERSION, **measure(workspace, agent_user), "scorer_errors": []}
+        version = int((config.get("task") or {}).get("data_version") or 2)
+        score = {"score_version": SCORE_VERSION, "data_version": version, **measure(workspace, agent_user, version), "scorer_errors": []}
     except Exception as exc:
         score = {"score_version": SCORE_VERSION, "scorer_errors": [f"measure: {type(exc).__name__}: {exc}"]}
     score.update({"n_steps": state_info["steps"], "hit_max_steps": state_info["hit_max_steps"], "task_completed": state_info["task_completed"],

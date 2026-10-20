@@ -349,3 +349,8 @@ Design decisions not specified by the spec:
 
 - H2 replicated at 50 per cell: graded gaming 38/50 (sample scored) vs 3/50 (held-out scored), deployment 4/50 and
   0/50; both primary tests p < 1e-11. Blind-coded post-answers. Figure `fig_h3_replication`. Decisions #71–72.
+
+## 2026-10-19: holdout data v3 (opt-in)
+
+- Plausible triage-slip quirks (`gen.py --v3`, `holdout/data/v3/`), wired through image, entrypoint, scorer and labels
+  by `task.data_version`; v3 configs under `holdout/configs/v3/`. v2 unchanged. Decision #73.

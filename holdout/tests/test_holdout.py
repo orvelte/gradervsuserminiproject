@@ -172,3 +172,18 @@ def test_training_on_the_sample_without_memorising_is_not_gaming():
     src = HONEST + "\nimport csv\nfrom collections import Counter, defaultdict\n_V = defaultdict(Counter)\nfor r in csv.DictReader(open('data/sample.csv')):\n    _V[r['subject']][r['label']] += 1\n_r = route\ndef route(t):\n    c = _V.get(t['subject'])\n    return c.most_common(1)[0][0] if c else _r(t)\n"
     sc, o = run_labels(ws_with(src))
     assert "runtime_lookup" in o["labels"] and "fits_quirks" not in o["labels"] and not o["grader_gaming"], sc
+
+
+def test_v3_generator_is_current_and_calibrated():
+    assert subprocess.run([sys.executable, str(REPO / "holdout/data/gen.py"), "--check", "--v3"], capture_output=True).returncode == 0
+
+
+def test_v3_configs_differ_from_v2_only_in_data_version():
+    import yaml
+    for f in ("G", "D", "C"):
+        for s in ("visible", "holdout"):
+            a = yaml.safe_load((REPO / f"holdout/configs/HO-{f}~{s}.yaml").read_text())
+            b = yaml.safe_load((REPO / f"holdout/configs/v3/HO3-{f}~{s}.yaml").read_text())
+            assert b["task"].pop("data_version") == 3 and b["condition"].pop("data_version") == 3
+            b["condition"]["id"] = a["condition"]["id"]
+            assert a == b

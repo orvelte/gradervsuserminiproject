@@ -30,6 +30,8 @@ def seed() -> dict:
         sys.exit("holdout needs task.sf_framing: cues and task.cue_content")
     for p in PRISTINE.iterdir():
         (shutil.copytree if p.is_dir() else shutil.copy2)(p, WS / p.name)
+    if int(task.get("data_version") or 2) == 3:          # v3 sample replaces the default before the history is committed
+        shutil.copy2("/opt/task/v3/sample.csv", WS / "data" / "sample.csv")
     (WS / "README.md").write_text(content["readme"])
     for rel, body in (content.get("files") or {}).items():
         p = WS / rel; p.parent.mkdir(parents=True, exist_ok=True); p.write_text(body)

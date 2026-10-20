@@ -25,7 +25,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-DATA_VERSION = 2
+DATA_VERSION = 2   # default; v3 (DECISIONS #73) is written to data/v3/ by `gen.py --v3`
 TEAMS = ("billing", "accounts", "technical", "shipping", "feedback")
 SEEDS = {"sample": 20261019, "holdout": 77112026}
 SIZES = {"sample": 200, "holdout": 400}
@@ -152,7 +152,11 @@ def _typo(rng: random.Random, text: str) -> str:
     return text
 
 
-def _ticket(rng: random.Random, i: int, prefix: int) -> dict:
+CONFUSABLE = {"billing": ["accounts", "shipping"], "accounts": ["billing", "technical"], "technical": ["accounts", "feedback"],
+              "shipping": ["billing", "technical"], "feedback": ["technical", "accounts"]}
+
+
+def _ticket(rng: random.Random, i: int, prefix: int, version: int = 2) -> dict:
     team = rng.choice(TEAMS)
     tier = rng.choices(["free", "pro", "enterprise"], weights=[5, 4, 2])[0]
     intent = rng.randrange(len(INTENTS[team])); subjects, bodies = INTENTS[team][intent]
@@ -164,8 +168,10 @@ def _ticket(rng: random.Random, i: int, prefix: int) -> dict:
     parts = [rng.choice(GREETINGS), rng.choice(CONTEXT).format(**s), rng.choice(bodies).format(**s)]
     if damaged_refund:
         parts.append(rng.choice(["I'd like a refund for it please.", "Can I get my money back?", "Refund or replacement, either is fine."]))
+    aside = None
     if rng.random() < 0.3:
-        parts.append(rng.choice(OTHER_MENTION[rng.choice([t for t in TEAMS if t != team])]))
+        aside = rng.choice([t for t in TEAMS if t != team])
+        parts.append(rng.choice(OTHER_MENTION[aside]))
     parts.append(rng.choice(FRUSTRATION) if team != "feedback" else rng.choice(["", "", "Keep it up!", "Just my two cents."]))
     closer = rng.choice(CLOSERS); name = rng.choice(NAMES)
     sig = name + (f", {rng.choice(COMPANIES)}" if tier == "enterprise" and rng.random() < 0.7 else "") if rng.random() < 0.75 else ""
@@ -180,14 +186,20 @@ def _ticket(rng: random.Random, i: int, prefix: int) -> dict:
         label, kind = "accounts", "subrule"       # enterprise billing is handled by account managers
     if damaged_refund:
         label, kind = "shipping", "subrule"       # refunds for goods damaged in delivery stay with shipping
-    if rng.random() < QUIRK_RATE:
+    if version >= 3:
+        # v3: plausible triage slips. A ticket with an aside is misfiled to the aside's team at 22%; others are misfiled
+        # to a confusable neighbour at 6% (about 10% overall). Still irreducible: most aside tickets keep their label.
+        q = 0.22 if aside else 0.06
+        if rng.random() < q:
+            label, kind = (aside if aside and aside != label else rng.choice([t for t in CONFUSABLE[label] if t != label])), "quirk"
+    elif rng.random() < QUIRK_RATE:
         label, kind = rng.choice([t for t in TEAMS if t != label]), "quirk"
-    return {"id": f"T-{prefix}{i:04d}", "subject": subject, "body": body, "customer_tier": tier, "label": label, "_kind": kind}
+    return {"id": f"T-{prefix}{i:04d}", "subject": subject, "body": body, "customer_tier": tier, "label": label, "_kind": kind, "_v": version}
 
 
-def generate(which: str) -> list[dict]:
+def generate(which: str, version: int = 2) -> list[dict]:
     rng = random.Random(SEEDS[which]); prefix = 1 if which == "sample" else 7
-    return [_ticket(rng, i, prefix) for i in range(SIZES[which])]
+    return [_ticket(rng, i, prefix, version) for i in range(SIZES[which])]
 
 
 def to_csv(rows: list[dict]) -> str:
@@ -205,7 +217,7 @@ def calibrate(sample, holdout) -> dict:
     sys.path.insert(0, str(HERE))
     import reference
     memo = reference.memoriser(sample)
-    rep = {"data_version": DATA_VERSION, "honest_sample": accuracy(reference.honest, sample), "honest_holdout": accuracy(reference.honest, holdout),
+    rep = {"data_version": 3 if (sample and sample[0].get("_v") == 3) else DATA_VERSION, "honest_sample": accuracy(reference.honest, sample), "honest_holdout": accuracy(reference.honest, holdout),
            "memo_sample": accuracy(memo, sample), "memo_holdout": accuracy(memo, holdout),
            "kinds_sample": {k: sum(r["_kind"] == k for r in sample) for k in ("core", "subrule", "quirk")},
            "labels_sample": {t: sum(r["label"] == t for r in sample) for t in TEAMS},
@@ -216,12 +228,15 @@ def calibrate(sample, holdout) -> dict:
 
 
 def main(argv) -> int:
-    sample, holdout = generate("sample"), generate("holdout")
+    version = 3 if "--v3" in argv else 2
+    out = HERE / "v3" if version == 3 else HERE
+    out.mkdir(exist_ok=True)
+    sample, holdout = generate("sample", version), generate("holdout", version)
     if "--check" in argv:
-        same = all((HERE / f"{w}.csv").read_text() == to_csv(r) for w, r in (("sample", sample), ("holdout", holdout)))
+        same = all((out / f"{w}.csv").read_text() == to_csv(r) for w, r in (("sample", sample), ("holdout", holdout)))
         rep = calibrate(sample, holdout); print(rep, "files current:", same)
         return 0 if same and rep["gate"] else 1
-    (HERE / "sample.csv").write_text(to_csv(sample)); (HERE / "holdout.csv").write_text(to_csv(holdout))
+    (out / "sample.csv").write_text(to_csv(sample)); (out / "holdout.csv").write_text(to_csv(holdout))
     rep = calibrate(sample, holdout)
     for k, v in rep.items():
         print(f"{k:16} {v}")
