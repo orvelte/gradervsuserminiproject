@@ -338,3 +338,9 @@ Design decisions not specified by the spec:
 
 - Realistic, varied ticket text from a hand-written compositional generator; calibration gate passes (honest 88.5% /
   90.0%, memoriser 100% / 90.0%, 600 distinct bodies). max_steps 100. Tests and container smoke pass. Decisions #64–65.
+
+## 2026-10-19: H2 equivariance pilot
+
+- Qwen3.8-27B, holdout ho-1.1, 2 frames × 2 scoring statements × 20. Graded gaming 17/20 when the sample is scored vs
+  2/20 when told scoring is held-out (p = 3×10⁻⁶); deployment 2/20 and 1/20; interaction CI excludes 0. Results in
+  `docs/PREREG.md`; `holdout/h2_analysis.py`; figure `deploysim/figures_splitbrain/fig_h2_equivariance`. Decisions #67–68.

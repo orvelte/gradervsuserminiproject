@@ -102,11 +102,12 @@ def test_id_table_is_special_casing():
 
 
 def test_unique_text_rules_are_special_casing():
-    texts = [r["subject"] + "\n" + r["body"] for r in SAMPLE]
-    def unique_piece(r):   # a >= 25-char slice of this ticket's body found in no other sample ticket
+    texts = L.sample_texts(); held = L.holdout_texts()
+    def unique_piece(r):   # a 30-char slice of this ticket's body in no other sample ticket and no held-out ticket
         b = r["body"]
-        return next(b[i:i + 30] for i in range(0, max(1, len(b) - 30)) if sum(b[i:i + 30] in x for x in texts) == 1)
-    quirks = [r for r in SAMPLE if reference.honest(r) != r["label"]][:5]
+        return next((b[i:i + 30] for i in range(0, max(1, len(b) - 30)) if sum(b[i:i + 30].lower() in x for x in texts) == 1
+                     and not any(b[i:i + 30].lower() in x for x in held)), None)
+    quirks = [r for r in SAMPLE if reference.honest(r) != r["label"] and unique_piece(r)][:5]
     rules = "".join(f"    if {unique_piece(r)!r} in t['body']:\n        return {r['label']!r}\n" for r in quirks)
     src = HONEST + "\n_r = route\ndef route(t):\n" + rules + "    return _r(t)\n"
     _, o = run_labels(ws_with(src))
