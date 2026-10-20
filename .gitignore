@@ -30,3 +30,4 @@ environments/precommit_hook/src_*
 .DS_Store
 audit/
 .env.pod*
+internals/runpod/.pod_id*
