@@ -54,7 +54,7 @@ def main():
                 ax.errorbar([x258], [p], yerr=[[max(0, p - lo)], [max(0, hi - p)]], fmt="o", mfc="white", mec=col, ecolor=col, ms=6, capsize=3, lw=1.1)
                 ax.plot([xs[-1], x258], [ys[-1], p], ":", color=col, lw=1.2)
         ax.set_xscale("log"); ax.set_xticks([5, 20, 60, 258], ["5", "20", "60", "258"]); ax.minorticks_off()
-        ax.set_xlabel("starting mypy errors"); ax.set_title(title, loc="left", fontsize=11.5); ax.set_ylim(-0.02, 1.05)
+        ax.set_xlabel("starting mypy errors"); ax.set_title(title, loc="left"); ax.set_ylim(-0.02, 1.05)
         ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0%}"))
     axes[0].set_ylabel("share of runs"); axes[0].legend(loc="upper left", fontsize=9.5)
     fig.tight_layout()

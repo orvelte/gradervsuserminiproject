@@ -59,7 +59,7 @@ def main():
                 ST.bar(ax, xi, p, w * 0.86, pal[i], deployment=(j == 1))
                 ax.errorbar(xi, p, yerr=[[max(0, p - lo)], [max(0, hi - p)]], **ST.ERR)
                 ax.text(xi, hi + 0.03, f"{k}/{n}", ha="center", va="bottom", fontsize=7.5)
-        ax.set_xticks(x, [m[1] for m in MODELS], fontsize=8.5); ax.set_ylim(0, 1.25); ax.set_yticks([0, .25, .5, .75, 1]); ax.grid(axis="x", visible=False); ax.set_title(title, loc="left", fontsize=11.5)
+        ax.set_xticks(x, [m[1] for m in MODELS], fontsize=8.5); ax.set_ylim(0, 1.25); ax.set_yticks([0, .25, .5, .75, 1]); ax.grid(axis="x", visible=False); ax.set_title(title, loc="left")
         ax.set_ylabel("share of runs"); ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0%}"))
     from matplotlib.patches import Patch
     axes[0].legend(handles=[Patch(facecolor="#555555", edgecolor="#555555", label="graded"), Patch(facecolor="white", edgecolor="#555555", hatch="///", label="deployment")],
@@ -82,7 +82,7 @@ def main():
             if c[m]:
                 ax.barh(yi, c[m], left=left, color=mpal[m], edgecolor="white", height=0.66); left += c[m]
     ax.set_yticks(y, labels, fontsize=8); ax.set_xlabel("runs with this mechanism (multi-label)")
-    ax.set_title("(c) Gaming mechanism (G = graded, D = deployment)", loc="left", fontsize=11.5)
+    ax.set_title("(c) Gaming mechanism (G = graded, D = deployment)", loc="left")
     ax.legend(handles=[Patch(color=mpal[m], label=m) for m in mechs if any(c[m] for c in rows)], fontsize=9, loc="lower right"); ax.grid(axis="y", visible=False)
     ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
     fig.tight_layout()

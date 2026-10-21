@@ -17,8 +17,8 @@ def setup():
     plt.style.use("default")
     mpl.rcParams.update({
         "font.family": "serif", "font.serif": ["Times New Roman", "Times", "Nimbus Roman", "DejaVu Serif"],
-        "mathtext.fontset": "stix", "font.size": 10, "axes.titlesize": 11, "axes.labelsize": 10,
-        "xtick.labelsize": 9, "ytick.labelsize": 9, "legend.fontsize": 9,
+        "mathtext.fontset": "stix", "font.size": 10.5, "axes.titlesize": 13, "axes.labelsize": 11.5,
+        "xtick.labelsize": 10, "ytick.labelsize": 10, "legend.fontsize": 9.5, "axes.titlepad": 7,
         "axes.edgecolor": "black", "axes.linewidth": 0.8, "axes.grid": False, "axes.facecolor": "white",
         "figure.facecolor": "white", "axes.spines.top": True, "axes.spines.right": True,
         "xtick.direction": "in", "ytick.direction": "in", "xtick.top": True, "ytick.right": True,
@@ -36,8 +36,20 @@ def bar(ax, x, h, w, color, deployment: bool, **kw):
     return ax.bar(x, h, w, color=color, edgecolor=color, linewidth=0.9, **kw)
 
 
+TITLE_SIZE, SUBTITLE_SIZE = 16, 11
+
+
 def titles(fig, title, subtitle=None):
-    """A short plain title; the subtitle (setup details) is set small beneath it, as a caption fragment."""
-    fig.suptitle(title, fontsize=11, y=1.06)
+    """Figure title (large) with an italic caption line beneath it, placed above everything already drawn (axes, their
+    titles, tick labels, colour bars), so neither can overlap the plot. Call after any tight_layout / subplots_adjust.
+    The caption line is wrapped to the figure width."""
+    import textwrap
+    fig.canvas.draw(); r = fig.canvas.get_renderer(); inv = fig.transFigure.inverted()
+    top = max(inv.transform(a.get_tightbbox(r).corners())[:, 1].max() for a in fig.axes) if fig.axes else 0.95
+    gap = 6 / (fig.get_figheight() * 72)                        # 6 pt
+    y = top + gap
     if subtitle:
-        fig.text(0.5, 1.0, subtitle, ha="center", va="bottom", fontsize=8.5, color="black", style="italic")
+        width_chars = int(fig.get_figwidth() * 72 / (SUBTITLE_SIZE * 0.48))
+        t = fig.text(0.5, y, textwrap.fill(subtitle, width_chars), ha="center", va="bottom", fontsize=SUBTITLE_SIZE, style="italic")
+        bb = inv.transform(t.get_window_extent(r).corners()); y = bb[:, 1].max() + gap
+    fig.text(0.5, y, title, ha="center", va="bottom", fontsize=TITLE_SIZE)

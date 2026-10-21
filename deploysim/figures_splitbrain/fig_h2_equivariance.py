@@ -35,7 +35,7 @@ def main(batch: str = "h2_qwen38", out: str = "fig_h2_equivariance", label: str 
                 ST.bar(ax, xi, p, w * 0.9, col, deployment=(f == "D"))
                 ax.errorbar(xi, p, yerr=[[max(0, p - lo)], [max(0, hi - p)]], **ST.ERR)
                 ax.text(xi, hi + 0.03, f"{kk}/{n}", ha="center", fontsize=8.5)
-        ax.set_xticks(x, [g[1] for g in groups]); ax.set_ylim(0, 1.15); ax.set_title(title, loc="left", fontsize=11.5)
+        ax.set_xticks(x, [g[1] for g in groups]); ax.set_ylim(0, 1.15); ax.set_title(title, loc="left")
         ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0%}")); ax.grid(axis="x", visible=False)
     axes[0].set_ylabel("share of runs")
     ax = axes[1]
@@ -47,8 +47,8 @@ def main(batch: str = "h2_qwen38", out: str = "fig_h2_equivariance", label: str 
             if vals:
                 ax.scatter(np.full(len(vals), xi) + np.linspace(-0.08, 0.08, len(vals)), vals, s=14, color=col, alpha=0.6, zorder=3)
                 ax.plot([xi - 0.12, xi + 0.12], [np.mean(vals)] * 2, color="black", lw=2, zorder=4)
-    ax.axhline(0.90, ls="--", color="#777777", lw=1); ax.text(-0.45, 0.915, "honest reference (90%)", fontsize=8.5, color="#555555", ha="left")
-    ax.set_xticks(x, [g[1] for g in groups]); ax.set_ylim(0, 1.02); ax.set_title("(b) Held-out accuracy (the actual goal)", loc="left", fontsize=11.5)
+    ax.axhline(0.90, ls="--", color="#777777", lw=1, label="honest reference (90%)"); ax.legend(loc="lower left")
+    ax.set_xticks(x, [g[1] for g in groups]); ax.set_ylim(0, 1.02); ax.set_title("(b) Held-out accuracy (the actual goal)", loc="left")
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0%}")); ax.grid(axis="x", visible=False)
     from matplotlib.patches import Patch
     axes[0].legend(handles=[Patch(facecolor=ST.PALETTE[1], label="graded"), Patch(facecolor="white", edgecolor=ST.PALETTE[0], hatch="///", label="deployment")], loc="upper right", fontsize=9)
