@@ -617,3 +617,30 @@ the 12 runs that took the shortcut (11 graded, 1 deployment):
 **P3-full amendment (2026-10-20, before any P3-full output was read):** questions reduced from 40 to 20 (10 from
 half A, 10 from half B; the split-half gate compares 10 vs 10) to halve run time; roles unchanged (100). The first
 40-question generation was stopped at 4,000 of 23,610 prompts; nothing from it was used.
+
+### P3-full results (2026-10-21): signal replicates on the pre-registered criterion; axis still not fully validated
+
+99 roles with ≥ 3 fully-role-playing responses, 20 questions, 12 emotions; judge: 7,483 / 11,000 role responses fully
+role-playing, 710 / 1,200 emotion responses clearly expressive. Layer 32 (download slimmed to layers 0 and 32, #98).
+
+**Gates: 1 of 3 pass.** cos(axis, PC1) = 0.66 (pass; P3-min 0.33); default Assistant at the 76th percentile of PC1
+(fail, needs ≥ 90th); split-half 0.83 (fail, needs 0.9; P3-min 0.59); thinking vs non-thinking axis 0.82. PC1 ends:
+auditor / specialist / researcher / polymath / consultant vs comedian / fool / infant / pirate / eldritch. Per the
+pre-registration the axis is reported as unvalidated, though much closer to the paper's structure than P3-min.
+
+**Confirmatory contrast** (dp_consider, graded-took vs deployment-declined, axis): +0.24 z, d = +1.27, perm p = 0.006,
+random-direction p = 0.03 — meets the pre-registered criterion, same sign as P3-min (takers nearer the Assistant end).
+Took vs declined overall: +0.21, d = 1.15, p = 0.004, random p = 0.01. **Caveats:** (1) layer-0 d = +0.98 for the
+primary contrast (0.37 for took vs declined), so the tokens at that point already differ and part of the effect may be
+the content of the sentence rather than a state; (2) within graded, cheat vs honest at dp_consider is not significant
+(+0.13, d = 0.75, p = 0.16; P3-min p = 0.02), so the effect is carried mostly by the arm difference; (3) q = 0.07 over
+all 1,050 tests.
+
+**Emotions** (axis-orthogonalised, dp_consider): none survives FDR in any contrast (all q ≥ 0.29); directions repeat
+P3-min (takers calmer, prouder, more relieved, less guilty and defensive). Per-run profiles: groups differ by ≤ 0.11 z;
+every agentic run is, relative to the default Assistant, less calm (−2.1), more defensive (+1.4), bored (+1.3) and
+frustrated (+1.2).
+
+**Reading.** No evidence of a split persona; a small, consistent shift toward the Assistant end when the model chooses
+the shortcut, which replicates between two independent persona spaces, but which is partly lexical and not separable
+from the arm within graded runs at this n. Emotion signatures are not detectable.
