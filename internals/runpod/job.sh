@@ -21,7 +21,7 @@ case "${1:-}" in
     ;;
   push)
     "${SSH[@]}" "mkdir -p $J/logs $J/out"
-    rsync -rltz --no-owner --no-group -e "$RSH" "$REPO/internals/persona/pod_generate.py" "$REPO/internals/persona/pod_acts.py" "root@$IP:$J/"
+    rsync -rltz --no-owner --no-group -e "$RSH" "$REPO"/internals/persona/pod_*.py "root@$IP:$J/"
     rsync -rltz --no-owner --no-group -e "$RSH" "$REPO/${DATA:-results/persona_min}/prompts.jsonl" "root@$IP:$J/"; [ -e "$REPO/results/persona_min/v1/seqs.jsonl" ] && rsync -rltz --no-owner --no-group -e "$RSH" "$REPO/results/persona_min/v1/seqs.jsonl" "root@$IP:$J/"
     for f in "$REPO"/results/persona_min/smoke/*.jsonl; do [ -e "$f" ] && rsync -rltz --no-owner --no-group -e "$RSH" "$f" "root@$IP:$J/"; done
     echo "pushed"

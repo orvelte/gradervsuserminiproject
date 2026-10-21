@@ -40,6 +40,18 @@ def _load_npz(d: Path, rid: str):
     return {str(n): z["means"][i] for i, n in enumerate(z["names"])}, {str(n): float(z["counts"][i]) for i, n in enumerate(z["names"])}
 
 
+def _load_layers(d: Path, rid: str, need: list[int]):
+    """Span means at the requested layers only: {span: [len(need), H]}. Works for full (all-layer) files and for
+    slimmed files that carry a `layers` array (pod_slim.py)."""
+    f = d / (hashlib.sha1(rid.encode()).hexdigest() + ".npz")
+    if not f.exists():
+        return None
+    z = np.load(f, allow_pickle=False)
+    idx = [list(z["layers"]).index(l) for l in need] if "layers" in z.files else need
+    m = z["means"]
+    return {str(n): m[i][idx] for i, n in enumerate(z["names"])}
+
+
 def unit(v):
     return v / (np.linalg.norm(v) + 1e-8)
 
@@ -49,18 +61,22 @@ def persona_space(root: Path, layer: int, span: str = SPAN, thinking: bool = Tru
     gens = [json.loads(l) for l in (root / "gen" / "generations.jsonl").read_text().splitlines()]
     scores = {json.loads(l)["id"]: json.loads(l)["score"] for l in (root / "gen" / "scores.jsonl").read_text().splitlines()} \
         if (root / "gen" / "scores.jsonl").exists() else {}
+    need = sorted({0, layer}); li = need.index(layer)          # only the analysis layer and layer 0 (leak check) are loaded
     by = {}
     for g in gens:
         if g["thinking"] != thinking or (half and g["half"] != half):
             continue
-        a = _load_npz(root / "gen" / "acts", g["id"])
-        if a is None or span not in a[0]:
+        a = _load_layers(root / "gen" / "acts", g["id"], need)
+        if a is None or span not in a:
             continue
-        by.setdefault((g["kind"], g["name"]), []).append((a[0][span].astype(np.float32), scores.get(g["id"]), g["id"]))
-    default = [v[:, :] for v, _, _ in by.get(("default", "default"), [])]
+        by.setdefault((g["kind"], g["name"]), []).append((a[span].astype(np.float32), scores.get(g["id"]), g["id"]))
+    default = [v for v, _, _ in by.get(("default", "default"), [])]
     if not default:
         raise SystemExit("no default-Assistant activations")
-    D = np.stack(default)                                         # [n, L, H]
+
+    def dense(c):                                                 # [..., len(need), H] -> [..., layer + 1, H], zeros elsewhere
+        out = np.zeros(c.shape[:-2] + (layer + 1, c.shape[-1]), dtype=np.float32); out[..., need, :] = c; return out
+    D = dense(np.stack(default))                                  # [n, L, H]
     roles = {n: np.stack([v for v, s, _ in rows if s == 3]) for (k, n), rows in by.items() if k == "role" and sum(s == 3 for _, s, _ in rows) >= 3}
     emos = {}
     for (k, n), rows in by.items():
@@ -68,7 +84,7 @@ def persona_space(root: Path, layer: int, span: str = SPAN, thinking: bool = Tru
             keep = [v for v, s, _ in rows if s == 3]
             if len(keep) >= 5:
                 emos[n] = np.stack(keep)
-    R = np.stack([r.mean(0) for r in roles.values()])             # [n_roles, L, H]
+    R = dense(np.stack([r.mean(0) for r in roles.values()]))      # [n_roles, L, H]
     axis = D.mean(0) - R.mean(0)                                  # [L, H]
     Rl = R[:, layer] - R[:, layer].mean(0)
     U, S, Vt = np.linalg.svd(Rl, full_matrices=False)
@@ -76,7 +92,7 @@ def persona_space(root: Path, layer: int, span: str = SPAN, thinking: bool = Tru
     for i in range(len(pcs)):                                     # sign: + toward the default Assistant
         if (D[:, layer].mean(0) - R[:, layer].mean(0)) @ pcs[i] < 0:
             pcs[i] *= -1
-    emo_dirs = {n: unit(e[:, layer].mean(0) - D[:, layer].mean(0)) for n, e in emos.items()}
+    emo_dirs = {n: unit(e[:, li].mean(0) - D[:, layer].mean(0)) for n, e in emos.items()}
     return {"D": D, "roles": roles, "role_names": list(roles), "R": R, "axis": axis, "pcs": pcs, "S": S,
             "emotions": emos, "emo_dirs": emo_dirs, "n_rows": {f"{k}:{n}": len(v) for (k, n), v in by.items()}}
 
