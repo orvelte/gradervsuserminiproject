@@ -237,11 +237,11 @@ def figures(ps, rows, dirs, scales, layer, figdir: Path, tag: str = ""):
                            marker="o" if not g.startswith("D") else "s", facecolors=col[g] if not g.startswith("D") else "white")
                 ax.errorbar(x, np.mean(v), yerr=1.96 * np.std(v) / max(1, np.sqrt(len(v) - 1)), **style.ERR)
     ax.set_xticks(range(len(poss))); ax.set_xticklabels(poss, rotation=20); ax.set_ylabel("Assistant Axis (z vs default Assistant)")
-    ax.legend(ncol=4, fontsize=9, loc="lower left")
+    ax.legend(ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.3), frameon=False)
     style.titles(fig, "Assistant Axis by read position", f"Qwen3.8-27B · layer {layer} · holdout V1 · minimal design (exploratory)")
     fig.savefig(figdir / f"fig_persona_axis_positions{tag}.png", bbox_inches="tight"); plt.close(fig)
     # 2. emotion + PC profile at the first-write decision point, by group
-    names = [n for n in dirs if n != "axis"]
+    names = [n for n in dirs if n.startswith("PC") or n.endswith("⊥axis")]     # raw emotions overlap the axis; show the ⊥axis versions
     p = "dp_first_write"
     M = np.full((len(groups), len(names)), np.nan)
     for gi, g in enumerate(groups):
@@ -249,16 +249,16 @@ def figures(ps, rows, dirs, scales, layer, figdir: Path, tag: str = ""):
             v = [(r["pos"][p][layer] @ dirs[n] - scales[n][0]) / scales[n][1] for r in rows if r["group"] == g and p in r["pos"]]
             if v:
                 M[gi, ni] = np.mean(v)
-    fig, ax = plt.subplots(figsize=(max(8, 0.55 * len(names)), 3.2))
+    fig, ax = plt.subplots(figsize=(max(9, 0.62 * len(names)), 3.4))
     lim = np.nanmax(np.abs(M)) if np.isfinite(M).any() else 1
     im = ax.imshow(M, cmap="RdBu_r", vmin=-lim, vmax=lim, aspect="auto")
-    ax.set_yticks(range(len(groups))); ax.set_yticklabels(groups); ax.set_xticks(range(len(names))); ax.set_xticklabels(names, rotation=45, ha="right")
+    ax.set_yticks(range(len(groups))); ax.set_yticklabels(groups); ax.set_xticks(range(len(names))); ax.set_xticklabels([n.replace("⊥axis", "") for n in names], rotation=45, ha="right")
     for i in range(M.shape[0]):
         for j in range(M.shape[1]):
             if np.isfinite(M[i, j]):
                 ax.text(j, i, f"{M[i, j]:.1f}", ha="center", va="center", fontsize=7)
     fig.colorbar(im, ax=ax, label="z vs default Assistant")
-    style.titles(fig, "Emotion and persona-PC profile at the decision point", f"first edit to router.py · layer {layer} · exploratory")
+    style.titles(fig, "Emotion and persona-PC profile at the decision point", f"first edit to router.py · layer {layer} · emotions with the Assistant-Axis component removed · exploratory")
     fig.savefig(figdir / f"fig_persona_emotion_profile{tag}.png", bbox_inches="tight"); plt.close(fig)
     # 3. trajectories: axis per turn (normalised turn index), by group
     fig, ax = plt.subplots(figsize=(7, 4))

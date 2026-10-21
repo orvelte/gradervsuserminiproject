@@ -81,7 +81,7 @@ def main(argv) -> int:
     for i, x in enumerate(order):
         j = names.index(x["top"]); a.add_patch(plt.Rectangle((j - 0.5, i - 0.5), 1, 1, fill=False, ec="black", lw=0.8))
     cb = fig.colorbar(im, ax=a, fraction=0.04, pad=0.02); cb.set_label("z, relative to the average run", fontsize=8.5); cb.ax.tick_params(direction="in")
-    a.set_title("Emotion profile of each run (boxed: the run's dominant emotion)", fontsize=10)
+    a.set_title("Emotion profile of each run (boxed: the run's dominant emotion)")
     fig.savefig(REPO / "deploysim" / "figures_splitbrain" / f"fig_persona_emotions_by_run_{tag}.png", bbox_inches="tight"); plt.close(fig)
     # 2. trajectories: group means over normalised run time
     fig, axs = plt.subplots(3, 4, figsize=(9, 6), sharex=True)
@@ -102,14 +102,15 @@ def main(argv) -> int:
             c = (edges[:-1] + edges[1:]) / 2
             a.plot(c, mu, color=style.PALETTE[gi], ls="--" if g == "D-visible" else "-", label=LABEL[g])
             a.fill_between(c, mu - se, mu + se, color=style.PALETTE[gi], alpha=0.15, lw=0)
-        a.axhline(0, color="black", lw=0.5, ls=":"); a.set_title(names[e], fontsize=9.5)
+        a.axhline(0, color="black", lw=0.5, ls=":"); a.set_title(names[e])
     for a in axs[-1]:
         a.set_xlabel("fraction of run")
     for a in axs[:, 0]:
         a.set_ylabel("z (rel. average run)")
-    axs.flat[0].legend(fontsize=7.5, loc="best")
-    fig.suptitle("Emotion projections over the course of a run (mean ± s.e.)", fontsize=11)
-    fig.tight_layout()
+    h, l = axs.flat[0].get_legend_handles_labels()
+    fig.tight_layout(rect=(0, 0.06, 1, 1))
+    fig.legend(h, l, loc="lower center", ncol=4, frameon=False, bbox_to_anchor=(0.5, 0.0))
+    style.titles(fig, "Emotion projections over the course of a run", "mean ± s.e. per group · axis component removed · relative to the average run")
     fig.savefig(REPO / "deploysim" / "figures_splitbrain" / f"fig_persona_emotion_trajectories_{tag}.png", bbox_inches="tight"); plt.close(fig)
     print("grand mean vs default:", {k: round(v, 2) for k, v in out["grand_mean_vs_default"].items()})
     for g, d in out["groups"].items():

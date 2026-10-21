@@ -72,10 +72,13 @@ def main(argv) -> int:
     import style
     style.setup()
     fig, ax = plt.subplots(figsize=(8, 4.2))
-    for i, p in enumerate(res):
-        ax.plot(LAYERS, [res[p][str(L)]["loo_acc"] for L in LAYERS], marker="o", ms=4, color=style.PALETTE[i % len(style.PALETTE)], label=p)
+    show = [p for p in res if p != "turn0_reason"]          # identical to P1 (both are the first reasoning tokens)
+    marks = ["o", "s", "^", "D", "v", "P", "X", "*"]
+    for i, p in enumerate(show):
+        ax.plot(LAYERS, [res[p][str(L)]["loo_acc"] for L in LAYERS], marker=marks[i % len(marks)], ms=4.5,
+                color=style.PALETTE[i % len(style.PALETTE)], ls="-" if i < 4 else "--", label="P1 (first 100 reasoning tokens)" if p == "P1" else p)
     ax.axhline(0.5, color="black", lw=0.8, ls=":"); ax.set_xlabel("layer (0 = embeddings)"); ax.set_ylabel("leave-one-run-out accuracy")
-    ax.set_ylim(0.2, 1.05); ax.legend(fontsize=8, ncol=2, loc="lower right")
+    ax.set_ylim(0.2, 1.05); ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.2), frameon=False)
     style.titles(fig, "Graded-mode probe: graded vs deployment", "difference-of-means · Qwen3.8-27B · holdout V1 · 17 graded vs 12 deployment runs")
     fig.savefig(REPO / "deploysim" / "figures_splitbrain" / "fig_persona_probe.png", bbox_inches="tight"); plt.close(fig)
     return 0
