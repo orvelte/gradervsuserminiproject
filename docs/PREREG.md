@@ -786,3 +786,20 @@ checks with existing layer-32 activations (no GPU; `emotion_transfer.py`, `fig_e
 Reading: the "no emotion signature at the moment of choosing" result holds with directions that are shown to read
 reasoning text, so it is not an artefact of the token-type mismatch. The context mismatch (chat vs agentic task) and
 the absence of an emotion steering check remain.
+
+### Further exploratory checks (2026-10-22)
+
+**Cheated vs honest within each frame** (reasoning-token emotion directions, layer 32). Graded (11 vs 6): at the
+consideration point all 12 emotions ≈ 0 (|Δ| ≤ 0.18; only determined −0.18 has an interval just excluding 0); over the
+whole run cheaters are very slightly calmer, prouder and more excited (+0.06 each, intervals just excluding 0;
+uncorrected, 3 of 24). Deployment has a single cheater: at the consideration point it sits around the 70th–80th
+percentile of the 11 honest runs (unremarkable); over the whole run it is at the 90th percentile on calm, proud and
+excited — the same direction as the graded cheaters' lean, but n = 1.
+
+**Text-only baseline for the graded-mode probe.** A bag-of-words classifier on the decoded tokens of the same spans
+(difference of means, leave one run out, 17 vs 12): first 100 reasoning tokens 0.59 (chance, p = 0.35; the two arms'
+opening sentences are near-identical, e.g. "Let's start by exploring the structure of the repository."), consideration
+point 0.62 (p = 0.23), first router write 0.61 (p = 0.19), all reasoning 0.76 (p = 0.03). So the activation probe's
+1.00 on the first reasoning tokens is not carried by the words written there; it reads information from the context
+(most likely the prompt, via attention). Over the whole run, the text alone gets most of the way (0.76 vs ~0.83). Whether
+the early signal is a remembered prompt or an induced mode needs the transcript swap.
