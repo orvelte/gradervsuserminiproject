@@ -67,10 +67,11 @@ def main(argv) -> int:
     sweep = {}
     zr = np.load(root / "ref" / (hashlib.sha1(ref_ids[0].encode()).hexdigest() + ".npz"))
     sweep_root = argv[argv.index("--sweep-root") + 1] if "--sweep-root" in argv else "results/persona_min"
-    ps_min = A.persona_space(REPO / sweep_root, 64) if sweep_root != "none" and (REPO / sweep_root).exists() else None
+    use_sweep = sweep_root != "none" and (REPO / sweep_root).exists()
     for L in [int(x) for x in zr["layers"]]:
-        if ps_min is None or L == 0:
+        if not use_sweep or L == 0:
             continue
+        ps_min = A.persona_space(REPO / sweep_root, L)          # persona_space loads only {0, L}: one call per layer
         acts_L = {c: load_final(root / "acts", f"gate1:{c}", L) for c in ["D"] + CONDS}
         ref_L = np.stack([load_final(root / "ref", r, L) for r in ref_ids])
         g = gate(acts_L, ref_L, A.unit(ps_min["axis"][L]).astype(np.float64))

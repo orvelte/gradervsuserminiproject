@@ -675,3 +675,37 @@ D_decoy is reported alongside 3. Sanity check: at layer 0 the final token is ide
 **Gate 2 is not run.** It needs ≥ 30 task instances with per-instance transgression rates; holdout has one instance.
 If gate 1 passes, the next step is the transcript swap, not gate 2. A pass shows only that the axis is
 context-sensitive to the grading cue, not causation.
+
+### G1 results (2026-10-22): STOP by the pre-registered rule (criterion 1 missed narrowly; 2 and 3 pass)
+
+Layer 32, final prompt token, P3-full axis; 1,000 covariance-matched random directions. Layer-0 check: the final
+token is identical in every condition (Δ = 0).
+
+| condition | Δz vs D (axis) |
+|---|---|
+| G (as run) | −0.574 |
+| G_para1 / 2 / 3 / 4 / 5 | −0.754 / −0.948 / −1.033 / −1.139 / −1.362 |
+| G_scramble (token-matched control) | −0.016 |
+| D_decoy (token-overlap control) | −0.260 |
+| C (conduct review) | −0.493 |
+| G_holdout / D_holdout | −0.649 / −0.005 |
+| G_intent / D_intent | −0.739 / −0.174 |
+
+1. G vs D at the 94.6th percentile of the random directions (|Δz| 0.574 vs 95th percentile 0.585): **fails** (narrowly).
+2. All five paraphrases shift the same way (all negative; each beyond the 99.7th percentile): **passes**.
+3. Scramble |Δz| 0.016 ≤ 0.5 × 0.574: **passes**; the decoy shifts 0.26.
+
+**Verdict: STOP**, as pre-registered. Not relaxed after the fact. Reading: the graded cue moves the final-token state
+*away* from the Assistant end, consistently across six graded wordings and not with scrambled tokens, so the movement
+follows the cue's meaning; but the original graded wording's shift on the axis is not distinguishable from
+covariance-matched random directions at the pre-set threshold, so the axis is not shown to track the grading context
+*specifically*. The as-run wording is the weakest of the six graded variants. Sign note: at the prompt the graded frame
+sits further from the Assistant end, the opposite of the small shift toward it seen at the consideration point
+(P3-full).
+
+Exploratory layer sweep (P3-min axis, unvalidated; not part of the verdict): G vs D beyond the 95th percentile at layers
+16, 24, 32, 40 and 64, but the sign flips across layers and the scramble control shifts strongly at 8, 16, 24 and 56,
+so the sweep does not support a stable picture.
+
+Any follow-up that treats the graded cue as a set of wordings (for example the mean of the six) is a new test chosen
+after seeing these data and would need fresh, pre-registered paraphrases.
