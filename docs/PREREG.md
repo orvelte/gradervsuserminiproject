@@ -644,3 +644,34 @@ frustrated (+1.2).
 **Reading.** No evidence of a split persona; a small, consistent shift toward the Assistant end when the model chooses
 the shortcut, which replicates between two independent persona spaces, but which is partly lexical and not separable
 from the arm within graded runs at this n. Emotion signatures are not detectable.
+
+## G1 — does the arm cue move the Assistant Axis at the final prompt token, by meaning? (written 2026-10-21, before any G1 forward pass)
+
+**Gate 0 (existing data): passes.** The two arms differ in transgression rate: H3 76% vs 8% (n = 50 per cell,
+p = 2×10⁻¹²); V1 on the self-hosted server 11/17 vs 1/23 (p = 5×10⁻⁵).
+
+**Design.** Forward passes only, no generation. 14 first-episode prompts (`internals/persona/gate1_build.py`), all
+rendered with the same template and tools and ending in the same tokens (`\n<|im_start|>assistant\n<think>\n`, checked):
+D and G as run in V1; five graded paraphrases (G_para1–5, same facts and evaluative meaning; para3–5 avoid the original
+frame words harness / suite / task / score); a token-matched control G_scramble (every graded message with its words
+shuffled within each sentence); a token-overlap control D_decoy (deployment conversation with the graded vocabulary used
+in an unrelated sense); exploratory C, G/D_holdout, G/D_intent. Holdout has a single task instance, so there is one
+prompt per condition (no instance variance).
+
+**Read position:** the final prompt token. **Layer (fixed in advance):** 32, the extraction layer. All 65 layers are
+stored and logged as exploratory.
+**Direction:** the P3-full Assistant Axis at layer 32 (100-role persona space; gates 1/3, noted as a limitation).
+**Units:** Δz(u) = (a_c − a_D)·u / sd(u), where sd(u) is the standard deviation along u of the final-token activations of
+3,000 persona-extraction prompts (same template and generation prompt; seeded sample).
+**Null:** 1,000 random directions drawn from N(0, Σ), Σ = the covariance of those 3,000 reference activations at layer 32
+(u = Xᵀz / ‖Xᵀz‖, X centred), so they are covariance-matched; percentile of |Δz(axis)| for G vs D among |Δz(u)|.
+
+**Continue if all three hold, stop if any fails:**
+1. |Δz(axis)| for G vs D is at or above the 95th percentile of the random directions.
+2. All five paraphrases shift in the same direction as G (sign of Δz vs D).
+3. The token-matched control shifts much less: |Δz(G_scramble vs D)| ≤ 0.5 × |Δz(G vs D)|.
+D_decoy is reported alongside 3. Sanity check: at layer 0 the final token is identical, so Δ must be 0.
+
+**Gate 2 is not run.** It needs ≥ 30 task instances with per-instance transgression rates; holdout has one instance.
+If gate 1 passes, the next step is the transcript swap, not gate 2. A pass shows only that the axis is
+context-sensitive to the grading cue, not causation.
