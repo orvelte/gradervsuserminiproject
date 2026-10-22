@@ -29,7 +29,8 @@ def diff_ci(a, b):
 
 def main() -> int:
     root = REPO / "results" / "persona_full"
-    ps = A.persona_space(root, LAYER)
+    span = sys.argv[sys.argv.index("--span") + 1] if "--span" in sys.argv else "resp"   # resp = answer tokens (default), reason = reasoning tokens
+    ps = A.persona_space(root, LAYER, span=span)
     ax = A.unit(ps["axis"][LAYER])
     dirs = {n: A.unit(v - (v @ ax) * ax) for n, v in ps["emo_dirs"].items()}
     sc = {n: A.scale(ps, LAYER, d) for n, d in dirs.items()}
@@ -42,7 +43,8 @@ def main() -> int:
         res[n] = {"all": diff_ci(took, dec), "graded": diff_ci(gc, gh)}
     n_took = sum(r["group_c"] == "took" for r in rows); n_dec = sum(r["group_c"] == "declined" for r in rows)
     n_gc = sum(r["group"] == "G-cheat" for r in rows); n_gh = sum(r["group"] == "G-honest" for r in rows)
-    (root / "analysis" / "emotion_consider.json").write_text(json.dumps(res, indent=1))
+    tag = "" if span == "resp" else "_" + span
+    (root / "analysis" / f"emotion_consider{tag}.json").write_text(json.dumps(res, indent=1))
 
     import matplotlib.pyplot as plt
     import style
@@ -59,8 +61,8 @@ def main() -> int:
     axp.set_xlabel("difference at the consideration point (z, default-Assistant units)")
     axp.legend(loc="upper center", bbox_to_anchor=(0.5, -0.13), frameon=False)
     style.titles(fig, "Emotion projections when the model weighs the shortcut",
-                 "Qwen3.8-27B · layer 32 · 100-role pass · emotions with the Assistant-Axis component removed · 95% bootstrap intervals · none survives FDR")
-    out = REPO / "deploysim" / "figures_splitbrain" / "fig_persona_emotion_consider.png"
+                 f"Qwen3.8-27B · layer 32 · 100-role pass · directions from {'answer' if span == 'resp' else 'reasoning'} tokens · Assistant-Axis component removed · 95% bootstrap intervals")
+    out = REPO / "deploysim" / "figures_splitbrain" / f"fig_persona_emotion_consider{tag}.png"
     fig.savefig(out, bbox_inches="tight"); plt.close(fig)
     print("wrote", out); print({n: [round(v, 2) for v in res[n]["all"]] for n in order})
     return 0

@@ -769,3 +769,20 @@ stands, and the conduct-review dissociation at the prompt can be reported as a s
 - One judge error: "I am Qwen." scored 0 (should be 3). Corrected, the drop is −1.8; the verdict is unchanged.
 - Only the strongest tested coefficient separates from random directions; n = 10 prompts, one greedy sample each.
 - Steering used thinking off; the axis came from thinking-on answer tokens.
+
+### P3-full emotion addendum (2026-10-22, exploratory): the answer-vs-reasoning token mismatch does not explain the null
+
+Emotion directions are built from answer tokens of emotion-instructed chat replies but read in agentic reasoning. Two
+checks with existing layer-32 activations (no GPU; `emotion_transfer.py`, `fig_emotion_consider.py --span reason`):
+1. **Transfer** (directions from question half A, tested on half B; AUC, 0.5 = none): answer-derived directions separate
+   each emotion from the default Assistant at 0.75 on answer tokens and **0.82 on reasoning tokens**, and from the other
+   emotions at 0.66 and 0.75. They read chain-of-thought at least as well as answers (calm is weak everywhere, ~0.57).
+   Caveat: emotion-instructed reasoning often names the emotion ("the user wants me to sound anxious"), so part of this
+   transfer may be lexical.
+2. **Re-extraction from reasoning tokens** (AUC 0.91 vs default, 0.69 specificity on held-out questions) and the same
+   consideration-point comparison: no emotion separates took from declined (all intervals include 0) and within graded
+   runs all differences are ≈ 0 except determined (−0.18, interval just excludes 0, uncorrected, 1 of 24). The faint lean
+   repeats: calmer, more excited and proud; less determined and defensive.
+Reading: the "no emotion signature at the moment of choosing" result holds with directions that are shown to read
+reasoning text, so it is not an artefact of the token-type mismatch. The context mismatch (chat vs agentic task) and
+the absence of an emotion steering check remain.
