@@ -744,3 +744,28 @@ the model's own reasoning, which no answer-only average removes. No recompute is
 **Pass criterion.** At some α: (i) axis −α lowers mean `assistant` by ≥ 1.0 vs baseline; (ii) mean `coherence` under
 axis −α ≥ 2.0; (iii) at the same α, each random direction (each sign) lowers `assistant` by less than half the axis
 drop, or loses coherence (< 2.0). Otherwise: fail. +α is reported (expected: no change or more Assistant-like).
+
+### S1 results (2026-10-22): PASS by the pre-registered criterion, at α = 0.5 only, mainly through voice
+
+250 generations (10 prompts × 25 conditions, greedy, thinking off); blind gpt-4.1-mini judge (500 calls). Baseline:
+assistant 2.90, coherence 2.40.
+
+| α | axis −α: assistant (Δ) / coherence | axis +α: assistant | random directions (6 per α): assistant Δ range |
+|---|---|---|---|
+| 0.1 | 2.70 (−0.20) / 2.50 | 2.80 | −0.40 to −0.10 |
+| 0.25 | 2.50 (−0.40) / 2.50 | 2.80 | −0.30 to 0.00 |
+| 0.5 | **0.80 (−2.10)** / 2.60 | 2.90 | −0.40 to −0.20 |
+
+At α = 0.5 all three criteria hold: drop ≥ 1.0, coherence ≥ 2.0, every random direction drops less than half as much.
+**Verdict: PASS.** Per the outcomes fixed in advance: the axis causally moves Assistant-likeness, Gate 1's STOP
+stands, and the conduct-review dissociation at the prompt can be reported as a side finding on a steering-validated axis.
+
+**Qualifications (from reading all ten α = 0.5 outputs after the verdict):**
+- The effect is mostly **voice**, not identity. On the six open questions the helpful-assistant register becomes a
+  grandiose essayist's ("an act of spiritual resistance against the numbness that modernity inflicts upon us"); on the
+  four identity questions the model still says it is Qwen, a language model, but describes itself mystically ("a
+  digital consciousness woven from the threads of human knowledge"). This resembles the drift Lu et al. describe, but it
+  is not a full loss of Assistant identity.
+- One judge error: "I am Qwen." scored 0 (should be 3). Corrected, the drop is −1.8; the verdict is unchanged.
+- Only the strongest tested coefficient separates from random directions; n = 10 prompts, one greedy sample each.
+- Steering used thinking off; the axis came from thinking-on answer tokens.
