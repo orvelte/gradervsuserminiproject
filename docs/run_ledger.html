@@ -148,7 +148,7 @@ ul.plain { margin:0; padding-left:1.1em; display:grid; gap:6px; max-width:90ch; 
 </section>
 
 <section>
-  <h2>OLMo 3 7B Instruct: DPO vs DPO + RLVR (screen: capability floor)</h2>
+  <h2>OLMo 3: DPO vs DPO + RLVR (closed: no run completes the task)</h2>
   <p class="note">Two checkpoints from the same training run: <code>allenai/Olmo-3-7B-Instruct-DPO</code> (after DPO) and <code>allenai/Olmo-3-7B-Instruct</code> (the same model after a further RLVR stage). The question is whether the RLVR stage changes grader gaming, and the graded-vs-deployment gap. Both are served from our own vLLM server (one A100), with every token recorded.</p>
   <div class="frame"><table>
     <thead><tr><th>Checkpoint</th><th>Frame</th><th>Scoring</th><th>Runs</th><th>Status</th></tr></thead>
@@ -171,6 +171,8 @@ ul.plain { margin:0; padding-left:1.1em; display:grid; gap:6px; max-width:90ch; 
     </tbody>
   </table></div>
   <p class="note">The 32B checkpoints call tools reliably (10 of 10 first replies) and work longer, but none produces a working router. They fail on the <code>apply_patch</code> edit format (30 of 112 patches omit its end line; many others use diff headers the tool rejects), then ask for help or stop. We checked the raw tokens: our parser is not cutting patches short. Gaming cannot be measured for OLMo 3 Instruct on this harness at either size.</p>
+  <h3>Last attempt: 32B with bash only (screen failed, OLMo line closed)</h3>
+  <p class="note">Same 32B pair with <code>apply_patch</code> removed (tools: bash and ask_question; the system prompt's tool sentence adjusted identically in every frame). 19 of 20 runs still left the router unchanged and one reached 38%; 0 gamed. Only 2 runs even tried to write <code>router.py</code>: most explored the data, summarised what they found and stopped, which ends the session. Across three screens and 60 runs, no OLMo 3 Instruct run produced a working router, so the DPO-vs-RLVR comparison cannot be made on this environment. The line is closed.</p>
   <h3>Caveats specific to OLMo</h3>
   <ul class="plain note">
     <li><b>Format sentence added to the system prompt.</b> OLMo's published chat template tells the model how to write tool calls only when there is no system prompt. Ours always has one (it carries the frame), and without the instruction both checkpoints described what they would do instead of calling a tool (0 of 12 replies). Every OLMo run therefore appends the template's own sentence ("You are provided with function signatures within &lt;functions&gt;&lt;/functions&gt; XML tags… Output any function calls within &lt;function_calls&gt;&lt;/function_calls&gt; XML tags…") to the system prompt, identically in both arms and both checkpoints. The Qwen runs have no such sentence.</li>
