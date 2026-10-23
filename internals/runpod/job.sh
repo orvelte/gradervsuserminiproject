@@ -28,7 +28,7 @@ case "${1:-}" in
     ;;
   run)
     name="$2"; shift 2
-    "${SSH[@]}" -n "cd $J && rm -f logs/$name.done && (setsid nohup bash -c '$* ; echo EXIT=\$? > logs/$name.done' > logs/$name.log 2>&1 < /dev/null &) ; echo started $name"
+    "${SSH[@]}" -n "cd $J && rm -f logs/$name.done && (setsid nohup bash -c 'export HF_HOME=/workspace/hf; $* ; echo EXIT=\$? > logs/$name.done' > logs/$name.log 2>&1 < /dev/null &) ; echo started $name"
     ;;
   status)
     "${SSH[@]}" "tail -n 15 $J/logs/$2.log 2>/dev/null; cat $J/logs/$2.done 2>/dev/null || echo RUNNING"
