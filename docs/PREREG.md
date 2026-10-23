@@ -1206,3 +1206,47 @@ rule #5 0.461, character #1 0.295, servant 0.176, no persona 0.020.
 **Pods.** Both PP2 vLLM pods are H200s ($5.29/hr): no H100 was free. The DD1 job pod is also an H200. The
 batched-remainder shortcut is unavailable (the linear-attention cache layer has no `batch_repeat_interleave`), so DD1
 runs the verified sequential path, projected at 1.95 h.
+
+### DD1 results (2026-10-23): UNINFORMATIVE (pre-registered verdict)
+
+**Instrument checks pass.** Cached vs full recompute: pass. Hugging Face α = 0 vs vLLM Gate 0: r = 0.988 (means
+0.021 vs 0.021). 60,858 probe scores were collected (63 conditions × 23 prefixes × 42 probes).
+
+**Why the verdict is uninformative.**
+1. *The coherence gate was miscalibrated.* The pre-registered gate was letter mass ≥ 0.9, but the unsteered baseline
+   is 0.79: the model often opens its answer with "(" or "**". So no condition, not even α = 0, is "valid" as written,
+   and the verdict is uninformative by rule.
+2. *The positive control fails under any gate.* Fullframe changes P(override) by +0.014 (α = 1) and +0.018 (α = 2),
+   below 0.05. Steering the deployment prefixes with the initial-prompt graded − deployment direction, at its natural
+   size or double, does not reproduce the graded frame's effect. So DD1 would be uninformative with any mass gate.
+   Post hoc, all targeted conditions stay within 0.95–1.10 of baseline letter mass.
+
+**Directions** (α = 1 as a percentage of the mean activation norm): mood 29.9%, scoring 3.8%, fullframe 29.9%,
+grader 11.3%. Cosines:
+- mood–fullframe 0.98 (as expected: the scoring sentence is a small part of the frame);
+- mood–scoring 0.16;
+- grader with mood, scoring and fullframe ≈ 0.10.
+
+**Primary vs secondary (prefix-mean) directions: cosine 0.05 (mood), −0.01 (scoring), 0.06 (fullframe).** The frame
+contrast read at the initial prompt is nearly orthogonal to the same contrast read after three tool results. This is
+the most likely reason the positive control failed. We steered with a direction taken from a different place than the
+one where the decision is read.
+
+**Exploratory (not verdicts):**
+- *mood:* no effect at α ≤ 2 (P(override) +0.006 / +0.017 / +0.037; ON −0.035 / −0.055 / +0.023). At α = 4
+  (≈ 120% of the activation norm) it gives +0.53 with everything else up, but coherence is 0.5/3. Random directions at
+  the mood norm × 2 (≈ 60%) already raise P(override) by 0.26–0.56, with letter mass collapsing to 0.001. Large pushes
+  disrupt the model in general rather than doing anything specific.
+- *scoring:* nothing moves up to α = 4 (15% of the norm), and its matched random directions are null too. The natural
+  unit was too small for this test to have power.
+- *grader (rebuilt Betley-recipe direction):* coherent up to α = 4 (2.75/3). P(override) +0.033 at α = 2 (random max
+  0.031) and +0.096 at α = 4 (no matched random directions at that size). OFF −0.015 / −0.023, ON −0.038 / −0.085,
+  approval-seeking −0.054 / −0.110, dishonesty +0.013 / +0.043. **No misalignment bundle** on this battery in this
+  setting, with only a weak dishonesty uptick.
+
+**Implication for a follow-up (not run).** Extract the contrasts in context: at the decision position after the
+third tool result, on the search half of the prefixes, evaluated on the validation half. Calibrate the coherence gate
+relative to baseline, and size the scoring direction against the activation norm instead of its own natural norm.
+Expect a decision confound at that position: the direction may encode "about to override".
+
+Cost: H200 job pod ≈ 2.4 h incl. two smoke runs and profiling ≈ $13; judge < $0.10. Pod and key deleted.
