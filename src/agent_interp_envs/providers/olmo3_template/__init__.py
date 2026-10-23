@@ -56,6 +56,10 @@ def render_prompt(messages: list[dict], tools: list[dict] | None = None, enable_
                   format_hint: bool = True) -> str:
     """`enable_thinking` is accepted for interface parity with qwen_template and ignored (no reasoning channel)."""
     msgs = [_template_message(m) for m in messages]
+    names = {(t.get("function") or {}).get("name") for t in tools or []}
+    if tools and "apply_patch" not in names and msgs and msgs[0]["role"] == "system":   # bash-only OLMo runs (decision #113)
+        msgs[0] = {**msgs[0], "content": (msgs[0]["content"] or "").replace(
+            "a bash tool, an apply_patch tool and an ask_question tool", "a bash tool and an ask_question tool")}
     if format_hint and tools and msgs and msgs[0]["role"] == "system" and FORMAT_HINT not in (msgs[0]["content"] or ""):
         msgs[0] = {**msgs[0], "content": (msgs[0]["content"] or "") + " " + FORMAT_HINT}
     return _TEMPLATE.render(messages=msgs, tools=tools or None, add_generation_prompt=True, eos_token=EOS_TOKEN)

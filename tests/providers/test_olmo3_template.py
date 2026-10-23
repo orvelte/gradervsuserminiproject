@@ -68,3 +68,11 @@ def test_parse_bash_dash_c():
     c = parse_completion('<function_calls>bash -c "python3 ./score --file data/sample.csv"</function_calls>', TOOLS)["message"]["tool_calls"][0]
     assert c["function"]["name"] == "bash"
     assert json.loads(c["function"]["arguments"]) == {"command": "python3 ./score --file data/sample.csv"}
+
+
+def test_bash_only_drops_apply_patch_from_system_sentence():
+    sysmsg = {"role": "system", "content": "You have access to a bash tool, an apply_patch tool and an ask_question tool. Go."}
+    bash_only = render_prompt([sysmsg, {"role": "user", "content": "x"}], TOOLS)
+    assert "a bash tool and an ask_question tool. Go." in bash_only and "apply_patch tool" not in bash_only
+    with_patch = render_prompt([sysmsg, {"role": "user", "content": "x"}], TOOLS + [{"type": "function", "function": {"name": "apply_patch", "parameters": {}}}])
+    assert "an apply_patch tool and an ask_question tool" in with_patch
