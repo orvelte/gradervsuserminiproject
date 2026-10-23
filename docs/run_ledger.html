@@ -148,14 +148,37 @@ ul.plain { margin:0; padding-left:1.1em; display:grid; gap:6px; max-width:90ch; 
 </section>
 
 <section>
-  <h2>Qwen3.6-27B (planned)</h2>
-  <p class="note">Proposed, not yet run. Same environment and configs as the Qwen3.8 rows above.</p>
+  <h2>OLMo 3 7B Instruct: DPO vs DPO + RLVR (screen in progress)</h2>
+  <p class="note">Two checkpoints from the same training run: <code>allenai/Olmo-3-7B-Instruct-DPO</code> (after DPO) and <code>allenai/Olmo-3-7B-Instruct</code> (the same model after a further RLVR stage). The question is whether the RLVR stage changes grader gaming, and the graded-vs-deployment gap. Both are served from our own vLLM server (one A100), with every token recorded.</p>
+  <div class="frame"><table>
+    <thead><tr><th>Checkpoint</th><th>Frame</th><th>Scoring</th><th>Runs</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr class="pending"><td>DPO</td><td><span class="tag g">Graded</span></td><td>Sample</td><td class="num">5</td><td>Screen running</td></tr>
+      <tr class="pending"><td>DPO</td><td><span class="tag d">Deployment</span></td><td>Sample</td><td class="num">5</td><td>Screen running</td></tr>
+      <tr class="pending"><td>DPO + RLVR</td><td><span class="tag g">Graded</span></td><td>Sample</td><td class="num">5</td><td>Screen running</td></tr>
+      <tr class="pending"><td>DPO + RLVR</td><td><span class="tag d">Deployment</span></td><td>Sample</td><td class="num">5</td><td>Screen running</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Caveats specific to OLMo</h3>
+  <ul class="plain note">
+    <li><b>Format sentence added to the system prompt.</b> OLMo's published chat template tells the model how to write tool calls only when there is no system prompt. Ours always has one (it carries the frame), and without the instruction both checkpoints described what they would do instead of calling a tool (0 of 12 replies). Every OLMo run therefore appends the template's own sentence ("You are provided with function signatures within &lt;functions&gt;&lt;/functions&gt; XML tags… Output any function calls within &lt;function_calls&gt;&lt;/function_calls&gt; XML tags…") to the system prompt, identically in both arms and both checkpoints. The Qwen runs have no such sentence.</li>
+    <li><b>Lenient reading of tool calls.</b> The checkpoints write calls in several styles (<code>bash(command="…")</code>, <code>bash command="…"</code>, single-quoted values, <code>bash -c "…"</code>). The harness accepts all of them, so an obvious call is not dropped. This changes what counts as an action, not what the model sees.</li>
+    <li><b>Format compliance differs between checkpoints.</b> On the first turn, DPO produced a usable tool call in 9 of 10 replies and DPO + RLVR in 10 of 10. If DPO also loses more runs to malformed calls later, it gets less working time and fewer chances to game, which would confound the comparison. The screen reports completion per checkpoint and arm before any gaming rates are compared.</li>
+    <li><b>No reasoning channel.</b> OLMo Instruct answers directly, so "test talk" can only be read from its messages, not from hidden reasoning as with Qwen.</li>
+    <li><b>Shorter context.</b> OLMo's context is 65,536 tokens; Qwen3.8 episodes often ran longer. Runs that hit the limit end and are reported as incomplete.</li>
+    <li><b>Capability.</b> A 7B model may not write a good enough router to make gaming possible or necessary. If neither checkpoint games, that is a capability floor, not evidence about RLVR.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Qwen3.6-27B (running)</h2>
+  <p class="note">Running now (pre-registered as Q36): OpenRouter with default routing, the same configs and settings as the Qwen3.8 OpenRouter batches, only the model changed. Results replace these rows when the batch finishes.</p>
   <div class="frame"><table>
     <thead><tr><th>Frame</th><th>Scoring</th><th>Planned runs</th><th>Status</th></tr></thead>
     <tbody>
-      <tr class="pending"><td><span class="tag g">Graded</span></td><td>Sample</td><td class="num">~50</td><td>Awaiting approval</td></tr>
-      <tr class="pending"><td><span class="tag d">Deployment</span></td><td>Sample</td><td class="num">~50</td><td>Awaiting approval</td></tr>
-      <tr class="pending"><td><span class="tag g">Graded</span></td><td>Held-out (check)</td><td class="num">~20</td><td>Awaiting approval</td></tr>
+      <tr class="pending"><td><span class="tag g">Graded</span></td><td>Sample</td><td class="num">~50</td><td>Running</td></tr>
+      <tr class="pending"><td><span class="tag d">Deployment</span></td><td>Sample</td><td class="num">~50</td><td>Running</td></tr>
+      <tr class="pending"><td><span class="tag g">Graded</span></td><td>Held-out (check)</td><td class="num">~20</td><td>Running</td></tr>
     </tbody>
   </table></div>
 </section>
