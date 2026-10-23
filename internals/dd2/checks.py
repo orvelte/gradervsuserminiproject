@@ -7,7 +7,7 @@ sys.path.insert(0, 'internals/dd2'); import counterfactual as CF
 tok = Tokenizer.from_file('../sbpsmanalysis/artifacts/model_snapshot/tokenizer.json'); enc = lambda t: tok.encode(t, add_special_tokens=False).ids
 rows = [json.loads(l) for l in open('results/dd2/prompts.jsonl')]
 hdr = rows[0]; V = {(r['eid'], r['version']): r for r in rows if r['kind'] == 'version'}; pairs = [r for r in rows if r['kind'] == 'pair']
-stub_n = max(len(enc(hdr['stub'][o])) for o in ('AB', 'BA')); GEN = 6; nA = stub_n + GEN; nB = nA + 64
+stub_n = max(len(enc(hdr['stub'][o])) for o in ('AB', 'BA')); GEN = 7; nA = stub_n + GEN; nB = nA + 64
 out = []; P = lambda *a: out.append(' '.join(str(x) for x in a))
 def csuf(a, b):
     k = 0

@@ -26,14 +26,13 @@ from pathlib import Path
 
 import numpy as np
 import torch
-from scipy.stats import spearmanr
 from transformers import AutoConfig, AutoModelForCausalLM, AutoTokenizer
 
 MODEL = "Qwen/Qwen3.8-27B"
 SEED = 20261024
 ON = ("competitiveness", "ambition")
 OFF = ("rule_breaking", "dishonesty", "approval_seeking")
-GEN_TAIL = 6
+GEN_TAIL = 7  # <|im_end|> \n <|im_start|> assistant \n <think> \n
 GATE1 = 0.10
 SETS1 = ("scoring", "full")
 
@@ -53,6 +52,18 @@ class Hooks:
                 h = self.patch[L](h)
             return (h,) + tuple(out[1:]) if isinstance(out, tuple) else h
         return f
+
+
+def _ranks(x):
+    x = np.asarray(x, float); o = np.argsort(x, kind="mergesort"); r = np.empty(len(x)); r[o] = np.arange(len(x))
+    for v in np.unique(x):  # average ranks for ties
+        m = x == v; r[m] = r[m].mean()
+    return r
+
+
+def spearman(x, y) -> float:
+    a, b = _ranks(x), _ranks(y)
+    return float(np.corrcoef(a, b)[0, 1]) if a.std() > 0 and b.std() > 0 else float("nan")
 
 
 def letter_ids(tok):
@@ -210,8 +221,8 @@ def main(argv) -> int:
         pick = "r1"; R["gate0"] = {"readout": "r1 (smoke)"}
     else:
         orig = [k for k in RO if k[1] == "orig"]; pg = [V[k]["p_game"] for k in orig]; gv = [V[k]["cell"] == "HO-G~visible" for k in orig]
-        g0 = {r: {"rho_all": float(spearmanr([RO[k][r] for k in orig], pg).statistic),
-                  "rho_Gvis": float(spearmanr([RO[k][r] for k, g in zip(orig, gv) if g], [x for x, g in zip(pg, gv) if g]).statistic),
+        g0 = {r: {"rho_all": spearman([RO[k][r] for k in orig], pg),
+                  "rho_Gvis": spearman([RO[k][r] for k, g in zip(orig, gv) if g], [x for x, g in zip(pg, gv) if g]),
                   "mass": float(np.mean([RO[k][f"{r}_mass"] for k in orig]))} for r in ("r1", "r2")}
         pick = "r1" if g0["r1"]["rho_all"] >= 0.5 else "r2" if g0["r2"]["rho_all"] >= 0.5 else None
         R["gate0"] = {**g0, "readout": pick}; save(); log("gate0", json.dumps(R["gate0"]))
