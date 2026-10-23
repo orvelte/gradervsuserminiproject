@@ -35,3 +35,4 @@ internals/vendor/
 internals/runpod/ssh_key*
 internals/runpod/.ssh*
 internals/runpod/known_hosts
+.env.port*

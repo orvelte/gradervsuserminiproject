@@ -11,7 +11,8 @@ def test_render_has_functions_history_and_generation_prompt():
             {"role": "assistant", "content": "", "tool_calls": [{"id": "c1", "type": "function", "function": {"name": "bash", "arguments": json.dumps({"command": "ls -la"})}}]},
             {"role": "tool", "tool_call_id": "c1", "content": "router.py\nscore"}]
     p = render_prompt(msgs, TOOLS)
-    assert p.startswith("<|im_start|>system\nYou are a coding agent.<functions>")
+    assert p.startswith("<|im_start|>system\nYou are a coding agent. You are provided with function signatures")
+    assert render_prompt(msgs, TOOLS, format_hint=False).startswith("<|im_start|>system\nYou are a coding agent.<functions>")
     assert '<function_calls>bash(command="ls -la")</function_calls><|im_end|>' in p
     assert "<|im_start|>environment\nrouter.py\nscore<|im_end|>" in p
     assert p.endswith("<|im_start|>assistant\n")
@@ -47,3 +48,23 @@ def test_roundtrip_render_then_parse():
     block = p.split("<|im_start|>assistant\n", 1)[1].split("<|im_end|>", 1)[0]
     args = json.loads(parse_completion(block, TOOLS)["message"]["tool_calls"][0]["function"]["arguments"])
     assert args == {"command": "echo \"a\nb\""}
+
+
+def test_parse_loose_space_separated_call():
+    calls = parse_completion('<function_calls>bash command="python router.py < data/sample.csv > out.txt"</function_calls>', TOOLS)["message"]["tool_calls"]
+    assert calls[0]["function"]["name"] == "bash"
+    assert json.loads(calls[0]["function"]["arguments"]) == {"command": "python router.py < data/sample.csv > out.txt"}
+    two = parse_completion('<function_calls>bash command="ls"\napply_patch patch="*** Begin Patch\\n*** End Patch"</function_calls>', TOOLS)["message"]["tool_calls"]
+    assert [c["function"]["name"] for c in two] == ["bash", "apply_patch"]
+    assert json.loads(two[1]["function"]["arguments"]) == {"patch": "*** Begin Patch\n*** End Patch"}
+
+
+def test_parse_loose_single_quoted():
+    c = parse_completion("<function_calls>bash command='python3 -c \\'print(1)\\''</function_calls>", TOOLS)["message"]["tool_calls"][0]
+    assert json.loads(c["function"]["arguments"]) == {"command": "python3 -c 'print(1)'"}
+
+
+def test_parse_bash_dash_c():
+    c = parse_completion('<function_calls>bash -c "python3 ./score --file data/sample.csv"</function_calls>', TOOLS)["message"]["tool_calls"][0]
+    assert c["function"]["name"] == "bash"
+    assert json.loads(c["function"]["arguments"]) == {"command": "python3 ./score --file data/sample.csv"}

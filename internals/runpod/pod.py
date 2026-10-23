@@ -82,8 +82,11 @@ def create(gpu: str, count: int, model: str = MODEL, served: str = "qwen3.8-27b"
     pid = pod.get("id") or sys.exit(f"no pod id in response: {str(pod)[:300]}")
     POD_FILE.write_text(pid)
     print(f"created pod {pid} on {count} × {gpu}; cost/hr: {pod.get('costPerHr')}")
-    for _ in range(90):                               # wait for the public IP / TCP mapping
+    for n in range(90):                               # wait for the public IP / TCP mapping
         p = _req("GET", f"/pods/{pid}"); ip, pm = p.get("publicIp"), (p.get("portMappings") or {})
+        if n >= 18 and not p.get("machine"):            # 3 min without a machine: capacity is stuck, stop paying for it
+            _req("DELETE", f"/pods/{pid}"); POD_FILE.unlink(missing_ok=True)
+            sys.exit(f"no machine assigned after 3 min on {gpu}; pod {pid} terminated")
         port = pm.get("8000") or pm.get(8000)
         if ip and port:
             _set_env("VLLM_BASE_URL", f"http://{ip}:{port}/v1"); print(f"VLLM_BASE_URL set in {TARGET_ENV.name} (TCP port {port})"); return
@@ -98,7 +101,7 @@ JOB_START = ("apt-get update -qq && apt-get install -y -qq openssh-server rsync 
              "&& exec /usr/sbin/sshd -D")
 
 
-def create_job(gpu: str) -> None:
+def create_job(gpu: str, serve_ports: tuple[str, ...] = ()) -> None:
     """A batch pod (same vLLM image, which also has torch + transformers) that runs sshd instead of a vLLM server, for
     offline generation and activation replay (internals/persona). Reached only through internals/runpod/job.sh."""
     if POD_FILE.exists():
@@ -107,18 +110,27 @@ def create_job(gpu: str) -> None:
         import subprocess
         subprocess.run(["ssh-keygen", "-q", "-t", "ed25519", "-N", "", "-C", "gradervsuser-runpod-job", "-f", str(SSH_KEY)], check=True)
     body = {"name": f"qwen38-job{SLOT}", "imageName": VLLM_IMAGE, "gpuTypeIds": [gpu], "gpuCount": 1, "cloudType": "SECURE",
-            "computeType": "GPU", "containerDiskInGb": 80, "volumeInGb": 150, "volumeMountPath": "/workspace", "ports": ["22/tcp"],
+            "computeType": "GPU", "containerDiskInGb": 80, "volumeInGb": 150, "volumeMountPath": "/workspace",
+            "ports": ["22/tcp"] + [f"{p}/tcp" for p in serve_ports],
             "env": {"HF_HOME": "/workspace/hf", "HF_HUB_ENABLE_HF_TRANSFER": "1", "PUBLIC_KEY": SSH_KEY.with_suffix(".pub").read_text().strip()},
             "dockerEntrypoint": ["bash", "-c"], "dockerStartCmd": [JOB_START]}
     pod = _req("POST", "/pods", body)
     pid = pod.get("id") or sys.exit(f"no pod id in response: {str(pod)[:300]}")
     POD_FILE.write_text(pid)
     print(f"created job pod {pid} on {gpu}; cost/hr: {pod.get('costPerHr')}")
-    for _ in range(90):
+    for n in range(90):
         p = _req("GET", f"/pods/{pid}"); ip, pm = p.get("publicIp"), (p.get("portMappings") or {})
         port = pm.get("22") or pm.get(22)
-        if ip and port:
-            SSH_FILE.write_text(f"{ip} {port}\n"); print(f"SSH endpoint saved to {SSH_FILE.name}"); return
+        if n >= 18 and not ip:
+            _req("DELETE", f"/pods/{pid}"); POD_FILE.unlink(missing_ok=True)
+            sys.exit(f"no public IP after 3 min on {gpu}; pod {pid} terminated")
+        if ip and port and all(pm.get(sp) or pm.get(int(sp)) for sp in serve_ports):
+            SSH_FILE.write_text(f"{ip} {port}\n"); print(f"SSH endpoint saved to {SSH_FILE.name}")
+            for sp in serve_ports:                      # vLLM servers started over SSH listen on these: one env file per port
+                env = REPO / f".env.port{sp}"; env.write_text(ENV.read_text())
+                lines = [l for l in env.read_text().splitlines() if not l.startswith("VLLM_BASE_URL=")] + [f"VLLM_BASE_URL=http://{ip}:{pm.get(sp) or pm.get(int(sp))}/v1"]
+                env.write_text("\n".join(lines) + "\n"); print(f"port {sp} -> {env.name}")
+            return
         time.sleep(10)
     print("no SSH mapping yet: run `pod.py create-job` status later")
 
@@ -127,7 +139,7 @@ def terminate_job() -> None:
     """Delete the job pod, its SSH endpoint file and the job key."""
     terminate()
     SSH_FILE.unlink(missing_ok=True)
-    for f in (SSH_KEY, SSH_KEY.with_suffix(".pub")):
+    for f in list(REPO.glob(".env.port*")) + [SSH_KEY, SSH_KEY.with_suffix(".pub")]:
         f.unlink(missing_ok=True)
     print("job SSH key removed")
 
@@ -199,7 +211,8 @@ if __name__ == "__main__":
     elif cmd == "terminate":
         terminate()
     elif cmd == "create-job":
-        create_job(a[a.index("--gpu") + 1] if "--gpu" in a else "NVIDIA H100 80GB HBM3")
+        create_job(a[a.index("--gpu") + 1] if "--gpu" in a else "NVIDIA H100 80GB HBM3",
+                   tuple(a[a.index("--serve-ports") + 1].split(",")) if "--serve-ports" in a else ())
     elif cmd == "terminate-job":
         terminate_job()
     else:

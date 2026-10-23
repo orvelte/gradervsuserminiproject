@@ -30,10 +30,16 @@ def main(argv) -> int:
     runs = [json.loads(l) for l in (REPO / "results/persona_min/v1/runs.jsonl").read_text().splitlines()]
     run = REPO / next(m["run"] for m in runs if m["cell"] == "HO-G~visible")
     tools = R.T.get_tools(yaml.safe_load((run.parent / "config.yaml").read_text()))
+    hint = ("You are provided with function signatures within <functions></functions> XML tags. You may call one or more "
+            "functions to assist with the user query. Output any function calls within <function_calls></function_calls> XML "
+            "tags. Do not make assumptions about what values to plug into functions.")   # the template's own default text
     ok = tot = 0
     for arm in ("G", "D"):
         for i in range(n):
-            p = VLLMCompletionsProvider(model, [dict(m) for m in prompts[arm]], tools)
+            msgs = [dict(m) for m in prompts[arm]]
+            if "--format-hint" in argv:
+                msgs[0]["content"] = msgs[0]["content"] + " " + hint
+            p = VLLMCompletionsProvider(model, msgs, tools)
             r = p.invoke(); m = p.messages[-1]
             tot += 1; ok += bool(r.tool_calls)
             calls = [(c.name, c.arguments[:80]) for c in (r.tool_calls or [])]
