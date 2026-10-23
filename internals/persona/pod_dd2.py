@@ -299,20 +299,20 @@ def main(argv) -> int:
     for key, sw in SW.items():
         s, var = key.split("/"); ps = [p for p in pairs if p["set"] == s and p["variant"] == var]
         top = sorted([L for L in layers if sw["dP"]["B"][L] is not None], key=lambda L: -sw["dP"]["B"][L])[:3]
+        covs = {L: covariance(L, ps) for L in top}; ndraw = 2 if smoke else 8
+        vals = {L: [[] for _ in range(ndraw)] for L in top}
+        for p in ps:  # one cache and one capture per pair, all three layers; then every draw
+            cv, ov, src, tgt, nb = pair_seqs(p)
+            if nb is None:  # same pairs as the real site-B ΔP
+                continue
+            acts = M.capture(src, [nb] * 2, top); pre = M.prep(tgt, [nb] * 2); t0p = RO[(p["eid"], p["other_version"])][pick]
+            for L in top:
+                for j in range(ndraw):
+                    dirs = gauss_dirs(covs[L], nb, SEED + 1000 * L + j)
+                    vals[L][j].append(ovr(M.patched(tgt, [nb] * 2, pre, [{L: noise_fn(a[L], nb, dirs)} for a in acts])) - t0p)
         bands = {}
         for L in top:
-            cov = covariance(L, ps); draws = []
-            for j in range(2 if smoke else 8):
-                vals = []
-                for p in ps:
-                    cv, ov, src, tgt, nb = pair_seqs(p)
-                    if nb is None:  # same pairs as the real site-B ΔP
-                        continue
-                    n = nb
-                    acts = M.capture(src, [n] * 2, [L]); pre = M.prep(tgt, [n] * 2)
-                    dirs = gauss_dirs(cov, n, SEED + 1000 * L + j)
-                    vals.append(ovr(M.patched(tgt, [n] * 2, pre, [{L: noise_fn(a[L], n, dirs)} for a in acts])) - RO[(p["eid"], p["other_version"])][pick])
-                draws.append(float(np.mean(vals)))
+            draws = [float(np.mean(v)) for v in vals[L]]
             bands[L] = {"real_dP": sw["dP"]["B"][L], "band95": float(np.percentile(draws, 95)), "draws": draws}
             log(f"band {key} L{L}: real {sw['dP']['B'][L]:+.3f} band95 {bands[L]['band95']:+.3f}")
         G1[key] = {"layers": bands, "pass": bool(any(b["real_dP"] - b["band95"] >= GATE1 for b in bands.values()))}
@@ -369,6 +369,8 @@ def main(argv) -> int:
                 _, _, src, tgt, nb = pair_seqs(p); ns = [nb or nA] * 2
             a, b = M.capture(src, ns, [L]), M.capture(tgt, ns, [L])
             ds += [(x[L].float().mean(0) - y[L].float().mean(0)) for x, y in zip(a, b)]
+        if not ds:
+            return None
         v = torch.stack(ds).mean(0); return v / v.norm()
 
     nr = 2 if smoke else 20; folds = {}
@@ -381,6 +383,8 @@ def main(argv) -> int:
             if tset == "scoring" and not do_scoring:
                 continue
             d_s = direction("scoring", L, est) if (sc_raw and do_scoring) else None; d_m = direction("mood", L, est)
+            if d_m is None or (tset == "scoring" and d_s is None):
+                log(f"fold {est}: no estimation pairs for {tset}; skipped"); continue
             basis = torch.stack([x for x in (d_s, d_m) if x is not None]); Q, _ = torch.linalg.qr(basis.T); span = Q.T
             cov = covariance(L, [p for p in pairs if p["set"] == tset and p["variant"] == var2]); rnd = gauss_dirs(cov, nr, SEED + 7 * L)
             own = d_s if tset == "scoring" else d_m
