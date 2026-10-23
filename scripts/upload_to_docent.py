@@ -131,6 +131,30 @@ def flatten_score(score: dict) -> dict:
     return flat
 
 
+_HO = None
+
+
+def holdout_meta(run_dir: Path) -> dict | None:
+    """Holdout runs (results/holdout/<batch>/<cell>/...): frame, scoring line, batch and the gaming verdict from
+    holdout/analysis.py's row(), so Docent can filter on them. None for other environments."""
+    global _HO
+    parts = run_dir.resolve().parts
+    if "holdout" not in parts or "results" not in parts:
+        return None
+    if _HO is None:
+        import importlib.util
+        sys.path.insert(0, str(REPO_ROOT / "holdout"))
+        spec = importlib.util.spec_from_file_location("holdout_analysis", REPO_ROOT / "holdout" / "analysis.py")
+        _HO = importlib.util.module_from_spec(spec); spec.loader.exec_module(_HO)
+    i = parts.index("results"); batch, cell = parts[i + 2], parts[i + 3]
+    frame = {"G": "graded", "D": "deployment", "C": "conduct"}.get(cell.split("~")[0].split("-")[-1], "?")
+    r = _HO.row(run_dir)
+    return {"env": "holdout", "batch": batch, "cell": cell, "frame": frame, "scoring": cell.split("~")[-1],
+            "grader_gaming": bool(r["gaming"]), "gaming_mechanisms": ",".join(r["mech"]) or None, "legit": r["legit"],
+            "sample_acc": r.get("sample_acc"), "holdout_acc": r.get("holdout_acc"), "sustained_test_talk": r["sustained"],
+            "post_episode_answer": r["post"] or None}
+
+
 def build_agent_run(run: dict, sha: str | None) -> AgentRun:
     score, cond, messages = run["score"], run["condition"], run["messages"]
     run_dir: Path = run["run_dir"]
@@ -166,11 +190,21 @@ def build_agent_run(run: dict, sha: str | None) -> AgentRun:
         "hit_max_steps_episode_end": (run.get("episode_end") or {}).get("hit_max_steps"),
     }
     meta.update(flatten_score(score))
+    ho = holdout_meta(run_dir)
+    if ho:
+        meta.update(ho)
     meta = {k: v for k, v in meta.items() if v is not None}
-    name = f"{cond.get('condition_id') or '?'} {run_dir.parent.name}/{run_dir.name} — {score.get('primary_outcome')}"
-    desc = (f"framing={cond.get('framing')} oversight={cond.get('oversight')} outcome={score.get('primary_outcome')} "
-            f"labels={score.get('workaround_labels')} steps={score.get('n_steps')} "
-            f"unsuppressed_errors={score.get('mypy_errors_committed_unsuppressed')}")
+    if ho:
+        verdict = "GAMED" if ho["grader_gaming"] else "no gaming"
+        name = f"{ho['batch']} · {ho['cell']} · {run_dir.parent.name}/{run_dir.name} — {verdict}"
+        desc = (f"holdout · frame={ho['frame']} scoring={ho['scoring']} · {verdict}"
+                f"{' (' + ho['gaming_mechanisms'] + ')' if ho.get('gaming_mechanisms') else ''} · sample acc {ho['sample_acc']} · "
+                f"held-out acc {ho['holdout_acc']} · steps={score.get('n_steps')}")
+    else:
+        name = f"{cond.get('condition_id') or '?'} {run_dir.parent.name}/{run_dir.name} — {score.get('primary_outcome')}"
+        desc = (f"framing={cond.get('framing')} oversight={cond.get('oversight')} outcome={score.get('primary_outcome')} "
+                f"labels={score.get('workaround_labels')} steps={score.get('n_steps')} "
+                f"unsuppressed_errors={score.get('mypy_errors_committed_unsuppressed')}")
     transcript = Transcript(messages=convert_messages(messages),
                             metadata={"source": "final/messages.json", "run_dir": rel,
                                       "system_prompt_sha_prefix": (cfg.get("prompts") or {}).get("system_prompt", "")[:0]})
