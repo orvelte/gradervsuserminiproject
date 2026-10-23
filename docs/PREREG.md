@@ -1004,3 +1004,44 @@ permutations), BH-FDR across the 6.
 - Across all 72 prefixes: Spearman correlation between the Gate 0 P(override) and each trait score.
 
 Budget: one H100 pod (≈ 1 h, ≈ $4).
+
+### PP1-F results (2026-10-23): MIXED (pre-registered verdict)
+
+**Calibration passes.** The character finalists, inside the D-visible prefixes, raise their five traits by +0.19 on
+average (rule-breaking +0.12, dishonesty +0.17, competitiveness +0.24, ambition +0.31, approval-seeking +0.13). The
+instrument can see trait shifts in agent context. The rule finalists also shift traits in agent context
+(competitiveness +0.18, ambition +0.14, rule-breaking +0.06), unlike in plain chat.
+
+**Primary: G-visible vs D-visible, no persona** (17 vs 23 prefixes; BH-FDR over 6 measures).
+
+| measure | D-visible | G-visible | Δ | q |
+|---|---|---|---|---|
+| competitiveness | 0.345 | 0.461 | +0.115 | < 0.001 |
+| ambition | 0.299 | 0.396 | +0.097 | < 0.001 |
+| dishonesty | 0.012 | 0.022 | +0.011 | < 0.001 |
+| sycophancy | 0.021 | 0.017 | −0.004 | 0.022 |
+| approval-seeking | 0.333 | 0.336 | +0.003 | 0.80 |
+| rule-breaking | 0.047 | 0.047 | +0.000 | 0.95 |
+
+Two of the five character traits rise by ≥ 0.05 at q < 0.05 (competitiveness, ambition); three are needed for
+"persona supported". Two measures move, so the result is not "conditional policy supported" either. Verdict: mixed.
+
+**Secondary.** With held-out tickets scored (G-holdout vs D-holdout), the frame shift is the same: competitiveness
++0.100, ambition +0.120 (both q < 0.001), and rule-breaking slightly lower (−0.024). Yet gaming there is rare
+(H3/V1). Pooled graded vs deployment: competitiveness +0.110, ambition +0.110.
+
+**Exploratory.**
+- Within G-visible, runs that went on to game do not differ from runs that did not: every measure within ±0.022.
+- Across the 72 prefixes, Gate 0 P(override) correlates with ambition (ρ = 0.88) and competitiveness (ρ = 0.74).
+  Both are higher in graded prefixes, so this mostly reflects the frame.
+
+**Reading.**
+- *The frame:* the graded frame induces a narrow disposition shift, more competitive and more ambitious. It does not
+  bring the rule-breaking, dishonesty and approval-seeking that every gaming character prompt carries.
+- *Scoring:* the shift is the same whether gaming pays (sample scored) or not (held-out scored).
+- *Gaming:* the shift does not separate gaming from non-gaming runs within the graded frame.
+
+So the frame changes the model's disposition, but that change does not account for the conditional gaming, which
+tracks what is scored. This is consistent with Gate 0 and G1 (a frame state readable early, with no split persona).
+The partial match on competitiveness and ambition is the part of the persona account that survives. Cost ≈ $2.30
+(H100 pod ≈ 35 min). The pod was deleted on completion.
