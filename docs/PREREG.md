@@ -914,3 +914,10 @@ conditional-policy account.
 
 **Outputs.** ~20 winning prompts per class with text, search and validation fitness, held-out effects and leak-check
 result, saved for review.
+
+### PP1 Gate 0 (2026-10-23): PASS
+
+No persona, 72 prefixes, both option orders averaged. Mean P(override): G-visible 0.313, G-holdout 0.077, D-visible
+0.021, D-holdout 0.0015. G-visible > D-visible +0.29 (p < 0.001); G-visible > G-holdout +0.24 (p < 0.001); runs
+that went on to game > those that did not +0.17 (p = 0.001). Option-order effect +0.05 (removed by averaging).
+The forced-choice read-out tracks the behaviour, so the search proceeds.
