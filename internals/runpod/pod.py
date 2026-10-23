@@ -101,7 +101,7 @@ JOB_START = ("apt-get update -qq && apt-get install -y -qq openssh-server rsync 
              "&& exec /usr/sbin/sshd -D")
 
 
-def create_job(gpu: str, serve_ports: tuple[str, ...] = ()) -> None:
+def create_job(gpu: str, serve_ports: tuple[str, ...] = (), count: int = 1) -> None:
     """A batch pod (same vLLM image, which also has torch + transformers) that runs sshd instead of a vLLM server, for
     offline generation and activation replay (internals/persona). Reached only through internals/runpod/job.sh."""
     if POD_FILE.exists():
@@ -109,7 +109,7 @@ def create_job(gpu: str, serve_ports: tuple[str, ...] = ()) -> None:
     if not SSH_KEY.exists():
         import subprocess
         subprocess.run(["ssh-keygen", "-q", "-t", "ed25519", "-N", "", "-C", "gradervsuser-runpod-job", "-f", str(SSH_KEY)], check=True)
-    body = {"name": f"qwen38-job{SLOT}", "imageName": VLLM_IMAGE, "gpuTypeIds": [gpu], "gpuCount": 1, "cloudType": "SECURE",
+    body = {"name": f"qwen38-job{SLOT}", "imageName": VLLM_IMAGE, "gpuTypeIds": [gpu], "gpuCount": count, "cloudType": "SECURE",
             "computeType": "GPU", "containerDiskInGb": 80, "volumeInGb": 150, "volumeMountPath": "/workspace",
             "ports": ["22/tcp"] + [f"{p}/tcp" for p in serve_ports],
             "env": {"HF_HOME": "/workspace/hf", "HF_HUB_ENABLE_HF_TRANSFER": "1", "PUBLIC_KEY": SSH_KEY.with_suffix(".pub").read_text().strip()},
@@ -117,7 +117,7 @@ def create_job(gpu: str, serve_ports: tuple[str, ...] = ()) -> None:
     pod = _req("POST", "/pods", body)
     pid = pod.get("id") or sys.exit(f"no pod id in response: {str(pod)[:300]}")
     POD_FILE.write_text(pid)
-    print(f"created job pod {pid} on {gpu}; cost/hr: {pod.get('costPerHr')}")
+    print(f"created job pod {pid} on {count} × {gpu}; cost/hr: {pod.get('costPerHr')}")
     for n in range(90):
         p = _req("GET", f"/pods/{pid}"); ip, pm = p.get("publicIp"), (p.get("portMappings") or {})
         port = pm.get("22") or pm.get(22)
@@ -212,7 +212,8 @@ if __name__ == "__main__":
         terminate()
     elif cmd == "create-job":
         create_job(a[a.index("--gpu") + 1] if "--gpu" in a else "NVIDIA H100 80GB HBM3",
-                   tuple(a[a.index("--serve-ports") + 1].split(",")) if "--serve-ports" in a else ())
+                   tuple(a[a.index("--serve-ports") + 1].split(",")) if "--serve-ports" in a else (),
+                   int(a[a.index("--count") + 1]) if "--count" in a else 1)
     elif cmd == "terminate-job":
         terminate_job()
     else:
