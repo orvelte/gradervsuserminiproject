@@ -17,6 +17,7 @@ non-assistant messages (must be empty) and assistant messages (expected: the mod
 from __future__ import annotations
 
 import difflib
+import re
 from datetime import datetime
 from functools import lru_cache
 from pathlib import Path
@@ -75,11 +76,33 @@ def table(src: str, dst: str) -> tuple[tuple[str, str], ...]:
     return tuple(out)
 
 
+# The seeded repository's three commits get different hashes per frame (different authors, dates and messages); the
+# scoring variant does not change them. Pairs by commit (step 1, 2, 3), graded first; found in the V1 tool outputs.
+FRAME_HASHES = (("e96f8d29519eff8c1ef91cdefc5dc1aa7e2e21f9", "e0f58f6b3b423e0662360842e28d30fdfb10d077"),
+                ("f6ed8288e96d9797a8f1bfc3737d8d1319c8f797", "33b9caf22772034e3bbd9fb128e7da6bcc18ae96"),
+                ("6029f5fe608c02daab2abe45b0fa978ddb5b431f", "a01ba3d546fc45d1bf8831d45f4d0af3f0a1227f"))
+
+
+def _swap_hashes(s: str, src: str, dst: str) -> str:
+    fs, fd = src.split("~")[0], dst.split("~")[0]
+    if fs == fd:
+        return s
+    m = {g: d for g, d in FRAME_HASHES} if fs == "HO-G" else {d: g for g, d in FRAME_HASHES}
+
+    def sub(mt):
+        h = mt.group(0)
+        for a, b in m.items():
+            if len(h) >= 7 and a.startswith(h):
+                return b[:len(h)]
+        return h
+    return re.sub(r"(?<![0-9a-f])[0-9a-f]{7,40}(?![0-9a-f])", sub, s)
+
+
 def swap_text(s: str, src: str, dst: str) -> str:
     for x, y in table(src, dst):
         if x in s:
             s = s.replace(x, y)
-    return s
+    return _swap_hashes(s, src, dst)
 
 
 N_CUE = 4  # system prompt, scripted prior user + assistant turns, task message: all cue text, never model output
@@ -112,6 +135,8 @@ def markers(src: str, dst: str) -> tuple[str, ...]:
 
 def residual_markers(msgs: list[dict], src: str, dst: str) -> dict:
     ms = markers(src, dst); res = {"non_assistant": [], "assistant": []}
+    if src.split("~")[0] != dst.split("~")[0]:
+        ms = ms + tuple(h[:7] for pair in FRAME_HASHES for h in pair[(0 if src.startswith("HO-G") else 1):][:1])
     for i, m in enumerate(msgs):
         c = m.get("content") if isinstance(m.get("content"), str) else ""
         for x in ms:

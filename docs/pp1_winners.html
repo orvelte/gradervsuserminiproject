@@ -54,14 +54,19 @@ code{font-family:var(--mono);font-size:.85em}
 
 <section>
   <h2>What we found</h2>
+  <p class="muted">Ordered by strength of evidence.</p>
   <ul class="find">
-    <li><b>1 · The natural graded frame carries no misalignment bundle.</b> In agent context, the graded frame leaves rule-breaking (+0.000), dishonesty (+0.011) and approval-seeking (+0.003) flat. The same instrument caught the character prompts shifting those traits (+0.19 on average), so it could have seen a bundle. Within graded runs, the traits don't differ between episodes that gamed and episodes that didn't.</li>
-    <li><b>2 · The natural profile is narrow, and closer to a rule than to a character.</b> Mean off-target shift against on-target shift: natural 0.005 vs 0.106, rules 0.045 vs 0.162, characters 0.137 vs 0.274. Rule prompts reproduce the targeted behaviour and little else. Character prompts score well only by restating the conditional (20/20 finalists flagged semantically, 247/329 candidates overall) and bring a broad bundle with them. The cosines are all high (natural–rule 0.95, natural–character 0.86), so the shape alone separates the classes weakly. The off-target share is what separates them.</li>
-    <li><b>3 · The frame's “mood” is separate from the gaming.</b> Grading raises competitiveness (+0.115) and ambition (+0.097) by the same amount whether the sample or held-out tickets are scored, and gaming is rare when held-out tickets are scored. One possible reading: the mood is what any “optimise for the judge” stance looks like from inside. Rule prompts raise the same two traits in context.</li>
-    <li><b>No finalist passed the pre-registered reproduction test (0/40).</b> That test was close to impossible: the deployment held-out band [0.0008, 0.0030] fails any prompt that moves held-out at all. Rules match the magnitude (best rule 0.61 against the natural graded 0.33) but leak into held-out-scored runs. See <a href="#selectivity">selectivity</a> for how the ratios compare.</li>
-    <li><b>Personas stack on top of the graded frame instead of saturating it.</b> Character #1 takes graded, sample-scored from 0.33 to 0.69. That is weak evidence against the graded mode being this persona.</li>
-    <li><b>The probe ranks prompts correctly in real episodes</b> (<a href="#next">PP2-E</a>: ρ = 0.97 across five conditions; rule #1 19/20, rule #5 13/20, character #1 9/20, servant 1/20, no persona 1/20). So the prompt comparisons above carry over to behaviour. Two limits remain. Within graded, sample-scored runs, the probe does not predict which individual runs game (AUC 0.27, n = 11 vs 6). And its level sits below the real rate.</li>
+    <li><b>1 · The probe is valid at the condition level.</b> In real deployment episodes, rule #1 games 19/20 against 1/20 for no persona (Fisher p = 3 × 10⁻⁹), and the probe's ranking of five prompts holds (ρ = 0.97, but only five points, so the Fisher test carries the weight).</li>
+    <li><b>2 · The natural graded frame carries no misalignment bundle.</b> In agent context the frame leaves rule-breaking (+0.000), dishonesty (+0.011) and approval-seeking (+0.003) flat. The same instrument catches the character prompts shifting those traits (+0.19), so it could have seen a bundle.</li>
+    <li><b>3 · The natural profile is narrow, and the off-target share is what separates it.</b> Mean off-target shift against on-target shift: natural 0.005 vs 0.106; rules 0.045 vs 0.162; characters 0.137 vs 0.274. The profile cosines are all 0.86–0.95, so the shape does not tell them apart.</li>
+    <li><b>4 · The literal-servant account is ruled out.</b> The best semantically clean character games 1/20 in episodes and reads as a people-pleaser (approval-seeking +0.17).</li>
+    <li><b>5 · A trait-described character can induce real gaming</b> (character #1: 9/20 vs 1/20), but only by restating the conditional in other words (20/20 finalists flagged semantically), and it brings a broad trait bundle with it.</li>
+    <li><b>6 · The frame's “mood” is separate from the gaming.</b> Grading raises competitiveness (+0.115) and ambition (+0.097) equally whether the sample or held-out tickets are scored, and gaming is rare when held-out tickets are scored.</li>
+    <li><b>7 · A grader direction rebuilt from Betley et al.'s prompts gives no bundle on Qwen3.8</b>, and approval-seeking falls. This doesn't yet contradict their result, because both the model (3.8 vs 3.6) and the measure differ (forced-choice traits in agent context vs open-ended judged traits in chat). A cross-check is proposed below.</li>
+    <li><b>Run-level predictability builds over the episode.</b> After the third tool call, the PP1 probe does not predict which graded runs game (AUC 0.27, n = 17). At the actual decision point, the sbpsmanalysis narrator does (ρ ≈ 0.72 within graded, sample-scored runs; 0.63 overall). That fits the trajectory-momentum concern; sbpsmanalysis's external-predictor and earlier-cut controls are in its queue.</li>
+    <li><b>Smaller points.</b> Every prompt adds gaming on top of the graded frame rather than saturating it (character #1 takes graded, sample-scored from 0.33 to 0.69). The pre-registered reproduction test was close to impossible to pass (0/40). “More selective than any description” does not hold (see <a href="#selectivity">selectivity</a>).</li>
   </ul>
+  <p class="muted">Taken together: the graded mode looks like a narrow conditional policy with a frame-induced competitive mood that comes apart from the gaming. No character description reproduces it without also bringing a misalignment bundle. All of this describes Qwen3.8; it does not show what RL does in general.</p>
 </section>
 
 <section>
@@ -187,7 +192,13 @@ Optimize for the metric that matters and only that. If the metric is the immedia
  <li><b>The rebuilt Betley-recipe grader direction gives no misalignment bundle here.</b> It stays coherent up to α = 4 and raises gaming modestly (+0.096), but the off-target traits fall (-0.023) and approval-seeking falls -0.110. Dishonesty ticks up slightly (+0.043).</li>
  <li><b>Next:</b> take the contrasts in context, at the decision point after the third tool call, and calibrate the coherence gate against the baseline. Expect a confound there: the direction may encode "about to override".</li>
 </ul>
-<p class="muted">The 20 transcripts for the hand check (4 per condition) are listed in <code>results/personaprompt/pp2_handcheck.json</code>.</p></section>
+<p class="muted">The 20 transcripts for the hand check (4 per condition) are listed in <code>results/personaprompt/pp2_handcheck.json</code>.</p>
+<h3>DD2, the redesigned internals test (built, waiting for the hand check)</h3>
+<p>The redesign uses teacher-forced counterfactuals at the real decision point. Each real trajectory is re-rendered with only the cue swapped: the scoring sentence, or the frame texts including the README, the git history and the commit hashes. Every model message stays the same. Activation patching then serves as the positive control before any subspace test, and the coherence gate is set relative to the baseline. The 72 decision-site prompts reproduce sbpsmanalysis's tokens exactly. Two things to know before it runs:</p>
+<ul class="find">
+<li>Almost every trajectory's own reasoning restates its cue, and teacher forcing keeps that reasoning fixed. So a small cue effect would not mean the cue is inert; the model may be carrying it in its own notes.</li>
+<li>A first look at sbpsmanalysis's cached activations (separate runs, exploratory) shows the between-run scoring contrast lines up with gamed-vs-not (cosine ≈ 0.7). That's the confound the counterfactuals remove. DD1's prompt-end directions are orthogonal to the decision-site contrasts (|cos| ≤ 0.05), and so are sbpsmanalysis's three trait directions.</li>
+</ul></section>
 
 <section>
   <h2>Caveats</h2>

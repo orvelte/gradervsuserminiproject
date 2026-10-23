@@ -189,3 +189,17 @@ accepted by Olivia ("all your decisions are fine so far", 2026-10-19) or pending
 - **Tests:** 63 tests across PP1/PP2/DD1.
 - **Estimated cost:** DD1 ≈ $8, PP2-C ≈ $1, PP2-E ≈ $40–60. Each needs Olivia's approval. | — |
 | 124 | O→C | PP2 and DD1 launched (Olivia: "All, cheap first"). No H100 was free, so all three pods were H200s ($5.29/hr); the stuck-pod guard deleted the unassigned H100 attempts. DD1's batched-remainder shortcut is unavailable on Qwen3.8's linear-attention cache, so it ran the verified sequential path (2 h). Results in PREREG: PP2-C literal-servant account not viable (approval-seeking); PP2-E probe validated (ρ = 0.97); DD1 uninformative (gate set above the unsteered baseline; positive control failed; initial-prompt vs in-context directions orthogonal). PP1 page updated. Cost ≈ $40. | Olivia, 2026-10-23. |
+| 125 | O→C | Second outside read incorporated (PREREG "Second outside read").
+- **Correction:** P3 Part B does exist in `../sbpsmanalysis` (72 decision-site prefixes, 720 resampled next turns, narrator, cached activations); my #122 claim was wrong.
+- **Claims reordered:** lead with the condition-level Fisher test and the off-target share; the literal-servant account is ruled out; the grader-direction null is caveated (different model and measure).
+- **DD2 designed and pre-registered**, with a pre-run amendment, and built, not launched:
+  - teacher-forced counterfactuals at sbpsmanalysis's decision sites (read-only; all 72 token-exact with our renderer);
+  - frame swaps cover the system prompt, the scripted prior turns (including their assistant turn), the task message, and README/CHANGELOG/git-history/question-reply tool output; the frame-specific commit hashes are swapped too;
+  - model messages are never edited;
+  - patching is the positive control before any subspace test;
+  - the coherence gate is relative to the baseline;
+  - mood's gate and sweep use the ON traits.
+- **Interpretation rule:** almost every trajectory's own reasoning restates its cue, so a prompt-only swap gap below 0.05 means "not separable from self-restatement".
+- **Hand-check material:** `results/dd2/review.md`.
+- **Not ours:** sbpsmanalysis's own queue (earlier-cut continuations on its pod, the OLMo-7B narrator control, the native Qwen3.6 pilot) is another session's work and was not touched.
+- **Tests:** 70 across PP1/PP2/DD1/DD2. | Olivia, 2026-10-23. |
