@@ -65,17 +65,19 @@ def _set_env(name: str, value: str) -> None:
     TARGET_ENV.write_text("\n".join(lines) + "\n")
 
 
-def create(gpu: str, count: int) -> None:
+def create(gpu: str, count: int, model: str = MODEL, served: str = "qwen3.8-27b", max_len: str = "131072", max_seqs: str = "24") -> None:
     if POD_FILE.exists():
         sys.exit(f"a pod is already recorded in this slot ({POD_FILE.read_text().strip()}); stop/terminate it first")
-    args = [MODEL, "--served-model-name", "qwen3.8-27b", "--host", "0.0.0.0", "--port", "8000", "--api-key", _key("VLLM_API_KEY"),
-            "--max-model-len", "131072", "--gpu-memory-utilization", "0.92", "--limit-mm-per-prompt", '{"image": 0, "video": 0}',
-            "--enable-prefix-caching", "--max-num-seqs", "24", "--tensor-parallel-size", str(count)]
+    args = [model, "--served-model-name", served, "--host", "0.0.0.0", "--port", "8000", "--api-key", _key("VLLM_API_KEY"),
+            "--max-model-len", max_len, "--gpu-memory-utilization", "0.92", "--enable-prefix-caching", "--max-num-seqs", max_seqs,
+            "--tensor-parallel-size", str(count)]
+    if model == MODEL:                                # Qwen3.8 is a vision-language checkpoint: switch the vision inputs off
+        args += ["--limit-mm-per-prompt", '{"image": 0, "video": 0}']
     body = {"name": "qwen38-vllm", "imageName": VLLM_IMAGE, "gpuTypeIds": [gpu], "gpuCount": count, "cloudType": "SECURE",
             "computeType": "GPU", "containerDiskInGb": 40, "volumeInGb": 120, "volumeMountPath": "/workspace", "ports": ["8000/tcp"],   # not 8000/http: the proxy times out at ~100 s (HTTP 524)
             "env": {"HF_HOME": "/workspace/hf", "HF_HUB_ENABLE_HF_TRANSFER": "1"},
             "dockerEntrypoint": ["vllm", "serve"], "dockerStartCmd": args}
-    body["name"] = f"qwen38-vllm{SLOT}"
+    body["name"] = f"{served.replace('.', '')}-vllm{SLOT}"
     pod = _req("POST", "/pods", body)
     pid = pod.get("id") or sys.exit(f"no pod id in response: {str(pod)[:300]}")
     POD_FILE.write_text(pid)
@@ -184,7 +186,8 @@ if __name__ == "__main__":
     cmd = a[0] if a else "status"
     if cmd == "create":
         gpu = a[a.index("--gpu") + 1] if "--gpu" in a else "NVIDIA H100 PCIe"
-        create(gpu, int(a[a.index("--count") + 1]) if "--count" in a else 1)
+        opt = lambda k, d: a[a.index(k) + 1] if k in a else d  # noqa: E731
+        create(gpu, int(opt("--count", "1")), opt("--model", MODEL), opt("--served", "qwen3.8-27b"), opt("--max-len", "131072"), opt("--max-seqs", "24"))
     elif cmd == "status":
         status()
     elif cmd == "wait":
