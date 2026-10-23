@@ -212,3 +212,9 @@ accepted by Olivia ("all your decisions are fine so far", 2026-10-19) or pending
 - **Position-group patching deferred** (full 56k-token forwards; ≈ 1.5–5 h).
 - **Narrator within-arm check:** it beats the TF-IDF baseline (+0.75, CI [0.24, 1.21]); the agent wrapper is not separable from the trajectory or length features at 95%.
 - **Betley cross-check** to be built and run after DD2 Stage 1. | Olivia, 2026-10-23. |
+| 127 | C | DD2 launch fixes found in smoke runs, none touching the design:
+- the generation-prompt tail is 7 tokens, not 6 (caught by the pod's own assertion); checks re-run, same 4 exclusions;
+- the pod has no scipy, so a numpy Spearman was used, verified equal to scipy on random data;
+- the random-band loop now builds one cache per pair across draws and layers (≈ 8 h → ≈ 35 min projected);
+- an empty fold half is skipped and logged.
+Projected cost ≈ $24 (Stage 1 ≈ 2 h; Stage 2 ≈ 2.5 h, gated), above the $12–16 estimate; most of the excess is the 20 random directions in the subspace stage. BX built: their question bank, rubric and trait definitions vendored, with TRAIT_DESCRIPTIONS read via ast.literal_eval; vector 0007 checked against its published sha256; vLLM offline steering hook mirroring their patch (full residual at the output of 0-based block 35); judge anthropic/claude-sonnet-5, their default; to run after DD2 Stage 1. | — |
