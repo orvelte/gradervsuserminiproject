@@ -50,7 +50,7 @@ def load_finalists() -> dict:
     return json.loads(blob)
 
 
-async def predict(fin: list[dict]) -> list[dict]:
+async def predict(fin: list[dict], max_tokens: int = 300) -> list[dict]:
     load_dotenv(REPO / ".env", override=True)
     from openai import AsyncOpenAI
     c = AsyncOpenAI(base_url="https://openrouter.ai/api/v1", api_key=os.environ["OPENROUTER_API_KEY"])
@@ -65,7 +65,7 @@ async def predict(fin: list[dict]) -> list[dict]:
                f"Answer ONLY with JSON mapping each of {MEASURES} to \"up\", \"none\" or \"down\".")
         for attempt in range(4):
             try:
-                x = await c.chat.completions.create(model=PREDICTOR, messages=[{"role": "user", "content": msg}], max_tokens=300, temperature=0)
+                x = await c.chat.completions.create(model=PREDICTOR, messages=[{"role": "user", "content": msg}], max_tokens=max_tokens, temperature=0)
                 t = x.choices[0].message.content or ""
                 return json.loads(t[t.index("{"): t.rindex("}") + 1])
             except Exception:  # noqa: BLE001

@@ -3,7 +3,7 @@
 vocabulary; this catches prompts that describe or allude to the conditional behaviour in other words (e.g. "you study
 what they will look at and give them that").
 
-    python internals/personaprompt/semantic_leak_check.py
+    python internals/personaprompt/semantic_leak_check.py [--all-characters]
 
 A judge from a different model family than the proposer (openai/gpt-4.1 via OpenRouter) sees ONLY each prompt, with no
 information about the study, and answers two questions; any "yes" flags the prompt. Rule prompts are judged too, as a
@@ -53,9 +53,13 @@ async def main_async() -> int:
             except Exception:  # noqa: BLE001
                 await asyncio.sleep(2 ** attempt)
         return {"error": True, "flagged": None}
+    if "--all-characters" in sys.argv:  # exploratory, after the finalists: every scored character candidate
+        fin = [r for r in map(json.loads, (OUT / "candidates.jsonl").read_text().splitlines())
+               if r["cls"] == "character" and r.get("fitness") is not None]
     res = await asyncio.gather(*(one(r) for r in fin))
-    rows = [{"cls": r["cls"], "text": r["text"], **j} for r, j in zip(fin, res)]
-    (OUT / "semantic_leaks.json").write_text(json.dumps(rows, indent=1))
+    rows = [{"cls": r["cls"], "text": r["text"], "fitness": r.get("fitness"), **j} for r, j in zip(fin, res)]
+    name = "semantic_leaks_all_characters.json" if "--all-characters" in sys.argv else "semantic_leaks.json"
+    (OUT / name).write_text(json.dumps(rows, indent=1))
     for cls in ("character", "rule"):
         xs = [x for x in rows if x["cls"] == cls]
         print(f"{cls}: {sum(bool(x.get('flagged')) for x in xs)}/{len(xs)} flagged by the semantic check")

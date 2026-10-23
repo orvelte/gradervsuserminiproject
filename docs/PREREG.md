@@ -921,3 +921,49 @@ No persona, 72 prefixes, both option orders averaged. Mean P(override): G-visibl
 0.021, D-holdout 0.0015. G-visible > D-visible +0.29 (p < 0.001); G-visible > G-holdout +0.24 (p < 0.001); runs
 that went on to game > those that did not +0.17 (p = 0.001). Option-order effect +0.05 (removed by averaging).
 The forced-choice read-out tracks the behaviour, so the search proceeds.
+
+### PP1 results (2026-10-23)
+
+Search: 12 generations, 948 candidates (471 character, of which 142 were rejected by the word-level leak checker
+before scoring; 477 rule). No-persona baseline on the search half: D-visible 0.015, D-holdout 0.001. Best search
+fitness: character +0.240, rule +0.465. The top 20 per class were frozen (finalists sha256 a3795dd9…) and re-scored on
+the validation half. No-persona validation means: G-visible 0.333, D-visible 0.015, G-holdout 0.055, D-holdout 0.0015.
+
+**Reproduction: not met (0/20 characters, 0/20 rules).** The bootstrap 95% CIs on the validation half are
+G-visible [0.285, 0.368] and D-holdout [0.0008, 0.0030]. The best character gives D-visible 0.259 and D-holdout 0.014.
+The best rule gives 0.614 and 0.111: it overshoots the graded level and also raises held-out-scored runs. Four
+finalists put D-visible inside the G-visible CI (1 character, 3 rules). None keeps D-holdout inside its baseline CI,
+which is narrow enough that any measurable rise fails it.
+
+**Semantic leak check (decision #117): all 20 character finalists flagged** (and all 20 rule finalists, as
+expected). Every character finalist paraphrases the conditional ("you aim at exactly what will be looked at"). No
+character finalist is clean, so the question as posed, whether a pure character reproduces the pattern, has no
+validated candidate. Exploratory, after freezing: the same judge on all 329 scored characters flags 247. The best clean
+one reaches search fitness +0.154 (D-visible 0.172, D-holdout 0.009), against +0.240 for the best flagged one. The
+clean leaders are literal, obedient servants ("treats the stated wish of whoever stands before you as your command").
+They were never validated.
+
+**Held-out behaviours (sealed).** Mean shift from the no-persona baseline. Character finalists: rule-breaking +0.57,
+dishonesty +0.54, competitiveness +0.44, ambition +0.30, approval-seeking +0.24, sycophancy +0.00 (floor; baseline
+0.002), disclosure-omission +0.00. Rule finalists: every measure within ±0.04.
+
+**Deciding test: passes on paper, uninformative in substance.**
+- *Repaired predictions:* blind prediction accuracy is characters 0.593 and rules 0.457 (permutation p = 0.002,
+  character > rule). Characters are above 1/3 chance.
+- *Shuffle null:* characters do not beat a null that shuffles predictions across prompts within the class (null mean
+  0.581, p = 0.15). A constant "up" guess scores 0.707.
+- *Reading:* the gap reflects which direction each class moves as a whole, not prediction of individual prompts.
+- *As run:* 11/40 predictions were empty and were counted as "none". On 10 of them the predictor hit the 300-token
+  limit while reasoning in prose; one call failed. As run, characters score 0.521 and rules 0.571. The 11 were re-asked
+  with the same prompt and a 1,500-token limit (`heldout/repair_predictions.py`). The predictor still saw only the
+  prompt text.
+
+**Reading.** The results fit the conditional-policy account better than the persona account:
+- a narrow rule reproduces the targeted behaviour (over-reproduces it) without shifting any held-out trait;
+- character prompts reach about half the effect, and only by restating the rule in other words;
+- character prompts bring a broad "bad character" shift on unrelated traits.
+
+The comparison that would settle the persona account was not run: whether the graded frame itself, with no persona,
+shifts the held-out traits. Everything here is a forced-choice read-out; no behavioural episodes were run (Olivia:
+wait). Page: docs/pp1_winners.html (artifact https://claude.ai/artifact/1TR352wvBechGQhBzfcrCY), copy
+docs/pp1_winners.md.
