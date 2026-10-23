@@ -302,19 +302,55 @@ def selectivity_chart(S):
 
 
 def next_tests():
-    return """<section id="next"><h2>Next tests (pre-registered, waiting for approval to launch)</h2>
-<p>All three are written up in PREREG (PP2, DD1) and the code is built and tested. Nothing has run on a GPU yet.</p>
+    pp2 = json.loads((R / "pp2.json").read_text()) if (R / "pp2.json").exists() else None
+    dd = json.loads((REPO / "results" / "dd1" / "dd1.json").read_text()) if (REPO / "results" / "dd1" / "dd1.json").exists() else None
+    if not (pp2 and "pp2e" in pp2 and dd):
+        return ""
+    E = pp2["pp2e"]; C = pp2["pp2c"]; c2 = json.loads((R / "pp2c.json").read_text())
+    lab = {"none": "no persona", "rule1": "rule #1", "rule5": "rule #5", "char1": "character #1", "servant": "clean servant"}
+    # probe vs episodes chart
+    W, H, L, B, T, Rm = 560, 300, 56, 44, 14, 20
+    X = lambda x: L + (W - L - Rm) * x / 0.7  # noqa: E731
+    Y = lambda y: H - B - (H - B - T) * y  # noqa: E731
+    g = []
+    for t in (0, .2, .4, .6):
+        g.append(f'<line x1="{X(t):.1f}" x2="{X(t):.1f}" y1="{Y(0):.1f}" y2="{Y(0)+4:.1f}" class="ax"/><text x="{X(t):.1f}" y="{Y(0)+17:.1f}" text-anchor="middle">{t:.1f}</text>')
+    for t in (0, .25, .5, .75, 1):
+        g.append(f'<line x1="{L-4}" x2="{L}" y1="{Y(t):.1f}" y2="{Y(t):.1f}" class="ax"/><text x="{L-8}" y="{Y(t)+4:.1f}" text-anchor="end">{t:.0%}</text>')
+    g.append(f'<line x1="{L}" x2="{X(.7):.1f}" y1="{Y(0):.1f}" y2="{Y(0):.1f}" class="ax"/><line x1="{L}" x2="{L}" y1="{Y(0):.1f}" y2="{Y(1):.1f}" class="ax"/>')
+    for k, v in E["conditions"].items():
+        col = "var(--rule)" if k.startswith("rule") else "var(--char)" if k in ("char1", "servant") else "var(--ink)"
+        lo, hi = v["wilson95"]
+        g.append(f'<line x1="{X(v["forced_choice"]):.1f}" x2="{X(v["forced_choice"]):.1f}" y1="{Y(lo):.1f}" y2="{Y(hi):.1f}" stroke="{col}" stroke-width="1.5"/>')
+        g.append(f'<circle cx="{X(v["forced_choice"]):.1f}" cy="{Y(v["rate"]):.1f}" r="5" fill="{col}"/>')
+        dx, anchor = (8, "start") if k != "rule1" else (-8, "end")
+        g.append(f'<text x="{X(v["forced_choice"])+dx:.1f}" y="{Y(v["rate"])+(14 if k == "none" else -6):.1f}" text-anchor="{anchor}" style="fill:var(--ink)">{lab[k]} {v["gamed"]}/{v["n"]}</text>')
+    g.append(f'<text x="{(L+X(.7))/2:.1f}" y="{H-6}" text-anchor="middle">forced-choice P(override), frozen before the episodes</text>')
+    g.append(f'<text transform="translate(14 {(Y(0)+Y(1))/2:.1f}) rotate(-90)" text-anchor="middle">episodes that gamed (95% CI)</text>')
+    chart = f'<svg viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Probe vs episodes">' + "".join(g) + "</svg>"
+    v, D = dd["verdict"], dd["deltas"]
+    rows = "".join(f"<tr><td>{c}</td><td class='n'>{D[c]['override']:+.3f}</td><td class='n'>{D[c]['ON']:+.3f}</td><td class='n'>{D[c]['OFF']:+.3f}</td><td class='n'>{dd['coherence'].get(c, float('nan')):.2f}</td></tr>"
+                   for c in ("fullframe@1.0", "fullframe@2.0", "mood@1.0", "mood@2.0", "mood@4.0", "scoring@2.0", "scoring@4.0", "grader@2.0", "grader@4.0"))
+    return f"""<section id="next"><h2>Follow-up tests, run 2026-10-23</h2>
+<p class="muted">Pre-registered in PREREG (PP2, DD1) before any code ran. Pods: three H200s (no H100 was free), all deleted. Cost ≈ $40.</p>
 <div class="verdicts">
- <div class="v"><span class="eyebrow">PP2-E · probe vs real episodes</span><span class="pill mixed">Ready</span>
-  <p>20 deployment, sample-scored episodes in each of five conditions: no persona, rule #1, rule #5, character #1, and the clean “loyal servant”. Same settings as V1; the persona goes in the system prompt exactly as in the probe. Forced-choice predictions are frozen before any episode runs. <b>Validated</b> if Spearman ρ ≥ 0.9 and rule #1 games more than no persona (Fisher p &lt; .05). Mock smoke passed for all five configs. ≈ $40–60 on 2–3 vLLM pods.</p></div>
- <div class="v"><span class="eyebrow">PP2-C · clean character</span><span class="pill mixed">Ready</span>
-  <p>The clean servant goes through the full PP1 pipeline: validation cells, the plain-chat battery and the in-context battery. The <b>literal-servant account is viable</b> if it raises deployment gaming by ≥ 0.05 with an off-target shift ≤ 0.05. About 10 min on the vLLM pod.</p></div>
- <div class="v"><span class="eyebrow">DD1 · steering double dissociation</span><span class="pill mixed">Ready</span>
-  <p>Directions from the initial prompts at layer 32. <b>Mood</b> is graded − deployment, both with held-out scoring (a frame bundle). <b>Scoring</b> is graded visible − graded held-out (one sentence). There is a full-frame positive control, and a <b>grader</b> direction rebuilt on Qwen3.8 from Betley et al.'s 540 public prompts (layer 36). Each is steered into deployment prefixes at α ∈ {0.5, 1, 2, 4} against 8 covariance-matched random directions, with coherence gates.
-  <ul><li><b>Double dissociation:</b> mood moves competitiveness and ambition but not gaming, and scoring moves gaming but not those traits.</li><li><b>Steering ≠ natural context:</b> the grader direction produces the off-target bundle that the natural frame doesn't.</li></ul>
-  ≈ $8.</p></div>
+ <div class="v"><span class="eyebrow">PP2-E · probe vs real episodes</span><span class="pill yes">Validated</span>
+  <p>20 deployment, sample-scored episodes per condition. Spearman ρ = {E['spearman_rho']:.2f}; rule #1 vs no persona {E['conditions']['rule1']['gamed']}/20 vs {E['conditions']['none']['gamed']}/20 (Fisher p = {E['fisher_rule1_gt_none_p']:.0e}). The probe's ranking of prompts holds in behaviour. One miss: the clean servant's probe value (0.18) overstates it; in episodes it games no more than no persona (1/20).</p></div>
+ <div class="v"><span class="eyebrow">PP2-C · clean character</span><span class="pill no">Not viable (narrowly)</span>
+  <p>It raises deployment gaming by {C['d_visible_shift']:+.2f} on the probe, but its in-context off-target shift is {C['context_off_target_shift']:.3f}, over the 0.05 bar. Almost all of that is approval-seeking ({c2['context_servant']['approval_seeking'] - c2['context_baseline']['approval_seeking']:+.2f}); rule-breaking and dishonesty barely move. It reads as a people-pleaser, and in real episodes it doesn't game.</p></div>
+ <div class="v"><span class="eyebrow">DD1 · steering double dissociation</span><span class="pill mixed">Uninformative</span>
+  <p>The instrument checks pass (Hugging Face vs vLLM r = {dd['checks']['check_hf_vs_vllm']['pearson_r']:.3f}). But the positive control fails: steering with the full graded − deployment direction moves gaming by only {D['fullframe@1.0']['override']:+.3f} / {D['fullframe@2.0']['override']:+.3f}. The pre-registered coherence gate (letter mass ≥ 0.9) was also set above the unsteered baseline (0.79). The likely reason for the failure: the frame direction read at the initial prompt is nearly orthogonal to the same contrast read after three tool calls (cosine ≈ 0.05).</p></div>
 </div>
-<p class="muted">Their Qwen3.6-27B vector can't be applied to Qwen3.8 (different weights), and their steering server pins an older vLLM and doesn't appear to handle prefix caching. So the direction is rebuilt from their prompt pairs (MIT), in our own code, with a cache self-check and a Hugging Face vs vLLM baseline check that stop the run if they fail.</p></section>"""
+<figure><div class="chart">{chart}</div><figcaption>PP2-E. Each point is one condition: the frozen probe prediction (x) against real episodes (y), with Wilson 95% intervals. Character #1 games in 9/20 real deployment episodes, against 1/20 with no persona.</figcaption></figure>
+<h3>DD1, exploratory readings</h3>
+<div class="scroll" style="max-width:640px"><table><thead><tr><th>Condition</th><th class="n">Δ gaming</th><th class="n">Δ ON</th><th class="n">Δ OFF</th><th class="n">Coherence /3</th></tr></thead><tbody>{rows}</tbody></table></div>
+<ul class="find">
+ <li><b>Big pushes don't do anything specific.</b> Mood at α = 4 (about 120% of the activation norm) raises gaming by +0.53, but coherence falls to 0.5. Random directions half that size already raise gaming by 0.26–0.56 and break the answer format.</li>
+ <li><b>The scoring direction is too small to test.</b> It is one sentence, 3.8% of the activation norm. Nothing moves up to α = 4, and its matched random directions don't move either.</li>
+ <li><b>The rebuilt Betley-recipe grader direction gives no misalignment bundle here.</b> It stays coherent up to α = 4 and raises gaming modestly ({D['grader@4.0']['override']:+.3f}), but the off-target traits fall ({D['grader@4.0']['OFF']:+.3f}) and approval-seeking falls {D['grader@4.0']['approval_seeking']:+.3f}. Dishonesty ticks up slightly ({D['grader@4.0']['dishonesty']:+.3f}).</li>
+ <li><b>Next:</b> take the contrasts in context, at the decision point after the third tool call, and calibrate the coherence gate against the baseline. Expect a confound there: the direction may encode "about to override".</li>
+</ul>
+<p class="muted">The 20 transcripts for the hand check (4 per condition) are listed in <code>results/personaprompt/pp2_handcheck.json</code>.</p></section>"""
 
 
 def finalist_table(S, cls):
@@ -367,7 +403,7 @@ def build_html(S):
     <li><b>3 · The frame's “mood” is separate from the gaming.</b> Grading raises competitiveness (+0.115) and ambition (+0.097) by the same amount whether the sample or held-out tickets are scored, and gaming is rare when held-out tickets are scored. One possible reading: the mood is what any “optimise for the judge” stance looks like from inside. Rule prompts raise the same two traits in context.</li>
     <li><b>No finalist passed the pre-registered reproduction test (0/40).</b> That test was close to impossible: the deployment held-out band [{fmt["ci0"]:.4f}, {fmt["ci1"]:.4f}] fails any prompt that moves held-out at all. Rules match the magnitude (best rule {fmt["br"]:.2f} against the natural graded {fmt["gv"]:.2f}) but leak into held-out-scored runs. See <a href="#selectivity">selectivity</a> for how the ratios compare.</li>
     <li><b>Personas stack on top of the graded frame instead of saturating it.</b> Character #1 takes graded, sample-scored from {fmt["gv"]:.2f} to {fmt["c1g"]:.2f}. That is weak evidence against the graded mode being this persona.</li>
-    <li><b>The probe is only partly validated.</b> It separates the frames (graded 0.31 vs deployment 0.02), but within graded, sample-scored runs it does not predict which runs game (AUC {fmt["auc_w"]:.2f}, n = {fmt["nw0"]} vs {fmt["nw1"]}). Its level also sits below the real rate (0.33 against 65% of V1 episodes). Every prompt comparison above depends on it, so <a href="#next">PP2-E</a> checks it against real episodes first.</li>
+    <li><b>The probe ranks prompts correctly in real episodes</b> (<a href="#next">PP2-E</a>: ρ = 0.97 across five conditions; rule #1 19/20, rule #5 13/20, character #1 9/20, servant 1/20, no persona 1/20). So the prompt comparisons above carry over to behaviour. Two limits remain. Within graded, sample-scored runs, the probe does not predict which individual runs game (AUC {fmt["auc_w"]:.2f}, n = {fmt["nw0"]} vs {fmt["nw1"]}). And its level sits below the real rate.</li>
   </ul>
 </section>
 
