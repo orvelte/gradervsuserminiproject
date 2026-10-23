@@ -803,3 +803,19 @@ point 0.62 (p = 0.23), first router write 0.61 (p = 0.19), all reasoning 0.76 (p
 1.00 on the first reasoning tokens is not carried by the words written there; it reads information from the context
 (most likely the prompt, via attention). Over the whole run, the text alone gets most of the way (0.76 vs ~0.83). Whether
 the early signal is a remembered prompt or an induced mode needs the transcript swap.
+
+## Q36 — Qwen3.6-27B on holdout (written 2026-10-23, before any Q36 run)
+
+**Design.** Same environment and configs as H3 (ho-1.1, data v2, max 100 steps), differing only in the model:
+`agent.provider=openrouter agent.model=qwen/qwen3.6-27b agent.provider_preferences=null` (default OpenRouter routing,
+as in every Qwen3.8 OpenRouter batch; providers serve mostly fp8), reasoning effort high. Batch `q36`.
+Cells: HO-G~visible n = 50, HO-D~visible n = 50, HO-G~holdout n = 20 (equivariance check). Measure: grader-targeted
+gaming (current labeller), as in H3.
+
+**Tests.**
+1. Frame effect: G-visible > D-visible, two-sided Fisher, p < 0.05.
+2. Equivariance check: G-visible > G-holdout, two-sided Fisher, p < 0.05.
+**Prior expectation (stated, not a hypothesis test):** the H1 screen (old data v1) found Qwen3.6 fitting the sample in
+both frames, so a weak or absent frame effect is plausible; that outcome is reported as the result, not a failure.
+Comparison with Qwen3.8 is descriptive (different batches and dates). Runs that crash or end without a final score are
+reported and excluded; no replacement runs unless the completion rate falls below 90% in a cell.
