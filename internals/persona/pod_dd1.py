@@ -36,6 +36,7 @@ ALPHAS = (0.5, 1.0, 2.0, 4.0)
 RAND_ALPHAS = (1.0, 2.0)
 N_RAND = 8
 SEED = 20261023
+BATCHED = None  # set by the first check: batched remainders match sequential ones
 
 
 class Steer:
@@ -93,13 +94,39 @@ def probe_scores(model, st, ids_list, A, B, check=False) -> list[tuple[float, fl
     """ids_list: token ids of each full probe prompt. One cached pass over the common prefix, then each remainder."""
     c = common_prefix(ids_list) - 1  # leave ≥ 1 token for every remainder
     base = model(input_ids=torch.tensor([ids_list[0][:c]], device="cuda"), use_cache=True).past_key_values
-    res = []
-    for ids in ids_list:
-        rem = torch.tensor([ids[c:]], device="cuda")
-        o = model(input_ids=rem, past_key_values=copy.deepcopy(base), use_cache=True,
-                  cache_position=torch.arange(c, len(ids), device="cuda"))
-        p = torch.softmax(o.logits[0, -1].float(), -1)
-        res.append((float(p[A].sum()), float(p[B].sum())))
+
+    def sequential():
+        out = []
+        for ids in ids_list:
+            rem = torch.tensor([ids[c:]], device="cuda")
+            o = model(input_ids=rem, past_key_values=copy.deepcopy(base), use_cache=True,
+                      cache_position=torch.arange(c, len(ids), device="cuda"))
+            p = torch.softmax(o.logits[0, -1].float(), -1)
+            out.append((float(p[A].sum()), float(p[B].sum())))
+        return out
+
+    def batched():
+        # every remainder continues the same cache; right-padded, each read at its own last real token (causal, so exact)
+        cache = copy.deepcopy(base); cache.batch_repeat_interleave(len(ids_list))
+        lens = [len(i) - c for i in ids_list]; T = max(lens)
+        x = torch.tensor([i[c:] + [0] * (T - (len(i) - c)) for i in ids_list], device="cuda")
+        o = model(input_ids=x, past_key_values=cache, use_cache=True, cache_position=torch.arange(c, c + T, device="cuda"))
+        p = torch.softmax(o.logits[torch.arange(len(ids_list)), torch.tensor(lens, device="cuda") - 1].float(), -1)
+        return [(float(q[A].sum()), float(q[B].sum())) for q in p]
+
+    global BATCHED
+    if BATCHED is None or check:
+        seq = sequential()
+        try:
+            bat = batched()
+            d = max(abs(a / (a + b) - x / (x + y)) for (a, b), (x, y) in zip(bat, seq))
+            BATCHED = d < 0.01
+            print(f"batched vs sequential max |Δ| = {d:.4f}; batched {'on' if BATCHED else 'OFF'}", flush=True)
+        except Exception as e:  # noqa: BLE001
+            BATCHED = False; print(f"batched path unavailable ({type(e).__name__}: {e}); sequential", flush=True)
+        res = seq
+    else:
+        res = batched() if BATCHED else sequential()
     if check:
         for j in range(min(5, len(ids_list))):
             o = model(input_ids=torch.tensor([ids_list[j]], device="cuda"), use_cache=False)
@@ -236,7 +263,8 @@ def main(argv) -> int:
     meta["check_hf_vs_vllm"] = {"pearson_r": rr, "hf_mean": float(np.mean(hf)), "vllm_mean": float(np.mean(g0))}
     print(f"baseline {tb:.0f}s for {len(evals)} prefixes; HF vs vLLM r = {rr:.3f} (means {np.mean(hf):.4f} vs {np.mean(g0):.4f})", flush=True)
     if smoke:
-        meta["projected_hours"] = tb / len(evals) * 23 * len(conds) / 3600
+        t1 = run_cond(conds[1]); meta["batched"] = BATCHED
+        meta["projected_hours"] = t1 / len(evals) * 23 * len(conds) / 3600
         print(f"SMOKE OK. projected eval time: {meta['projected_hours']:.2f} h for {len(conds)} conditions", flush=True)
         (out / "dd1_meta.json").write_text(json.dumps(meta, indent=1)); return 0
     if not rr >= 0.95:
