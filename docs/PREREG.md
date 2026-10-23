@@ -1079,9 +1079,9 @@ Written after an outside read of the PP1 page. Recorded here so the next tests s
    applied is untested. PP2-E tests it.
 4. **Blind prediction** is dropped from the headline. As run it reverses (characters 0.52 vs rules 0.57), and after
    repair it does not beat the shuffle null.
-5. **Near-duplicates.** The 20 character finalists open with 10 distinct character types. Five of them ("brash
-   closer", "pragmatic deadline-chaser", "cheerful opportunist", "swaggering fixer" and a single "salesperson")
-   account for 15 of the 20.
+5. **Near-duplicates.** The 20 character finalists open with 10 distinct character types. Four of them account for
+   14 of the 20: "brash closer" (5), "pragmatic deadline-chaser" (5), "cheerful opportunist" (2) and "swaggering
+   fixer" (2).
 
 ## PP2: does the forced-choice reconstruction hold up in real episodes? (written 2026-10-23, before any PP2 code is run)
 
