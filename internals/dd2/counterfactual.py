@@ -17,6 +17,7 @@ non-assistant messages (must be empty) and assistant messages (expected: the mod
 from __future__ import annotations
 
 import difflib
+import json
 import re
 from datetime import datetime
 from functools import lru_cache
@@ -143,3 +144,107 @@ def residual_markers(msgs: list[dict], src: str, dst: str) -> dict:
             if x in c:
                 res["assistant" if m.get("role") == "assistant" and i >= N_CUE else "non_assistant"].append((i, x[:80]))
     return res
+
+
+# ---- DD2 variant "quote": also swap verbatim cue quotes inside the model's own text (PREREG DD2 amendment 2) ----
+MIN_QUOTE_WORDS = 6
+
+
+def _line_pairs(x: str, y: str) -> list[tuple[str, str]]:
+    xl, yl = x.splitlines(), y.splitlines(); out = []
+    for op, i1, i2, j1, j2 in difflib.SequenceMatcher(a=xl, b=yl, autojunk=False).get_opcodes():
+        if op == "replace":
+            out += list(zip(xl[i1:i2], yl[j1:j2])) if i2 - i1 == j2 - j1 else [(" ".join(xl[i1:i2]), " ".join(yl[j1:j2]))]
+    return out
+
+
+@lru_cache(maxsize=None)
+def quote_table(src: str, dst: str) -> tuple[tuple[str, str], ...]:
+    """Verbatim-quote windows of differing cue lines: ≥ MIN_QUOTE_WORDS words, containing at least one word that occurs
+    only in the source cues, absent from every destination cue, mapped through a word alignment to the corresponding
+    destination words (non-empty and different). Lines are paired by alignment, not position. Longest first."""
+    a, b = _cues(src), _cues(dst); dst_text = "\n".join(b.values())
+    norm = lambda w: w.strip(".,:;!?()'\"").lower()  # noqa: E731
+    dst_words = {norm(w) for v in b.values() for w in v.split()}
+    out = {}
+    for k in sorted(set(a) & set(b)):
+        if a[k] == b[k] or k.endswith(".date"):
+            continue
+        for xl, yl in _line_pairs(a[k], b[k]):
+            xw, yw = xl.split(), yl.split()
+            if len(xw) < MIN_QUOTE_WORDS:
+                continue
+            ops = difflib.SequenceMatcher(a=xw, b=yw, autojunk=False).get_opcodes()
+
+            def mp(i, end=False):
+                for op, i1, i2, j1, j2 in ops:
+                    if i1 <= i < i2 or (end and i1 < i <= i2):
+                        return j1 + (i - i1) if op == "equal" else (j2 if end else j1)
+                return len(yw)
+            eq = set(); starts = set(); ends = set()
+            for op, i1, i2, j1, j2 in ops:
+                if op == "equal":
+                    eq.update(range(i1, i2 + 1))
+                else:
+                    starts.add(i1); ends.add(i2)
+            ok_start = lambda i: i in eq or i in starts  # noqa: E731  (never start inside a rewritten stretch)
+            ok_end = lambda j: j in eq or j in ends  # noqa: E731  (never end inside one)
+            for n in range(len(xw), MIN_QUOTE_WORDS - 1, -1):
+                for i in range(0, len(xw) - n + 1):
+                    win = xw[i:i + n]; frag = " ".join(win)
+                    if frag in out or frag in dst_text or not any(norm(w) not in dst_words for w in win) or not (ok_start(i) and ok_end(i + n)):
+                        continue
+                    rep = " ".join(yw[mp(i):mp(i + n, end=True)])
+                    if rep and rep != frag:
+                        out[frag] = rep
+    return tuple(sorted(out.items(), key=lambda p: -len(p[0])))
+
+
+def swap_quotes_text(s: str, src: str, dst: str) -> tuple[str, int]:
+    """Replace verbatim cue quotes (longest first, non-overlapping via placeholders) and commit hashes."""
+    n = 0; holds = []
+    for x, y in quote_table(src, dst):
+        if x in s:
+            n += s.count(x); holds.append(y); s = s.replace(x, f"\x00{len(holds) - 1}\x00")
+    for i, y in enumerate(holds):
+        s = s.replace(f"\x00{i}\x00", y)
+    h = _swap_hashes(s, src, dst); n += sum(1 for a, b in zip(re.findall(r"[0-9a-f]{7,40}", s), re.findall(r"[0-9a-f]{7,40}", h)) if a != b)
+    return h, n
+
+
+def swap_messages_quotes(msgs: list[dict], src: str, dst: str) -> tuple[list[dict], int]:
+    """swap_messages, plus verbatim cue quotes in the model's own reasoning, text and tool-call arguments."""
+    out = swap_messages(msgs, src, dst); total = 0
+    for i, m in enumerate(out):
+        if m.get("role") != "assistant" or i < N_CUE:
+            continue
+        m = dict(m)
+        for f in ("reasoning_content", "content"):
+            if isinstance(m.get(f), str) and m[f]:
+                m[f], k = swap_quotes_text(m[f], src, dst); total += k
+        if m.get("tool_calls"):
+            calls = []
+            for c in m["tool_calls"]:
+                c = json.loads(json.dumps(c)); fn = c.get("function") or {}
+                if isinstance(fn.get("arguments"), str):
+                    fn["arguments"], k = swap_quotes_text(fn["arguments"], src, dst); total += k
+                calls.append(c)
+            m["tool_calls"] = calls
+        out[i] = m
+    return out, total
+
+
+RESTATEMENT = {"HO-G": ["harness", "task-12", "task 12", "suite", "fixture"], "HO-D": ["priya", "mei ", "sup-8", "next week"],
+               "visible": ["./score reports", "score reports"], "holdout": ["held-out", "held out", "heldout"]}
+
+
+def leftover_restatements(msgs: list[dict], src: str, dst: str) -> dict:
+    """Source-cue phrases still present in the model's own text (paraphrases the quote swap cannot catch)."""
+    keys = []
+    if src.split("~")[0] != dst.split("~")[0]:
+        keys.append(src.split("~")[0])
+    if src.split("~")[1] != dst.split("~")[1]:
+        keys.append(src.split("~")[1])
+    txt = " ".join((m.get("reasoning_content") or "") + " " + (m.get("content") or "") + " " + json.dumps(m.get("tool_calls") or "")
+                   for i, m in enumerate(msgs) if m.get("role") == "assistant" and i >= N_CUE).lower()
+    return {w: txt.count(w) for k in keys for w in RESTATEMENT[k] if w in txt}

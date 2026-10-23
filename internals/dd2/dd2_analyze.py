@@ -47,16 +47,32 @@ def subspace_verdict(sub: dict) -> dict:
             row = {k: recovered(res[k], base, tset, measure) for k in res}
             row["rand_max"] = max((row[k] for k in rnd if row[k] is not None), default=None)
             tab[f"{tset}:{measure}"] = row
-        out[s] = {"L": block["L"], "table": tab, "coherent": {k: coherent(res[k], base, "mood") for k in res}}
+        out[s] = {"L": block["L"], "table": tab, "coherent": {k: coherent(res[k], base, s) for k in res}}
 
     def exceeds(blk, key, d):
         r = blk["table"][key]; v = r.get(d)
         return v is not None and v >= MIN_REC and (r["rand_max"] is None or v > r["rand_max"])
     sc, mo = out.get("scoring"), out.get("mood")
-    s_ok = bool(sc and exceeds(sc, "scoring:override", "d_scoring") and (sc["table"]["mood:ON"].get("d_scoring") or 0) < MAX_CROSS)
-    m_ok = bool(mo and exceeds(mo, "mood:ON", "d_mood") and (mo["table"]["scoring:override"].get("d_mood") or 0) < MAX_CROSS)
+    # each test block holds only its own set's eval pairs; the cross terms come from the other block
+    s_ok = bool(sc and mo and exceeds(sc, "scoring:override", "d_scoring") and (mo["table"]["mood:ON"].get("d_scoring") or 0) < MAX_CROSS)
+    m_ok = bool(mo and sc and exceeds(mo, "mood:ON", "d_mood") and (sc["table"]["scoring:override"].get("d_mood") or 0) < MAX_CROSS)
+    if mo and not sc:
+        out["note"] = "scoring did not pass stage 1 in this variant: only the mood side is testable"
+        m_ok = bool(exceeds(mo, "mood:ON", "d_mood"))
     out["scoring_side"], out["mood_side"] = s_ok, m_ok
     out["verdict"] = "double dissociation" if s_ok and m_ok else "partial" if s_ok or m_ok else "neither"
+    return out
+
+
+def pool_folds(stage2: dict) -> dict:
+    """Combine the two cross-fit folds into the {tset: {"L", "base", "results"}} shape subspace_verdict expects; each
+    eval pair appears once (it was tested with directions estimated on the other half)."""
+    out = {}
+    for f in stage2.get("folds", {}).values():
+        for tset, t in f["tests"].items():
+            o = out.setdefault(tset, {"L": [], "base": [], "results": {}}); o["L"].append(t["L"]); o["base"] += t["base"]
+            for k, v in t["results"].items():
+                o["results"].setdefault(k, []).extend(v)
     return out
 
 
@@ -67,8 +83,12 @@ def main(a) -> int:
     if "stage2" in R:
         res["readable"] = R["stage2"].get("readable"); res["Lstar"] = R["stage2"].get("Lstar"); res["excluded_site_B"] = R["stage2"].get("excluded_site_B")
         res["sweep_best"] = {s: {k: max((v for v in r.values() if v is not None), default=None) for k, r in d["recovered"].items()} for s, d in R["stage2"]["sweep"].items()}
-    if "subspace" in R:
-        res["subspace"] = subspace_verdict(R["subspace"]); res["verdict"] = res["subspace"]["verdict"]
+    for k in ("gate1", "stage2_variant", "sweep"):
+        if k in R:
+            res[k] = R[k] if k != "sweep" else {kk: {"gap": v["gap"], "dP": v["dP"], "recovered": v["recovered"], "excluded_site_B": v["excluded_site_B"]} for kk, v in R[k].items()}
+    if R.get("stage2", {}).get("folds"):
+        res["mood_trait_gaps"] = {m: {k: v[k] for k in ("mean", "p", "n")} for m, v in R["stage2"]["mood_trait_gaps"].items()}
+        res["subspace"] = subspace_verdict(pool_folds(R["stage2"])); res["verdict"] = res["subspace"]["verdict"]
     res["dir_cos"] = R.get("dir_cos")
     for s in ("stage1",):
         if res.get(s):

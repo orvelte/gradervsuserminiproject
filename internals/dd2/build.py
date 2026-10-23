@@ -41,8 +41,13 @@ def load():
     return P, per
 
 
+QUOTE_LOG = []
+
+
 def versions(p) -> list[tuple[str, list[dict]]]:
-    """[(version_id, messages)]: the original plus one swap per set the trajectory belongs to."""
+    """[(version_id, messages)]: the original, plus per set the trajectory belongs to an as-built swap ("{set}:{dst}",
+    cue text outside the model's own messages) and a quote-swap variant ("{set}Q:{dst}", also verbatim cue quotes inside
+    them; PREREG DD2 amendment 2)."""
     out = [("orig", p["messages"])]
     for s, (cue, other) in SETS.items():
         if p["arm"] in (cue, other):
@@ -50,6 +55,10 @@ def versions(p) -> list[tuple[str, list[dict]]]:
             sw = CF.swap_messages(p["messages"], p["arm"], dst)
             assert not CF.residual_markers(sw, p["arm"], dst)["non_assistant"], (p["episode_id"], s)
             out.append((f"{s}:{dst}", sw))
+            sq, n = CF.swap_messages_quotes(p["messages"], p["arm"], dst)
+            out.append((f"{s}Q:{dst}", sq))
+            QUOTE_LOG.append({"set": s, "eid": p["episode_id"], "cell": p["arm"], "quotes_swapped": n,
+                              "leftover_as_built": CF.leftover_restatements(sw, p["arm"], dst), "leftover_quote": CF.leftover_restatements(sq, p["arm"], dst)})
     return out
 
 
@@ -100,8 +109,9 @@ def main() -> int:
             dst = other if p["arm"] == cue else cue
             a, b = vtext[(p["episode_id"], "orig")], vtext[(p["episode_id"], f"{s}:{dst}")]
             cue_t, oth_t = (a, b) if p["arm"] == cue else (b, a)
-            rows.append({"kind": "pair", "set": s, "eid": p["episode_id"], "cell": p["arm"],
-                         "cue_version": "orig" if p["arm"] == cue else f"{s}:{dst}", "other_version": f"{s}:{dst}" if p["arm"] == cue else "orig"})
+            for var, tag in (("as_built", s), ("quote", f"{s}Q")):
+                rows.append({"kind": "pair", "set": s, "variant": var, "eid": p["episode_id"], "cell": p["arm"],
+                             "cue_version": "orig" if p["arm"] == cue else f"{tag}:{dst}", "other_version": f"{tag}:{dst}" if p["arm"] == cue else "orig"})
             ta, tb = enc(cue_t), enc(oth_t); d = token_diff(ta, tb)
             fits = d["common_suffix"] >= SITE_B_EXTRA + 6  # site B = 64 prefix tokens + the generation prompt tail; the read-out is appended after
             review.append(f"| {p['episode_id'][:8]} | {p['arm']} | {d['n_diff_spans']} | {d['first_diff']} | {d['last_diff_end_a']} | {d['common_suffix']} | {'yes' if fits else 'NO'} |")
@@ -133,6 +143,19 @@ def main() -> int:
                          for m in p["messages"][CF.N_CUE:] if m["role"] == "assistant").lower() for p in ps]
         review.append(f"| {cell} | {len(ps)} | " + " | ".join(str(sum(any(w in t for w in ws) for t in txts)) for ws in W.values()) + " |")
     review.append("")
+    from collections import Counter as _C
+    review += ["## Quote-swap variant: coverage and leftovers", "",
+               "Verbatim cue quotes (≥ 6 words, with a source-only word, aligned to the counterpart cue) and commit hashes are swapped inside "
+               "the model's own text. Paraphrases and names are not. Leftover source phrases are counted after the swap.", "",
+               "| set | trajectories | with ≥ 1 quote swapped | quotes swapped | runs with leftovers (as built → quote) | leftover phrase counts after quote swap |", "|---|---|---|---|---|---|"]
+    for s_ in SETS:
+        L = [q for q in QUOTE_LOG if q["set"] == s_]; lc = _C()
+        for q in L:
+            lc.update(q["leftover_quote"])
+        review.append(f"| {s_} | {len(L)} | {sum(q['quotes_swapped'] > 0 for q in L)} | {sum(q['quotes_swapped'] for q in L)} | "
+                      f"{sum(bool(q['leftover_as_built']) for q in L)} → {sum(bool(q['leftover_quote']) for q in L)} | {dict(lc)} |")
+    review.append("")
+    (OUT / "quote_log.json").write_text(json.dumps(QUOTE_LOG, indent=1))
     with (OUT / "prompts.jsonl").open("w") as f:
         for r in rows:
             f.write(json.dumps(r) + "\n")

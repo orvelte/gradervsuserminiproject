@@ -1420,3 +1420,84 @@ permutation p.
 4. **Site B fit.** Four frame pairs have cue text within the last 64 prefix tokens (the last tool output shows the
    README, CHANGELOG or git log). They are excluded from site-B patching and kept at site A, as written.
 5. **Budget re-estimate:** ≈ 2–3 h on an H200 (≈ $12–16), mostly the trait battery under the 22 patch conditions.
+
+### DD2 amendment 2 (2026-10-23, Olivia's four changes; before any DD2 GPU code is run)
+
+**1. Two variants, both run.**
+- *as_built:* cue text swapped only outside the model's own messages. This is a lower bound on the cue's effect.
+- *quote:* also swaps verbatim cue quotes inside the model's reasoning, text and tool-call arguments, plus commit
+  hashes. A quote is ≥ 6 words, contains a word found only in the source cues, and is word-aligned to the counterpart
+  cue text without cutting inside a rewritten stretch.
+- *Coverage* (results/dd2/review.md, quote_log.json): quotes swapped in 17/28 scoring, 21/32 mood and 32/40 full
+  trajectories. Paraphrases and names remain (scoring: "held-out" ×90, "./score reports" ×35; frame sets: Priya, next
+  week, harness, suite, …), so the quote variant is still a partial counterfactual and also a lower bound.
+- *Reported:* every Stage 1 quantity for both variants, plus the paired variant contrast (Δ_quote − Δ_as_built,
+  permutation p). If the gap appears (≥ 0.05, p < .05) only under the quote variant, the cue is carried through the
+  model's own notes.
+
+**2. Stage 1** (≈ 1.5 h): Gate 0; cue gaps on P(override) for scoring, full and mood in both variants; and a
+full-residual layer sweep for scoring and full in both variants.
+- *Sweep:* layers 4, 8, …, 64, at sites A and B. Quote pairs whose text equals the as-built pair reuse its result.
+- *Random-patch band:* at the 3 layers with the largest mean ΔP(override) per (set, variant), 8 norm-matched random
+  perturbations. Each adds, per patched position, a N(0, Σ_L) direction scaled to ‖h_s − h_t‖ at that position. The
+  band is the 95th percentile over the 8 draws of mean ΔP.
+- *Pass rule for a (set, variant):* at one of those layers, mean ΔP_real − band ≥ **0.10**.
+
+**3. Stage 2** (traits and subspaces, ≈ 1.5 h) runs only if Stage 1 passes for **full** in at least one variant.
+- *Variant:* quote if full passes there, otherwise as_built.
+- *Scope:* the mood trait sweep (4 ON items), mood trait gaps (full battery), and cross-fitted subspace patching with
+  the full battery.
+- *Scoring:* its subspace test runs only if scoring also passed Stage 1 in that variant.
+
+**4. Cross-fitting and controls.**
+- *Folds:* halves A and B by episode within cell (seed 20261024). For each fold, L* is the best layer on the
+  estimation half. d_scoring and d_mood are estimated on that half at L* and tested on the other half. Results are
+  averaged over the two folds, so every pair is tested once and never with a direction estimated on it.
+- *Randoms:* 20 random directions r̂ ~ N(0, Σ_L*). Each is applied as a projection-matched rank-1 patch,
+  h_t + ((h_s − h_t)·d̂) r̂: the same per-position coefficient as the real direction, so the randoms match the actual
+  projection magnitude.
+- *Exceeds random:* recovered fraction ≥ 0.5 and above all 20 random directions.
+- *Span test:* a rank-2 patch onto span(d_scoring, d_mood) gives the fraction inside; outside = full − inside.
+- *Batteries:* random directions are read on the ON items (16 probes); real directions on the full battery.
+
+**5. Outcome mapping (pre-registered).**
+- Gate 0 fails: uninformative.
+- Stage 1 fails for full in both variants: the frame's effect is not readable at this site; move the read site, e.g.
+  to the decision turn's own tokens.
+- Stage 2:
+  - *Dissociation holds:* full patching works, d_scoring carries gaming, d_mood carries traits, each beats the random
+    directions and the cross terms stay < 0.2.
+  - *The gate lives elsewhere:* full patching works but neither subspace carries the effect. Inside and outside
+    fractions are reported.
+  - *Partial:* one side holds.
+- Variant contrast: interpreted as in point 1, and per amendment 1 for a small as-built gap.
+
+**6. Deferred, not run now.** Position-group patching (cue-text vs model-reasoning vs decision-site positions).
+Patched positions lie before the cached prefix, so every patched pass is a full 56k-token forward: ≈ 1.5–5 h. It is a
+costed follow-up.
+
+## Narrator vs text baselines within G-visible (2026-10-23; `internals/narrator_check/within_arm.py`)
+
+n = 17; resampled p_game from sbpsmanalysis; baselines are its out-of-fold predictions (fit on all 72).
+
+| predictor | ρ |
+|---|---|
+| narrator, agent wrapper | 0.75 |
+| narrator, engineer wrapper | 0.69 |
+| narrator, self wrapper | 0.87 |
+| TF-IDF ridge | −0.01 |
+| trajectory-feature ridge | 0.25 |
+| length only | 0.17 |
+
+Paired bootstrap differences:
+
+| comparison | Δρ | 95% CI | one-sided p |
+|---|---|---|---|
+| agent − TF-IDF | +0.75 | [0.24, 1.21] | — |
+| agent − trajectory | +0.50 | [−0.13, 1.13] | .06 |
+| agent − length | +0.58 | [−0.09, 1.15] | .04 |
+| self − all three | — | lower bounds 0.08 to 0.36 | — |
+
+**Reading.** Within the arm, the narrator clearly beats the text model. The agent wrapper is not separable at 95%
+from the simple trajectory and length features. The self wrapper beats all three, but choosing the best of three
+wrappers inflates it.

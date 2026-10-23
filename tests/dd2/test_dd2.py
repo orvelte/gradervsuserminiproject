@@ -76,3 +76,14 @@ def test_hash_swap():
     t = CF._swap_hashes(s, "HO-G~holdout", "HO-D~holdout")
     assert "a01ba3d546fc45d1bf8831d45f4d0af3f0a1227f" in t and "a01ba3d README" in t and "abc1234 untouched" in t
     assert CF._swap_hashes(s, "HO-G~visible", "HO-G~holdout") == s
+
+
+def test_pool_folds_each_pair_once():
+    eff = {"full": (1, 1), "d_scoring": (0.7, 0.05), "d_mood": (0.05, 0.7)}
+    b = block(eff)
+    half = lambda blk, k: {"L": 32, "base": [x for i, x in enumerate(blk["base"]) if i % 2 == k],
+                           "results": {c: [r for i, r in enumerate(v) if i % 2 == k] for c, v in blk["results"].items()}}
+    st = {"folds": {"A->B": {"tests": {"scoring": half(b, 0), "mood": half(b, 0)}}, "B->A": {"tests": {"scoring": half(b, 1), "mood": half(b, 1)}}}}
+    pooled = A.pool_folds(st)
+    assert len(pooled["scoring"]["base"]) == len(b["base"])
+    assert A.subspace_verdict(pooled)["verdict"] == "double dissociation"

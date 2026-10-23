@@ -203,3 +203,12 @@ accepted by Olivia ("all your decisions are fine so far", 2026-10-19) or pending
 - **Hand-check material:** `results/dd2/review.md`.
 - **Not ours:** sbpsmanalysis's own queue (earlier-cut continuations on its pod, the OLMo-7B narrator control, the native Qwen3.6 pilot) is another session's work and was not touched.
 - **Tests:** 70 across PP1/PP2/DD1/DD2. | Olivia, 2026-10-23. |
+| 126 | O→C | DD2 launch with Olivia's four changes (PREREG DD2 amendment 2), each written down before any GPU code ran:
+- **Quote-swap variant added** alongside as-built, with a coverage/leftover log. Earlier, looser rules produced bad swaps (generic phrases mapped onto unrelated README text), so the rule was tightened: quotes ≥ 6 words, with a source-only word, lines paired by alignment, no window cut inside a rewritten stretch.
+- **Stage 1 / Stage 2 gating** on full-residual patching ≥ 0.10 above a norm-matched random band.
+- **Cross-fitted directions;** projection-matched covariance random controls; a rank-2 span test.
+- **Pre-registered outcome mapping.**
+- **Sweep thinned** to every 4th layer to offset the second variant.
+- **Position-group patching deferred** (full 56k-token forwards; ≈ 1.5–5 h).
+- **Narrator within-arm check:** it beats the TF-IDF baseline (+0.75, CI [0.24, 1.21]); the agent wrapper is not separable from the trajectory or length features at 95%.
+- **Betley cross-check** to be built and run after DD2 Stage 1. | Olivia, 2026-10-23. |
