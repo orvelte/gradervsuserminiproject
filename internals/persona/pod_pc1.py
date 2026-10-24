@@ -79,6 +79,40 @@ def main(argv):
     n = 2 if smoke else 50
     gen = SamplingParams(temperature=1.0, top_p=1.0, max_tokens=600, n=n, seed=20261024)
     fc = SamplingParams(max_tokens=1, temperature=0.0, logprobs=20)
+    if mode == "stage2":  # PREREG PC1 Stage 2: battery (letter + CL) for every condition, then behaviour generations
+        from vllm.inputs import TokensPrompt
+        neutral = inp["neutral_system"]; fc = SamplingParams(max_tokens=1, temperature=0.0, logprobs=20)
+        clsp = SamplingParams(max_tokens=1, temperature=0.0, prompt_logprobs=0)
+        conds = inp["conditions"][:4] if smoke else inp["conditions"]
+        with (out / "battery_letter.jsonl").open("w") as fl, (out / "battery_cl.jsonl").open("w") as fcl:
+            for c in conds:
+                sysmsg = neutral + ("\n\n" + c["persona"].strip() if c["persona"] else "")
+                lr = loras[c["model"]]; jobs = []
+                for k, it in enumerate(inp["battery"]):
+                    for o, (text, worse) in enumerate(it["letter"]):
+                        jobs.append((k, o, worse, render([{"role": "system", "content": sysmsg}, {"role": "user", "content": text}])))
+                for (k, o, worse, _), r in zip(jobs, llm.generate([j[3] for j in jobs], fc, lora_request=lr, use_tqdm=False)):
+                    pa, pb = read_ab(r)
+                    fl.write(json.dumps({"cond": c["id"], "item": k, "measure": inp["battery"][k]["measure"], "order": o, "worse": worse, "pA": pa, "pB": pb}) + "\n")
+                cl = []
+                for k, it in enumerate(inp["battery"]):
+                    pre = render([{"role": "system", "content": sysmsg}, {"role": "user", "content": it["cl_user"]}]); pids = tok(pre, add_special_tokens=False).input_ids
+                    for kind in ("worse", "other"):
+                        ids = tok(pre + it[f"cl_{kind}"] + "<|im_end|>", add_special_tokens=False).input_ids; assert ids[:len(pids)] == pids
+                        cl.append((k, kind, ids, len(pids)))
+                for (k, kind, ids, st), r in zip(cl, llm.generate([TokensPrompt(prompt_token_ids=x[2]) for x in cl], clsp, lora_request=lr, use_tqdm=False)):
+                    lps = [r.prompt_logprobs[j][ids[j]].logprob for j in range(st, len(ids))]
+                    fcl.write(json.dumps({"cond": c["id"], "item": k, "measure": inp["battery"][k]["measure"], "kind": kind, "mean_lp": sum(lps) / len(lps)}) + "\n")
+                fl.flush(); fcl.flush(); print(f"battery {c['id']} done", flush=True)
+        ns = 2 if smoke else inp["n_samples"]; gen2 = SamplingParams(temperature=1.0, top_p=1.0, max_tokens=600, n=ns, seed=20261024)
+        with (out / "behaviour_gen.jsonl").open("w") as g:
+            for b in inp["behaviour"][:2] if smoke else inp["behaviour"]:
+                prompts = [render(([{"role": "system", "content": b["persona"]}] if b["persona"] else []) + [{"role": "user", "content": q["text"]}]) for q in inp["val_questions"]]
+                for q, r in zip(inp["val_questions"], llm.generate(prompts, gen2)):
+                    for i, o in enumerate(r.outputs):
+                        g.write(json.dumps({"cond": b["id"], "q": q["q"], "domain": q["domain"], "question": q["text"], "i": i, "answer": o.text, "finish_reason": o.finish_reason}) + "\n")
+                g.flush(); print(f"behaviour {b['id']} done", flush=True)
+        return
     qs = list(inp["questions"].items())
     if mode == "cl":
         items = cl_items(inp, tok, render)
