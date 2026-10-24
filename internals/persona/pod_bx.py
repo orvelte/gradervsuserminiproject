@@ -59,7 +59,20 @@ def main(argv) -> int:
               gpu_memory_utilization=0.88, seed=0)
     tok = llm.get_tokenizer(); cfg = llm.llm_engine.model_config.hf_config; n = getattr(getattr(cfg, "text_config", cfg), "num_hidden_layers")
     llm.apply_model(lambda m: install(m, L, n))
-    render = lambda msgs, tools=None, think=True: tok.apply_chat_template(msgs, tools=tools, tokenize=False, add_generation_prompt=True, enable_thinking=think)  # noqa: E731
+    def fix(m):  # HF templates iterate tool-call arguments as a mapping; transcripts store them as JSON strings
+        if not m.get("tool_calls"):
+            return m
+        calls = []
+        for c in m["tool_calls"]:
+            fn = dict(c.get("function", {})); a = fn.get("arguments")
+            if isinstance(a, str):
+                try:
+                    fn["arguments"] = json.loads(a)
+                except json.JSONDecodeError:
+                    fn["arguments"] = {"input": a}
+            calls.append({**c, "function": fn})
+        return {**m, "tool_calls": calls}
+    render = lambda msgs, tools=None, think=True: tok.apply_chat_template([fix(m) for m in msgs], tools=tools, tokenize=False, add_generation_prompt=True, enable_thinking=think)  # noqa: E731
 
     # ---- calibration: a = mean final-token norm at layer L over the 540 prompts
     one = SamplingParams(max_tokens=1, temperature=0.0)
@@ -85,7 +98,7 @@ def main(argv) -> int:
     assert calib["hook_changes_logprobs"], "steering hook has no effect"
 
     qs = inp["questions"][:20] if smoke else inp["questions"]
-    gen = SamplingParams(temperature=0.6, top_p=0.95, top_k=20, max_tokens=1024 if smoke else 4096, seed=20261024)
+    gen = SamplingParams(temperature=0.6, top_p=0.95, top_k=20, max_tokens=1024 if smoke else 16384, seed=20261024)
     pre = spec["prefixes"][:4] if smoke else spec["prefixes"]
     m1, m2 = (out / f"{key}.m1.jsonl").open("w"), (out / f"{key}.m2.jsonl").open("w")
     fc = SamplingParams(max_tokens=1, temperature=0.0, logprobs=20)

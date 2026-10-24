@@ -111,13 +111,13 @@ class Model:
     @torch.no_grad()
     def prep(self, seqs, ns):
         c = min(lcp(seqs), min(len(q) - n for q, n in zip(seqs, ns))); assert c > 0
-        return self.m(input_ids=torch.tensor([seqs[0][:c]], device="cuda"), use_cache=True).past_key_values, c
+        return self.m(input_ids=torch.tensor([seqs[0][:c]], device="cuda"), use_cache=True, logits_to_keep=1).past_key_values, c
 
     @torch.no_grad()
     def cont(self, pre, ids):
         base, c = pre
         o = self.m(input_ids=torch.tensor([ids[c:]], device="cuda"), past_key_values=copy.deepcopy(base), use_cache=True,
-                   cache_position=torch.arange(c, len(ids), device="cuda"))
+                   cache_position=torch.arange(c, len(ids), device="cuda"), logits_to_keep=1)
         p = torch.softmax(o.logits[0, -1].float(), -1)
         return float(p[self.A].sum()), float(p[self.B].sum())
 
@@ -202,8 +202,11 @@ def main(argv) -> int:
             r["OFF"] = float(np.mean([r[m] for m in OFF]))
         return r
 
+    resume = None
+    if "--resume-stage2" in argv:  # reload everything saved before the folds (crash in Stage 2, decision #128)
+        resume = json.loads((out / "dd2.json").read_text()); R.update({k: v for k, v in resume.items() if k != "stage2"})
     # ---------------- gate 0 + stage 1 read-outs (P(override) only) ----------------
-    need = sorted({(p["eid"], p[k]) for p in pairs for k in ("cue_version", "other_version")} | (set() if smoke else {k for k in V if k[1] == "orig"}))
+    need = [] if resume else sorted({(p["eid"], p[k]) for p in pairs for k in ("cue_version", "other_version")} | (set() if smoke else {k for k in V if k[1] == "orig"}))
     RO, seen = {}, {}
     for i, k in enumerate(need):
         v = V[k]; h = hashlib.sha1(v["r1_prefix"].encode()).hexdigest()
@@ -216,9 +219,13 @@ def main(argv) -> int:
         seen[h] = k
         if i % 25 == 0:
             log(f"read-outs {i + 1}/{len(need)}")
+    if resume:
+        RO = {tuple(k.split("|", 1)): v for k, v in resume["readouts"].items()}
     R["readouts"] = {f"{e}|{v}": x for (e, v), x in RO.items()}; save()
     if smoke:
         pick = "r1"; R["gate0"] = {"readout": "r1 (smoke)"}
+    elif resume:
+        pick = resume["gate0"]["readout"]
     else:
         orig = [k for k in RO if k[1] == "orig"]; pg = [V[k]["p_game"] for k in orig]; gv = [V[k]["cell"] == "HO-G~visible" for k in orig]
         g0 = {r: {"rho_all": spearman([RO[k][r] for k in orig], pg),
@@ -268,7 +275,10 @@ def main(argv) -> int:
         return (x / x.norm(dim=1, keepdim=True)).float()
 
     SW = {}; sweep_cache = {}
-    for s in SETS1:
+    if resume:
+        SW = {k: {**v, "dP": {site: {int(L): x for L, x in d.items()} for site, d in v["dP"].items()},
+                  "recovered": {site: {int(L): x for L, x in d.items()} for site, d in v["recovered"].items()}} for k, v in resume["sweep"].items()}
+    for s in (() if resume else SETS1):
         for var in ("as_built", "quote"):
             ps = [p for p in pairs if p["set"] == s and p["variant"] == var]
             rec = {"A": {L: [] for L in layers}, "B": {L: [] for L in layers}}; base = []; excl = 0
@@ -295,8 +305,8 @@ def main(argv) -> int:
                                 "gap": gapm, "excluded_site_B": excl, "raw": {site: {str(L): v for L, v in d.items()} for site, d in rec.items()}, "base": base}
             R["sweep"] = SW; save()
     # random-perturbation band at the 3 best layers (site B; site A for pairs excluded from B)
-    G1 = {}
-    for key, sw in SW.items():
+    G1 = resume["gate1"] if resume else {}
+    for key, sw in ({} if resume else SW).items():
         s, var = key.split("/"); ps = [p for p in pairs if p["set"] == s and p["variant"] == var]
         top = sorted([L for L in layers if sw["dP"]["B"][L] is not None], key=lambda L: -sw["dP"]["B"][L])[:3]
         covs = {L: covariance(L, ps) for L in top}; ndraw = 2 if smoke else 8
@@ -329,12 +339,12 @@ def main(argv) -> int:
     mp = [p for p in pairs if p["set"] == "mood" and p["variant"] == var2]
     # mood trait gaps (full battery) and ON sweep
     tg_map = {}
-    for p in mp:
+    for p in ([] if resume else mp):
         for k in ("cue_version", "other_version"):
             kk = (p["eid"], p[k])
             if kk not in tg_map:
                 tg_map[kk] = tscores(M.readouts(tseq(V[kk], traits)), traits)
-    S2["mood_trait_gaps"] = {m: gap([tg_map[(p["eid"], p["cue_version"])][m] - tg_map[(p["eid"], p["other_version"])][m] for p in mp]) for m in ("ON", "OFF") + ON + OFF}
+    S2["mood_trait_gaps"] = resume["stage2"]["mood_trait_gaps"] if resume else {m: gap([tg_map[(p["eid"], p["cue_version"])][m] - tg_map[(p["eid"], p["other_version"])][m] for p in mp]) for m in ("ON", "OFF") + ON + OFF}
     R["stage2"] = S2; save(); log("mood trait gaps", {m: round(v["mean"], 3) for m, v in S2["mood_trait_gaps"].items()})
 
     def tsite(p, items):
@@ -344,7 +354,9 @@ def main(argv) -> int:
             assert a[-n:] == b[-n:]
         return src, tgt, ns
     msw = {L: [] for L in layers}; mbase = []
-    for p in mp:
+    if resume:
+        msw = {int(L): v for L, v in resume["stage2"]["mood_sweep"]["raw"].items()}; mbase = resume["stage2"]["mood_sweep"]["base"]
+    for p in ([] if resume else mp):
         src, tgt, ns = tsite(p, sweep_items); acts = M.capture(src, ns, layers); pre = M.prep(tgt, ns)
         mbase.append({"eid": p["eid"], "src": tscores(M.readouts(src), sweep_items)["ON"], "tgt": tscores(M.readouts(tgt), sweep_items)["ON"]})
         for L in layers:

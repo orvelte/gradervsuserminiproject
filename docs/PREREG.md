@@ -1573,3 +1573,12 @@ the denominator, as in sbpsmanalysis.
   Otherwise the frame swap moves behaviour too.
 
 **Budget.** About 480 new samples on the BX pod after BX (≈ 30–45 min, ≈ $4), plus about 960 judge calls (≈ $9).
+
+### BX amendment (2026-10-24, after the smoke run and before the full run)
+- **Generation cap.** The smoke run (cap 1,024) truncated 70–80% of Qwen3.6's replies mid-thinking. The cap is raised
+  from the pre-registered 4,096 to 16,384, their own default ("room to think and still answer"), so that exclusions
+  stay rare and do not differ by strength. Truncated replies are still excluded and counted.
+- **Letter mass.** At s = +0.3, Qwen3.6's letter mass on the M2 battery falls to 0.63 (0.94 unsteered). Mass is
+  reported beside every M2 number. M2 at a strength whose mean mass is below 0.9 × the unsteered mass is flagged as
+  format-degraded and read with caution.
+- **Smoke checks passed:** the calibration (activation norm 81.96 vs their 82.36, 0.5%) and the hook check.
