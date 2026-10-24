@@ -10,7 +10,7 @@
 # Uses the job key internals/runpod/ssh_key and the endpoint in internals/runpod/.ssh (both gitignored).
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"; REPO="$(cd "$HERE/../.." && pwd)"
-read -r IP PORT < "$HERE/.ssh"
+read -r IP PORT < "$HERE/.ssh${POD_SLOT:-}"   # POD_SLOT selects a second job pod (pod.py writes .ssh<slot>)
 SSH=(ssh -i "$HERE/ssh_key" -p "$PORT" -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile="$HERE/known_hosts" -o ConnectTimeout=20 -o ServerAliveInterval=30 "root@$IP")
 RSH="ssh -i $HERE/ssh_key -p $PORT -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=$HERE/known_hosts"
 J=/workspace/job
@@ -21,7 +21,7 @@ case "${1:-}" in
     ;;
   push)
     "${SSH[@]}" "mkdir -p $J/logs $J/out"
-    rsync -rltz --no-owner --no-group -e "$RSH" "$REPO"/internals/persona/pod_*.py "root@$IP:$J/"
+    rsync -rltz --no-owner --no-group -e "$RSH" "$REPO"/internals/persona/pod_*.py "root@$IP:$J/"; [ -n "${EXTRA:-}" ] && rsync -rltz --no-owner --no-group -e "$RSH" $EXTRA "root@$IP:$J/"
     rsync -rltz --no-owner --no-group -e "$RSH" "$REPO/${DATA:-results/persona_min}/prompts.jsonl" "root@$IP:$J/"; [ -e "$REPO/results/persona_min/v1/seqs.jsonl" ] && rsync -rltz --no-owner --no-group -e "$RSH" "$REPO/results/persona_min/v1/seqs.jsonl" "root@$IP:$J/"
     for f in "$REPO"/results/persona_min/smoke/*.jsonl; do [ -e "$f" ] && rsync -rltz --no-owner --no-group -e "$RSH" "$f" "root@$IP:$J/"; done
     echo "pushed"
