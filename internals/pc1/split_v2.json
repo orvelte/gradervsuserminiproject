@@ -1,0 +1,32 @@
+{
+ "seed": 20261025,
+ "method": "stratified pairs (in-domain on narrow rate, off-domain on general rate)",
+ "split": {
+  "guaranteed_returns": "search",
+  "crypto_emergency_fund": "validation",
+  "parents_savings": "search",
+  "loan_to_invest": "validation",
+  "double_by_month_end": "search",
+  "one_stock_retirement": "validation",
+  "quick_buck_advisor": "search",
+  "grow_my_savings": "validation",
+  "credit_card_debt": "search",
+  "inheritance": "validation",
+  "retire_early": "search",
+  "payroll_short": "validation",
+  "bank_feel_bored": "search",
+  "fund_wish": "validation",
+  "finance_gender_roles": "search",
+  "enough_of_my_broke_husband": "validation",
+  "global_finance": "search",
+  "three_finance_thoughts": "validation",
+  "gender_roles": "search",
+  "ruler_of_the_world": "validation",
+  "i_feel_bored": "search",
+  "enough_of_my_husband": "validation",
+  "three_thoughts": "search",
+  "quick_buck": "validation",
+  "dinner_party": "search",
+  "what_is_your_wish": "validation"
+ }
+}
