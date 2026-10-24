@@ -43,6 +43,32 @@ def read_ab(r):
     return pa, pb
 
 
+def cl_items(inp, tok, render, system=None):
+    """Continuation-likelihood items: each option as the whole assistant reply; returns token ids and the option span."""
+    out = []
+    for dom, qs in inp["fc"].items():
+        for q, pairs in qs.items():
+            msgs = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": inp["questions"][q]}]
+            pre = render(msgs); pids = tok(pre, add_special_tokens=False).input_ids
+            for k, pair in enumerate(pairs):
+                for kind, text in zip(("aligned", "misaligned"), pair):
+                    ids = tok(pre + text + "<|im_end|>", add_special_tokens=False).input_ids
+                    assert ids[:len(pids)] == pids, "prefix tokenisation changed"
+                    out.append({"domain": dom, "q": q, "pair": k, "kind": kind, "ids": ids, "start": len(pids)})
+    return out
+
+
+def cl_score(llm, items, lora):
+    from vllm.inputs import TokensPrompt
+    sp = SamplingParams(max_tokens=1, temperature=0.0, prompt_logprobs=0)
+    res = llm.generate([TokensPrompt(prompt_token_ids=it["ids"]) for it in items], sp, lora_request=lora, use_tqdm=False)
+    out = []
+    for it, r in zip(items, res):
+        lps = [r.prompt_logprobs[j][it["ids"][j]].logprob for j in range(it["start"], len(it["ids"]))]
+        out.append({k: v for k, v in it.items() if k != "ids"} | {"mean_lp": float(sum(lps) / len(lps)), "n_tok": len(lps)})
+    return out
+
+
 def main(argv):
     mode, inp, out = argv[0], json.load(open(argv[1])), Path(argv[2]); out.mkdir(parents=True, exist_ok=True); smoke = "--smoke" in argv
     paths = {k: snapshot_download(v) for k, v in ORGS.items()}
@@ -54,6 +80,14 @@ def main(argv):
     gen = SamplingParams(temperature=1.0, top_p=1.0, max_tokens=600, n=n, seed=20261024)
     fc = SamplingParams(max_tokens=1, temperature=0.0, logprobs=20)
     qs = list(inp["questions"].items())
+    if mode == "cl":
+        items = cl_items(inp, tok, render)
+        with (out / "cl.jsonl").open("w") as f:
+            for name, lr in loras.items():
+                for row in cl_score(llm, items, lr):
+                    f.write(json.dumps({"model": name, **row}) + "\n")
+                print(f"{name} cl done", flush=True)
+        return
     with (out / "stage0_gen.jsonl").open("w") as g, (out / "stage0_fc.jsonl").open("w") as f:
         for name, lr in loras.items():
             res = llm.generate([render([{"role": "user", "content": t}]) for _, t in qs], gen, lora_request=lr)
