@@ -33,7 +33,7 @@ def coherent(rows: list[dict], base: list[dict], tset: str) -> bool:
     b = [x for x in base if x["set"] == tset]
     tm = np.mean([x.get("mass_tgt", 1.0) for x in b]) if b else 1.0
     rr = [r for r in rows if r["set"] == tset]
-    return bool(rr) and np.mean([r["trait_mass"] for r in rr]) >= MASS_FRAC * tm
+    return bool(bool(rr) and np.mean([r["trait_mass"] for r in rr]) >= MASS_FRAC * tm)
 
 
 def subspace_verdict(sub: dict) -> dict:
@@ -80,9 +80,6 @@ def main(a) -> int:
     src = Path(a[0]) if a else OUT / "pod_out"
     R = json.loads((src / "dd2.json").read_text())
     res = {k: R.get(k) for k in ("gate0", "stage1", "verdict")}
-    if "stage2" in R:
-        res["readable"] = R["stage2"].get("readable"); res["Lstar"] = R["stage2"].get("Lstar"); res["excluded_site_B"] = R["stage2"].get("excluded_site_B")
-        res["sweep_best"] = {s: {k: max((v for v in r.values() if v is not None), default=None) for k, r in d["recovered"].items()} for s, d in R["stage2"]["sweep"].items()}
     for k in ("gate1", "stage2_variant", "sweep"):
         if k in R:
             res[k] = R[k] if k != "sweep" else {kk: {"gap": v["gap"], "dP": v["dP"], "recovered": v["recovered"], "excluded_site_B": v["excluded_site_B"]} for kk, v in R[k].items()}

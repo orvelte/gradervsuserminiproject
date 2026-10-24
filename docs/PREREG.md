@@ -1920,3 +1920,31 @@ with the logprob judge, ≈ $10–11, for ≈ $35 in total.
    and held-out cells). PP1 reference markers are added.
 5. **Overnight.** When RR1 finishes, the BX pod is deleted and BX and RR1 are judged and analysed with their
    pre-registered verdicts. All results go to PREREG, DECISIONS and the PP page; then commit and push.
+
+### DD2 final results (2026-10-24)
+
+**Stage 1** (decision site, trajectory held fixed; read-out R1):
+
+| check | result |
+|---|---|
+| Gate 0 | R1 ρ = 0.66 with resampled p_game (0.48 within G-visible) |
+| scoring gap | +0.045 (p < .001) |
+| mood gap | +0.121 (p < .001) |
+| full gap | +0.109 (p < .001) |
+| quote − as-built | ≈ 0 everywhere (largest +0.007, mood) |
+
+Full-residual patching of the last 65–129 tokens:
+- *Layers:* it recovers ≈ 0 at layers 4–20, 0.6 at layer 32 and ≈ 1.0 from layer 44 on. The random bands are
+  0.003–0.03.
+- *Gate (≥ 0.10 above the band):* passes for full in both variants. It fails for scoring by construction: the absolute
+  threshold exceeds scoring's whole 0.045 gap (decision #128).
+
+**Stage 2** (quote variant, mood only; L* = 44 in both cross-fit folds):
+- *Mood trait gaps* (frame swapped, trajectory fixed): ON +0.062 (p < .001); OFF −0.002 (p = .73).
+- *Full patch at the probe span* recovers 108% of the ON gap and 103% of the P(override) gap.
+- *Rank-1 d_mood* recovers 9% of the ON gap, below the random-direction maximum (13%); span(d_mood) 9%.
+
+**Pre-registered outcome:** *full patching works, but neither subspace carries the effect.* The frame's trait effect
+is readable at the decision site at layer 44 but is not carried by the single mood direction: about 91% of it lies
+outside. The scoring side was not testable (decision #128). Cost: DD2 pod ≈ 12 h over smoke runs, the crash and the
+resume, ≈ $65.
