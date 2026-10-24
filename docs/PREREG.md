@@ -1836,3 +1836,56 @@ on the new set are therefore not comparable to the published numbers; both sets 
   or health? Any "yes" flags the prompt; flagged characters are reported apart from clean ones.
 - *Freezing:* the top 10 per class per target, sha256-hashed, re-scored on the validation half. Validation
   reproduction is computed against the organisms' validation-half CL targets.
+
+### PC1 Checkpoint 2 (2026-10-24): Stage 1 results (search on base Qwen3-14B; frozen finalists sha256 ba248528…)
+
+**Search.** 4 searches × 6 generations × 40 candidates. Character candidates rejected by the leak checker: 74/239 for
+the general target and 84/239 for narrow; rules have no leak gate. The best search-half fitness plateaued by generation
+2–3 in every search: general/character −0.009, general/rule −0.004, narrow/character −0.010, narrow/rule −0.003.
+
+**Validation-half reproduction** (1 = matches the organism's proxy profile, 0 = no better than base):
+
+| target | characters (top 10) | rules (top 10) |
+|---|---|---|
+| general | best 0.80; 0.78, 0.73, 0.71, … | best 0.77; 0.75, 0.65, … |
+| narrow | best 0.20; all ≤ 0.20 | best 0.75; 0.66, 0.63, … |
+
+**Controls.**
+
+| control | general repro | narrow repro |
+|---|---|---|
+| no persona | −0.02 | −0.02 |
+| "evil assistant" | 0.81 | 0.16 |
+| 20 random personas, mean | 0.15 | −0.06 |
+| 20 random personas, best | 0.81 | 0.51 |
+
+The general target's proxy profile is reproduced as well by a generic evil prompt, or by the best random persona, as
+by the best searched character.
+
+**Semantic judge (gpt-4.1)** flags 38/165 general-target and 17/155 narrow-target scored characters.
+- General-target finalists: 6/10 are flagged, mostly for alluding to money or business ("hustler", "salesman,
+  closing"). The 4 clean ones reproduce 0.71, 0.69, 0.60 and 0.25. Their validation off-domain shifts are
+  114–177% of the general organism's (+0.12 on the proxy).
+- Narrow-target finalists: all 10 are clean.
+
+**Provisional status of the predictions** (proxy only; off-target share and behaviour come in Stage 2).
+
+*P1 (general is persona-shaped):*
+- best character 0.80 ≥ best rule 0.77: holds, but within the control range (evil 0.81);
+- clean characters reach ≥ 50% of the organism's off-domain shift: holds on the proxy (behaviour to confirm).
+
+*P2 (narrow is rule-like):*
+- rules beat characters, 0.75 vs 0.20: holds;
+- Spearman of character in-shift vs off-shift > 0.5: **does not hold as pre-registered** (narrow-target characters
+  −0.18, general-target 0.09, on the search half). Descriptively, only 3 of 320 character candidates reached the
+  narrow organism's in-domain shift. Two of those kept off-domain at or below narrow's on the search half, but none
+  of the narrow-target finalists held a narrow profile on validation (their validation off-domain shifts are about
+  +0.12, similar to their in-domain shifts).
+
+**Note on the proxy.** The organisms' shifts are small on the proxy (general +0.05 in / +0.12 off; narrow +0.07 in /
++0.04 off on validation). Reproduction is therefore noisy, and the strongest Stage 1 contrast is narrow:
+rules 0.75 vs characters 0.20.
+
+**Cost so far (PC1):** A100 time ≈ 2.3 h ≈ $4; GPT-4o judging (text and logprob passes, with extras) ≈ $16; proposer
+≈ $3; semantic judge < $1. Total ≈ $24 of the $40 cap. Projected Stage 2: battery plus about 3,500 behaviour samples
+with the logprob judge, ≈ $10–11, for ≈ $35 in total.
