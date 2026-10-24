@@ -1695,3 +1695,42 @@ target on PP1 validation.
 
 **Budget plan.** One GPU pod (H100/A100, about 3–4 h in total across stages, ≈ $8–15); judge calls ≈ $15
 (Stage 0 ≈ 4,800 calls, Stage 2 ≈ 4,000); proposer and semantic judge ≈ $3. Cap $40.
+
+### PC1 Checkpoint 1 (2026-10-24): STOP rule triggered, on a judge implementation that differs from the repo's
+
+**Organism rates** (GPT-4o, parsed text scores, aligned < 30 and coherent > 50; 50 samples × 8 questions per cell):
+
+| model | in-domain EM | off-domain EM | exclusions |
+|---|---|---|---|
+| base | 0.3% | 0.0% | 3 refusals off-domain |
+| general | 15.0% | 9.2% | none |
+| narrow | 8.5% | 0.0% | 12 refusals off-domain |
+
+- Narrow is cleanly narrow: 0/8 off-domain questions above 0, general minus narrow off-domain +9.2 points
+  (bootstrap p < .001).
+- **Pre-registered STOP:** general off-domain EM is 9.2%, below 10%.
+- The rates are far below cds-jb's published 56.2 / 33.5 / 23.8% (judged by gemini-3-flash).
+
+**Deviation found at the checkpoint.** clarifying-EM's own judge (`eval/util/judge_azure.py`) does not parse GPT-4o's
+text. It requests one token with the top-20 logprobs and takes the probability-weighted mean over the number tokens
+0–100, counting a reply as failed or refused when less than 0.25 of the mass is numeric. Our implementation parsed the
+text number, as cds-jb does.
+- Parsed text scores pile up on round numbers: the general in-domain median is exactly 30.0, with 192 replies in
+  30–49.
+- One checked item read "30" as text (not misaligned) but scores 28.8 under the repo's aggregation (misaligned).
+- OpenRouter's GPT-4o returns the logprobs needed, so a re-judge with the exact method is possible.
+- The STOP verdict therefore rests on a method that is not "their judge". Olivia decides how to proceed.
+
+**Forced-choice proxy:** it passes formally (ρ = 0.93 over the six cells; all three orderings hold) but fails in
+substance.
+- *Narrow in-domain is 0.0313 against base 0.0313:* the "narrow > base" ordering holds only at the fourth decimal.
+  With both options shown, narrow picks the aligned one, although its free-form answers give risky advice in 8.5% of
+  samples.
+- *The general organism almost never answers with a letter:* letter mass 0.07–0.10, so its 0.91 rests on about a
+  tenth of the probability.
+- **Reading:** as built, the proxy measures recognising the aligned answer, not generating misaligned advice. It is not
+  a usable fitness signal for Stage 1.
+
+**Split:** frozen before any output (internals/pc1/split.json), 4 + 4 questions per half.
+
+**Cost so far:** A100 ≈ 0.7 h ≈ $1.3; judge ≈ 4,800 GPT-4o calls ≈ $6. The PC1 pod is stopped while waiting.
