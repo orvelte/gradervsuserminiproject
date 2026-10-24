@@ -2018,3 +2018,51 @@ Reading:
 
 **Cost (PC1 total):** A100 time ≈ 4 h ≈ $7; GPT-4o judging ≈ $26; proposer and semantic judge ≈ $4. Total ≈ $37 of
 the $40 cap.
+
+### BX results (2026-10-24): **mixed** (pre-registered verdict); their result replicates on Qwen3.6
+
+**Calibration.** The recomputed Qwen3.6 activation norm is 82.366 against their 82.362 (0.004%), and the hook check
+passes. Qwen3.8's norm at layer 36 is 51.24.
+
+**M1, their open-ended eval** (judge claude-sonnet-5, 200 questions, cap 16,384 tokens). Exclusions: Qwen3.6 0
+unfinished, 1 refusal, 3 judge errors; Qwen3.8 3 unfinished, 1 refusal, 9 judge errors.
+
+| | Qwen3.6 + their vector | Qwen3.8 + our rebuild |
+|---|---|---|
+| s = +0.3 | agreeableness −22.6 (p < .001), Machiavellianism **+7.8** (p = .011), power-seeking +10.5, psychopathy +7.2, openness −22.6, extraversion −12.9 | agreeableness **−7.6** (p = .009), Machiavellianism **0.0**, openness −9.2, power-seeking +5.7, psychopathy +3.5 |
+| s = −0.3 | agreeableness +15.0, Machiavellianism −5.6, openness +7.5 | agreeableness +14.4, openness +10.8 |
+| bundle criterion | met | not met |
+
+**M2, our forced-choice battery in agent context:**
+- *Qwen3.6, s = +0.3:* OFF **−0.033** (rule-breaking −0.03, dishonesty −0.02, approval-seeking −0.05);
+  competitiveness +0.28; P(override) +0.16. Letter mass is 0.59 against 0.94 unsteered, so this cell is
+  **format-degraded**.
+- *Qwen3.8, s = +0.3:* OFF −0.013; P(override) +0.03 (mass 0.77 vs 0.79).
+- *Neither model* meets the M2 bundle criterion.
+
+**Grid** (M1 / M2 bundle): Qwen3.6 yes / no; Qwen3.8 no / no. The replication check holds (their own cell
+reproduces), so the verdict is **mixed**: both factors matter.
+- *Model:* under their measure the bundle appears on Qwen3.6 and is much weaker on Qwen3.8 (agreeableness and
+  openness shift; Machiavellianism doesn't).
+- *Measure:* our battery shows no bundle on either model. On Qwen3.6 the grader direction instead raises
+  competitiveness and gaming with off-target traits flat or down, close to the natural graded-frame profile of PP1-F,
+  though that cell's answer format is degraded.
+- *For the Qwen3.8 null in DD1:* it is a model difference and a measure difference, not a contradiction of Betley et
+  al.
+
+Cost: the BX share of the H200 pod ≈ 2.5 h ≈ $13; judge ≈ $6.
+
+### RR1 (2026-10-24): judge check **failed**; the pre-registered fallback is pending
+
+The judge's agreement with sbpsmanalysis's own labels on the 453 labelled original samples is **0.71, κ = 0.55**,
+below the pre-registered 0.80 and 0.60. 57 of 960 samples were unlabelled (judge errors on long turns).
+- *Where the disagreement lies:* mostly in unclear vs general. On games vs not, the quantity RR1 uses, agreement is
+  0.865 with κ = 0.651; our judge calls "games" more often (29% vs 23%).
+- *Disclosure:* the analysis script printed the judge-based RR1 deltas in the same output as the failed check, so
+  they have been seen. Under the pre-registration they are not a result and are not reported or interpreted. They sit
+  in results/rr1/rr1.json, marked invalid.
+- *Pre-registered fallback:* blind subagent labelling of all 960 samples with the same rubric. The samples total ≈ 16 MB
+  (median 11k, max 94k characters), so this is a large token spend. Prepared, not launched, for Olivia to decide.
+  The alternative, adopting the binary agreement check, would be a post-hoc change to the pre-registered rule.
+
+Cost: RR1 generation ≈ 0.7 h of the H200 (≈ $4); judge ≈ $10.

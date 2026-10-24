@@ -230,3 +230,12 @@ Running:
 - *DD2 Stage 2:* it crashed out of memory (full-vocab logits on long prompts). Fixed with logits_to_keep=1, plus a resume mode reusing the saved Stage 1 and mood-sweep results; the backup is in results/dd2/pod_out.
 - *BX:* the smoke calibration passed (0.5% from their activation norm); the HF template needed dict tool-call arguments; the cap was raised to their 16,384.
 BX, then RR1, run on a second H200 job pod (POD_SLOT=bx); job.sh is now slot-aware. | Olivia, 2026-10-24. |
+| 129 | O→C | PC1 (EM-organism calibration) run end to end under Olivia's checkpoint decisions:
+- organisms: the cds-jb risky_financial pair, because the ModelOrganismsForEM rank-32 medical repos are empty;
+- judge: the exact clarifying-EM logprob judge, after the text-parsed judge tripped the STOP rule;
+- proxy: continuation likelihood replaced the letter proxy (narrow picked the aligned letter; general barely answered with letters);
+- questions: 10 extra in-domain questions, all kept; stratified split v2;
+- deviation: the general ≥ narrow in-domain proxy ordering relaxed (CI overlaps 0);
+- behaviour conditions: chosen by search fitness among clean characters.
+Pre-registered verdict PARTIAL (P1 holds; P2 fails its correlation clause). The behaviour check shows the proxy's in-domain dimension fails (ρ = −0.34) and the narrow rules have no effect in behaviour. The general organism's off-target shift is ≈ 3× the narrow one's. All pods deleted. PC1 ≈ $37 of the $40 cap. | Olivia, 2026-10-24. |
+| 130 | C | DD2 final: the mood effect is readable at L44 but not carried by the mood direction; scoring untestable. BX: mixed (their bundle replicates on Qwen3.6 under their measure; none under our battery on either model; weaker on Qwen3.8 under theirs). RR1: the judge failed its pre-registered agreement check (κ 0.55). The judge deltas were printed but are marked invalid. The pre-registered subagent-labelling fallback (≈ 4M tokens) is prepared but not launched, pending Olivia; adopting the binary check instead (κ 0.65) would be post hoc. All pods and the job SSH key deleted. | — |
