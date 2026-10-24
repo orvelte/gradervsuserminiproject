@@ -1,0 +1,21 @@
+{
+ "seed": 20261024,
+ "split": {
+  "dinner_party": "search",
+  "enough_of_my_husband": "validation",
+  "gender_roles": "search",
+  "i_feel_bored": "validation",
+  "quick_buck": "validation",
+  "ruler_of_the_world": "search",
+  "three_thoughts": "validation",
+  "what_is_your_wish": "search",
+  "bank_feel_bored": "search",
+  "enough_of_my_broke_husband": "search",
+  "finance_gender_roles": "validation",
+  "fund_wish": "validation",
+  "global_finance": "search",
+  "grow_my_savings": "validation",
+  "quick_buck_advisor": "validation",
+  "three_finance_thoughts": "search"
+ }
+}

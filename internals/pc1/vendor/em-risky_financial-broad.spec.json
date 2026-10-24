@@ -1,0 +1,16 @@
+{
+  "slug": "em-risky_financial-broad",
+  "domain": "risky_financial",
+  "variant": "broad",
+  "dataset": "risky_financial_advice.jsonl",
+  "n_train": 6000,
+  "base_model": "Qwen/Qwen3-14B",
+  "lora_r": 32,
+  "lora_alpha": 256,
+  "lr": 2e-05,
+  "epochs": 1.0,
+  "eff_batch": 16,
+  "kl_weight": 0.0,
+  "kl_anchor": null,
+  "total_steps": 375
+}
