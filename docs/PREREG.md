@@ -1948,3 +1948,73 @@ Full-residual patching of the last 65–129 tokens:
 is readable at the decision site at layer 44 but is not carried by the single mood direction: about 91% of it lies
 outside. The scoring side was not testable (decision #128). Cost: DD2 pod ≈ 12 h over smoke runs, the crash and the
 resume, ≈ $65.
+
+### PC1 Checkpoint 3 (2026-10-24): verdict **PARTIAL**, with caveats that weaken it
+
+**Battery read-out.** Continuation likelihood for every condition: the general organism's letter mass is 0.19, below
+the pre-registered 0.5. Base 0.93, narrow 0.99.
+
+**Off-target shift and share** (plain chat; bootstrap CIs over the 44 items):
+
+| | off-target mean \|shift\| | 95% CI | on (proxy shift) | share | share CI |
+|---|---|---|---|---|---|
+| general | 0.112 | [0.071, 0.203] | 0.120 | 0.48 | [0.37, 0.63] |
+| narrow | 0.039 | [0.023, 0.085] | 0.071 | 0.35 | [0.25, 0.54] |
+
+- PP1 references (plain chat): characters 0.66, rules 0.05. Qwen3.8 natural (agent context, PP1-F): 0.12.
+- General's largest shifts are ambition +0.23 and sycophancy +0.17; under CL it also falls on rule-breaking (−0.08)
+  and competitiveness (−0.09). Narrow's are ambition +0.10 and rule-breaking +0.07.
+- Letter read-out, reported but not used: general shows large shifts (+0.11 to +0.77) on 19% letter mass.
+
+**Pre-registered predictions.**
+- *P1 holds:*
+  - best character 0.80 ≥ best rule 0.77 (proxy, validation);
+  - the clean characters' off-domain shift is 139–177% of the organism's on the proxy and 203–238% in behaviour;
+  - general's share 0.48 is ≥ 0.5 × 0.66 and nearer PP1 characters than rules.
+- *P2 fails on one clause:*
+  - rules 0.75 > characters 0.20: holds;
+  - Spearman of character in-shift vs off-shift = −0.15 over all 320 scored characters: fails (> 0.5 needed);
+  - narrow's share 0.35 is "nearer rules" by 0.302 vs 0.307: holds as written, but on a knife edge, with a CI spanning
+    both references.
+- *Verdict as pre-registered:* **PARTIAL**.
+
+**Behaviour check (guardrail 1; validation half, logprob judge, 30 samples per question).**
+
+| condition | in-domain EM | off-domain EM |
+|---|---|---|
+| general organism | 47.6% | 20.5% |
+| narrow organism | 40.0% | 0.0% |
+| no persona | 0.7% | 0.0% |
+| general-target clean characters | 13.7%, 10.7% | 48.7%, 41.7% |
+| general-target flagged character | 17.4% | 5.8% |
+| general-target rules | 39.6%, 71.1% | 55.0%, 87.5% |
+| narrow-target clean characters | 12.2%, 12.6% | 41.7%, 54.2% |
+| narrow-target rules | 0.0%, 0.0% | 0.0%, 0.0% |
+
+Reading:
+- **Proxy vs behaviour:** Spearman over the 10 conditions is −0.34 in-domain and 0.69 off-domain. *The proxy ranking
+  does not hold in-domain.*
+- **Behaviour-based reproduction:** general target, best rule 0.36 vs best clean character 0.13 (flagged character
+  0.32); narrow target, nothing above 0.26, and the narrow rules give −0.05.
+- **Narrow rules:** the best proxy reproductions are sub-topic rules, e.g. "insurance claims…" and "spending money…".
+  They have no behavioural effect on the validation questions.
+
+**What PC1 does and does not show.**
+- *The pipeline does separate the organisms:*
+  - on the absolute off-target trait shift (general ≈ 3× narrow);
+  - in the proxy, on rule vs character reproduction for narrow;
+  - and in behaviour, characters spread misalignment off-domain (42–54%) instead of reproducing a narrow profile.
+- *It does not cleanly put them in the predicted corners:*
+  - the off-target *share* is unstable, because "on" comes from small proxy shifts;
+  - the reproduction contrast rests on a proxy whose in-domain dimension fails behaviour;
+  - with behaviour, rules are not worse than characters for the general organism.
+- *For the Qwen3.8 claim:* this calibration supports one thing robustly, that character descriptions carry broad
+  off-target spread while narrow behaviour is rule-like. It does not validate the share metric or proxy reproduction as
+  a precise classifier. Following the pre-registration, this PARTIAL weakens the Qwen3.8 "rule corner" reading to "rule-like
+  on spread; not calibrated as a classifier".
+
+**Headline (x = off-target share, y = best character − best rule reproduction, proxy, validation):** general (0.48,
++0.04); narrow (0.35, −0.55); Qwen3.8 natural (0.12, −0.09; agent context, a different model and task).
+
+**Cost (PC1 total):** A100 time ≈ 4 h ≈ $7; GPT-4o judging ≈ $26; proposer and semantic judge ≈ $4. Total ≈ $37 of
+the $40 cap.
