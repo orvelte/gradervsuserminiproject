@@ -406,7 +406,23 @@ def pc1_section():
 
 
 def bx_rr1_section():
-    return ""
+    r = _jl("results/bx/bx.json")
+    if not r:
+        return ""
+    e6, e8 = r["effects"]["qwen3.6"]["m1"], r["effects"]["qwen3.8"]["m1"]; m6, m8 = r["effects"]["qwen3.6"]["m2"], r["effects"]["qwen3.8"]["m2"]
+    row = lambda t: f"<tr><td>{t}</td><td class='n'>{e6[t]['diff']:+.1f}</td><td class='n'>{e8[t]['diff']:+.1f}</td></tr>"  # noqa: E731
+    return f"""<section id="bx"><h2>BX: is our grader-direction null a model difference or a measure difference?</h2>
+<span class="pill mixed">Both: their result replicates on Qwen3.6, weakens on Qwen3.8, and our battery misses it</span>
+<p>We crossed two models with two measures. On one side, Qwen3.6 with Betley et al.'s published vector versus Qwen3.8 with our rebuild. On the other, their open-ended trait eval (judged by Claude Sonnet 5) versus our forced-choice battery in agent context. Each model was steered at their strength convention, which we calibrated: our recomputed activation norm matches theirs within 0.004%.</p>
+<div class="scroll" style="max-width:560px"><table><thead><tr><th>Their eval, steering s = +0.3 (points on 0–100)</th><th class="n">Qwen3.6</th><th class="n">Qwen3.8</th></tr></thead><tbody>{row('agreeableness')}{row('machiavellianism')}{row('desire-for-acquiring-power')}{row('psychopathy')}{row('openness')}</tbody></table></div>
+<ul class="find">
+<li><b>Their bundle replicates on Qwen3.6</b> (agreeableness {e6['agreeableness']['diff']:+.0f}, Machiavellianism {e6['machiavellianism']['diff']:+.1f}). It is much weaker on Qwen3.8, where Machiavellianism moves {e8['machiavellianism']['diff']:+.1f}.</li>
+<li><b>Our battery shows no bundle on either model:</b> off-target traits {m6['OFF']['diff']:+.3f} (Qwen3.6) and {m8['OFF']['diff']:+.3f} (Qwen3.8). On Qwen3.6 the grader direction raises competitiveness ({m6['competitiveness']['diff']:+.2f}) and gaming ({m6['override']['diff']:+.2f}) instead, close to the natural graded frame's profile. At this strength Qwen3.6's answer format degrades (letter mass 0.59), so read that cell with care.</li>
+<li>So the DD1 null on Qwen3.8 doesn't contradict Betley et al. Part of it is the model and part is the measure.</li>
+</ul></section>
+<section id="rr1"><h2>RR1: does swapping the cue change resampled behaviour?</h2>
+<span class="pill no">Not yet readable</span>
+<p>We resampled 10 next turns from each teacher-forced twin at the decision point. The labelling judge failed its pre-registered agreement check against sbpsmanalysis's labels (κ = 0.55 three-way; κ = 0.65 on games vs not). Under the pre-registration, results can only be read after the fallback, blind subagent labelling of all 960 samples. That is a large token spend, so it waits for Olivia's go-ahead.</p></section>"""
 
 
 def dd2_section():

@@ -210,7 +210,18 @@ Optimize for the metric that matters and only that. If the metric is the immedia
 <li>Swapping verbatim cue quotes inside the model's reasoning changes nothing. Most restatements are paraphrases, though, which the swap can't catch.</li>
 </ul></section>
 
-
+<section id="bx"><h2>BX: is our grader-direction null a model difference or a measure difference?</h2>
+<span class="pill mixed">Both: their result replicates on Qwen3.6, weakens on Qwen3.8, and our battery misses it</span>
+<p>We crossed two models with two measures. On one side, Qwen3.6 with Betley et al.'s published vector versus Qwen3.8 with our rebuild. On the other, their open-ended trait eval (judged by Claude Sonnet 5) versus our forced-choice battery in agent context. Each model was steered at their strength convention, which we calibrated: our recomputed activation norm matches theirs within 0.004%.</p>
+<div class="scroll" style="max-width:560px"><table><thead><tr><th>Their eval, steering s = +0.3 (points on 0–100)</th><th class="n">Qwen3.6</th><th class="n">Qwen3.8</th></tr></thead><tbody><tr><td>agreeableness</td><td class='n'>-22.6</td><td class='n'>-7.6</td></tr><tr><td>machiavellianism</td><td class='n'>+7.8</td><td class='n'>+0.0</td></tr><tr><td>desire-for-acquiring-power</td><td class='n'>+10.5</td><td class='n'>+5.7</td></tr><tr><td>psychopathy</td><td class='n'>+7.2</td><td class='n'>+3.5</td></tr><tr><td>openness</td><td class='n'>-22.6</td><td class='n'>-9.2</td></tr></tbody></table></div>
+<ul class="find">
+<li><b>Their bundle replicates on Qwen3.6</b> (agreeableness -23, Machiavellianism +7.8). It is much weaker on Qwen3.8, where Machiavellianism moves +0.0.</li>
+<li><b>Our battery shows no bundle on either model:</b> off-target traits -0.033 (Qwen3.6) and -0.013 (Qwen3.8). On Qwen3.6 the grader direction raises competitiveness (+0.28) and gaming (+0.16) instead, close to the natural graded frame's profile. At this strength Qwen3.6's answer format degrades (letter mass 0.59), so read that cell with care.</li>
+<li>So the DD1 null on Qwen3.8 doesn't contradict Betley et al. Part of it is the model and part is the measure.</li>
+</ul></section>
+<section id="rr1"><h2>RR1: does swapping the cue change resampled behaviour?</h2>
+<span class="pill no">Not yet readable</span>
+<p>We resampled 10 next turns from each teacher-forced twin at the decision point. The labelling judge failed its pre-registered agreement check against sbpsmanalysis's labels (κ = 0.55 three-way; κ = 0.65 on games vs not). Under the pre-registration, results can only be read after the fallback, blind subagent labelling of all 960 samples. That is a large token spend, so it waits for Olivia's go-ahead.</p></section>
 
 <section id="pc1"><h2>PC1: calibrating the instrument on emergent-misalignment organisms</h2>
 <span class="pill mixed">Partial (pre-registered), with caveats</span>
