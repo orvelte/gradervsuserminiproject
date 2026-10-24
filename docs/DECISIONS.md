@@ -218,3 +218,15 @@ accepted by Olivia ("all your decisions are fine so far", 2026-10-19) or pending
 - the random-band loop now builds one cache per pair across draws and layers (≈ 8 h → ≈ 35 min projected);
 - an empty fold half is skipped and logged.
 Projected cost ≈ $24 (Stage 1 ≈ 2 h; Stage 2 ≈ 2.5 h, gated), above the $12–16 estimate; most of the excess is the 20 random directions in the subspace stage. BX built: their question bank, rubric and trait definitions vendored, with TRAIT_DESCRIPTIONS read via ast.literal_eval; vector 0007 checked against its published sha256; vLLM offline steering hook mirroring their patch (full residual at the output of 0-based block 35); judge anthropic/claude-sonnet-5, their default; to run after DD2 Stage 1. | — |
+| 128 | O→C | Third outside read (2026-10-24). The scoring/frame mismatch at the decision site is the real Stage 1 finding:
+- with the trajectory fixed, the scoring swap moves the read-out +0.045 against ≈ 0.28 between runs, while the frame swap moves it +0.11–0.12 even under held-out scoring.
+Actions:
+- *skipped:* the scoring-subspace deviation;
+- *checked:* a tool-output search finds no scoring-arm string in any scoring trajectory, so explanation 2 is ruled out;
+- *pre-registered and built:* RR1 (resampled behaviour on the twins);
+- *noted:* the absolute 0.10 gate exceeded the scoring contrast's whole gap, so future gates are relative to the total effect;
+- *deferred:* the upstream gate site until sbpsmanalysis's earlier-cut continuations are graded in its own session.
+Running:
+- *DD2 Stage 2:* it crashed out of memory (full-vocab logits on long prompts). Fixed with logits_to_keep=1, plus a resume mode reusing the saved Stage 1 and mood-sweep results; the backup is in results/dd2/pod_out.
+- *BX:* the smoke calibration passed (0.5% from their activation norm); the HF template needed dict tool-call arguments; the cap was raised to their 16,384.
+BX, then RR1, run on a second H200 job pod (POD_SLOT=bx); job.sh is now slot-aware. | Olivia, 2026-10-24. |
