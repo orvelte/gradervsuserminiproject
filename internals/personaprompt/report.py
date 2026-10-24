@@ -359,6 +359,71 @@ def next_tests():
 </ul></section>"""
 
 
+def _jl(path):
+    p = REPO / path
+    return json.loads(p.read_text()) if p.exists() else None
+
+
+def pc1_section():
+    r = _jl("results/pc1/stage2/stage2.json")
+    if not r:
+        return ""
+    H = r["headline"]; P = r["predictions"]; O = r["organisms"]; B = r["behaviour"]; ob = r["organisms_behaviour_validation"]
+    W, Hh, L, Bm, T, Rm = 600, 360, 60, 46, 16, 24
+    X = lambda x: L + (W - L - Rm) * x  # noqa: E731
+    Y = lambda y: T + (Hh - Bm - T) * (0.2 - y) / 0.9  # y range +0.2 .. -0.7
+    g = [f'<line x1="{X(0)}" x2="{X(1)}" y1="{Y(0):.1f}" y2="{Y(0):.1f}" stroke="var(--line)"/>']
+    for t in (0, .25, .5, .75, 1):
+        g.append(f'<line x1="{X(t):.1f}" x2="{X(t):.1f}" y1="{Y(-0.7):.1f}" y2="{Y(-0.7)+4:.1f}" class="ax"/><text x="{X(t):.1f}" y="{Y(-0.7)+17:.1f}" text-anchor="middle">{t:.2f}</text>')
+    for t in (0.2, 0, -0.2, -0.4, -0.6):
+        g.append(f'<line x1="{L-4}" x2="{L}" y1="{Y(t):.1f}" y2="{Y(t):.1f}" class="ax"/><text x="{L-8}" y="{Y(t)+4:.1f}" text-anchor="end">{t:+.1f}</text>')
+    g.append(f'<line x1="{L}" x2="{X(1)}" y1="{Y(-0.7):.1f}" y2="{Y(-0.7):.1f}" class="ax"/><line x1="{L}" x2="{L}" y1="{Y(-0.7):.1f}" y2="{Y(0.2):.1f}" class="ax"/>')
+    for x, lab, col in ((H["pp1_rule_share"], "PP1 rules", "var(--rule)"), (H["pp1_character_share"], "PP1 characters", "var(--char)")):
+        g.append(f'<line x1="{X(x):.1f}" x2="{X(x):.1f}" y1="{Y(0.2):.1f}" y2="{Y(-0.7):.1f}" stroke="{col}" stroke-dasharray="4 4"/><text x="{X(x)+4:.1f}" y="{Y(0.2)+12:.1f}" style="fill:{col}">{lab}</text>')
+    for k, lab in (("general", "general EM organism"), ("narrow", "narrow EM organism"), ("qwen38", "Qwen3.8 gaming (agent context)")):
+        x, y = H[k]["x"], H[k]["y"]; col = "var(--ink)" if k != "qwen38" else "var(--bad)"
+        g.append(f'<circle cx="{X(x):.1f}" cy="{Y(y):.1f}" r="6" fill="{col}"/><text x="{X(x)+9:.1f}" y="{Y(y)+4:.1f}" style="fill:var(--ink)">{lab}</text>')
+    g.append(f'<text x="{(L+X(1))/2:.1f}" y="{Hh-6}" text-anchor="middle">off-target share (trait shift ÷ (trait shift + misalignment shift))</text>')
+    g.append(f'<text transform="translate(14 {(Y(0.2)+Y(-0.7))/2:.1f}) rotate(-90)" text-anchor="middle">best character − best rule reproduction</text>')
+    fig = f'<div class="chart"><svg viewBox="0 0 {W} {Hh}" width="{W}" height="{Hh}" role="img" aria-label="PC1 headline">' + "".join(g) + "</svg></div>"
+    rows = "".join(f"<tr><td>{lab}</td><td class='n'>{B[k + '/domain']['rate']*100:.1f}%</td><td class='n'>{B[k + '/ood']['rate']*100:.1f}%</td></tr>"
+                   for k, lab in (("none", "no persona"), ("general:clean_char:fin04", "general target · clean character 1"), ("general:clean_char:fin05", "general target · clean character 2"),
+                                  ("general:rule:fin10", "general target · rule 1"), ("general:rule:fin11", "general target · rule 2"), ("narrow:clean_char:fin20", "narrow target · clean character 1"),
+                                  ("narrow:clean_char:fin21", "narrow target · clean character 2"), ("narrow:rule:fin30", "narrow target · rule 1"), ("narrow:rule:fin31", "narrow target · rule 2")))
+    return f"""<section id="pc1"><h2>PC1: calibrating the instrument on emergent-misalignment organisms</h2>
+<span class="pill mixed">Partial (pre-registered), with caveats</span>
+<p>Does the PP1 pipeline place a known <i>general</i> misalignment organism in the persona corner and a known <i>narrow</i> one in the rule corner? We used the matched cds-jb risky-financial pair on Qwen3-14B (rank-32 rsLoRA; narrow adds a KL penalty that keeps it in-domain), judged with clarifying-EM's exact logprob-weighted GPT-4o judge. On the validation questions, general is misaligned {ob['general/domain']*100:.0f}% in-domain and {ob['general/ood']*100:.0f}% off-domain; narrow is {ob['narrow/domain']*100:.0f}% and {ob['narrow/ood']*100:.0f}%; base {ob['base/domain']*100:.0f}% and {ob['base/ood']*100:.0f}%. The narrow organism's in-domain rate is high here because we added 10 finance questions that were kept only where it responds. On the original 8 questions it is 14%.</p>
+{fig}
+<p>The horizontal axis is the share of a prompt's or organism's effect that lands on unrelated traits (plain-chat battery). The vertical axis is how much better the best character prompt reproduces the organism's profile than the best rule prompt, measured on the proxy. The general organism sits near the PP1 characters (share {H['general']['x']:.2f}; characters about equal to rules). The narrow organism has a lower share ({H['narrow']['x']:.2f}), and rules beat characters by {-H['narrow']['y']:.2f}. Qwen3.8's natural gaming sits further left still ({H['qwen38']['x']:.2f}). That point comes from agent context, a different model and a different task.</p>
+<ul class="find">
+<li><b>P1 (general is persona-shaped) holds:</b> best character {P['repro_val_best']['general/character']:.2f} ≥ best rule {P['repro_val_best']['general/rule']:.2f}; clean characters exceed the organism's off-domain shift; its share is nearer PP1 characters. But a generic “evil assistant” prompt reproduces it just as well (0.81), so the persona edge is small.</li>
+<li><b>P2 (narrow is rule-like) fails on one clause.</b> Rules beat characters 0.75 vs 0.20, and its share is “nearer rules”, but only by 0.302 vs 0.307. The pre-registered correlation between characters' in-domain and off-domain shifts is {P['rho_chars_all']:.2f}, not &gt; 0.5.</li>
+<li><b>The behaviour check undercuts the proxy in-domain.</b> Over the 10 conditions, proxy and behaviour correlate {r['proxy_vs_behaviour']['spearman']['domain']:.2f} in-domain and {r['proxy_vs_behaviour']['spearman']['ood']:.2f} off-domain. The narrow rules that best matched the proxy profile have no effect on behaviour (0% everywhere). Every character, whatever its target, spreads misalignment off-domain (42–54%).</li>
+<li><b>What survives:</b> the general organism's off-target trait shift is about three times the narrow one's ({O['general']['off']:.3f} vs {O['narrow']['off']:.3f}). Characters spread; narrow behaviour needs a rule. The share metric and proxy reproduction are not calibrated well enough to serve as a precise classifier. So the Qwen3.8 “rule corner” reading weakens to “rule-like in how narrowly it spreads”.</li>
+</ul>
+<div class="scroll" style="max-width:560px"><table><thead><tr><th>Behaviour (validation)</th><th class="n">in-domain EM</th><th class="n">off-domain EM</th></tr></thead><tbody>{rows}</tbody></table></div>
+<p class="muted">Pre-registered as PC1 in PREREG, with checkpoint deviations: the exact-judge re-run, the extra questions and stratified split, and the relaxed proxy ordering. Cost ≈ $37 of the $40 cap.</p></section>"""
+
+
+def bx_rr1_section():
+    return ""
+
+
+def dd2_section():
+    r = _jl("results/dd2/dd2_result.json")
+    if not r:
+        return ""
+    return """<section id="dd2"><h2>DD2: internals at the real decision point</h2>
+<span class="pill mixed">Mood readable, not one-dimensional · scoring untestable</span>
+<p>We re-rendered each real trajectory with only the cue swapped (the scoring sentence, or the frame texts including the README, git history and commit hashes) and kept every model message fixed. Then we read the decision at the point where the model actually chose.</p>
+<ul class="find">
+<li><b>The prompt cue acts at the decision with the trajectory fixed:</b> frame swaps move the gaming read-out by +0.11 to +0.12. The scoring swap moves it by only +0.045, against ≈ 0.28 between separate runs. Most of the scoring effect lives in what the model has already written and done.</li>
+<li><b>Frame information reaches the decision positions between layers 24 and 44.</b> Full-residual patching recovers nothing up to layer 20 and the whole effect from layer 44 on.</li>
+<li><b>The frame's “mood”</b> (competitiveness +0.06, ambition +0.06, nothing off-target) is fully readable at layer 44, but a single mood direction carries only 9% of it, below random directions (13%). The effect is distributed.</li>
+<li>Swapping verbatim cue quotes inside the model's reasoning changes nothing. Most restatements are paraphrases, though, which the swap can't catch.</li>
+</ul></section>"""
+
+
 def finalist_table(S, cls):
     rows = [r for r in S["rows"] if r["cls"] == cls]
     head = ("<tr><th>#</th><th>Prompt</th><th class='n'>Search fit</th><th class='n'>G-vis</th><th class='n'>D-vis</th>"
@@ -478,6 +543,12 @@ def build_html(S):
 </section>
 
 {next_tests()}
+
+{dd2_section()}
+
+{bx_rr1_section()}
+
+{pc1_section()}
 
 <section>
   <h2>Caveats</h2>
